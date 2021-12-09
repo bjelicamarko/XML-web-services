@@ -1,0 +1,23 @@
+## Interesovanje za vakcinaciju
+ - template - http://www.vakc-sistem.rs/interesovanje/{{id}}
+ - primer - http://www.vakc-sistem.rs/interesovanje/456
+
+## Saglasnost za vakcinaciju
+ - template - http://www.vakc-sistem.rs/saglasnost/{{id}}
+ - primer - http://www.vakc-sistem.rs/saglasnost/345
+
+## Potvrda o vakcinaciji
+ - template - http://www.vakc-sistem.rs/potvrda-o-vakcinaciji/{{sifra_potvrde}}
+ - primer - http://www.vakc-sistem.rs/potvrda-o-vakcinaciji/789
+
+## Zahtev za izdavanje digitalnog zelenog sertifikata
+ - template - http://www.vakc-sistem.rs/zahtev-dzs/{{id}}
+ - primer - http://www.vakc-sistem.rs/zahtev-dzs/123
+
+## Digitalni zeleni sertifikat
+ - template - http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat/{{broj_sertifikata}}
+ - primer - http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat/123456
+
+## Izvestaj
+ - template - http://www.vakc-sistem.rs/izvestaj/{{id}}
+ - primer - http://www.vakc-sistem.rs/izvestaj/555

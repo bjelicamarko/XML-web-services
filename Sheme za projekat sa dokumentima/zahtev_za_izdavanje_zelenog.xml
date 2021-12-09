@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Zahtev xmlns="http://www.vakc-sistem.rs/zahtev-dzs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.vakc-sistem.rs/zahtev-dzs zahtev_za_izdavanje_zelenog.xsd" Id="145434423">
+    <Podnosilac>
+        <Ime>Marko</Ime>
+        <Prezime>Marković</Prezime>
+        <Datum_rodjenja>1999-01-01</Datum_rodjenja>
+        <Pol>Musko</Pol>
+        <JMBG>0101999103012</JMBG>
+        <Broj_pasosa>G1245125</Broj_pasosa>
+    </Podnosilac>
+    <Razlog>Želim da idem na apsolventsku ekskurziju</Razlog>
+    <Mesto>Bečej</Mesto>
+    <Datum>2021-12-06</Datum>
+</Zahtev>
