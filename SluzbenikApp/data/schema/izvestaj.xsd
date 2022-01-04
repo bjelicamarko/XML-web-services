@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="http://www.vakc-sistem.rs/izvestaj" vc:minVersion="1.1"
+    xmlns="http://www.vakc-sistem.rs/izvestaj"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning">
+
+    <xs:element name="Izvestaj">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Broj_dokumenata_o_interesovanju">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:int">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Broj_pristiglih_zahteva_za_DZS">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:int">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Broj_izdatih_zahteva_za_DZS">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:int">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Broj_primljenih_vakcina">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:int">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Broj_primnljenih_novovakcinisanih">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:int">
+                            <xs:minInclusive value="0"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Proizvodjaci">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="Vakcina">
+                                <xs:complexType mixed="false">
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:nonNegativeInteger">
+                                            <xs:attribute name="Naziv_proizvodjaca" type="xs:string"
+                                                use="required"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Datum" type="xs:date"/>
+            </xs:sequence>
+            <xs:attribute name="Od" type="xs:date" use="required"/>
+            <xs:attribute name="Do" type="xs:date" use="required"/>
+            <xs:attribute name="Id" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
