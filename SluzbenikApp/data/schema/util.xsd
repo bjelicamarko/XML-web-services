@@ -237,7 +237,7 @@
                 </xs:simpleType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="Redni_broj" type="xs:positiveInteger"/>
+        <xs:attribute name="Redni_broj" type="xs:positiveInteger" use="required"/>
     </xs:complexType>
     <xs:complexType name="Doza_sa_ustanovom">
         <xs:complexContent>
