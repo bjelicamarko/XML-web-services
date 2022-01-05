@@ -42,7 +42,7 @@ public class DigitalniZeleniSertifikatRepository extends StoreRetrieveXMLReposit
             marshaller.marshal(digitalniZeleniSertifikat, os);
 
 //            super.storeXML("db/digitalni_zeleni_sertifikat", digitalniZeleniSertifikat.getPodaciOSertifikatu().getBrojSertifikata(), doc);
-            super.storeXML("db/digitalni_zeleni_sertifikat", digitalniZeleniSertifikat.getPodaciOSertifikatu().getBrojSertifikata(), os);
+            super.storeXML("db/digitalni_zeleni_sertifikat", digitalniZeleniSertifikat.getPodaciOSertifikatu().getBrojSertifikata()+".xml", os);
 
         } catch (JAXBException e) {
             e.printStackTrace();

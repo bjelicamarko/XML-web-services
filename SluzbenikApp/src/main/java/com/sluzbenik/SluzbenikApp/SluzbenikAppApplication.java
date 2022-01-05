@@ -11,7 +11,7 @@ public class SluzbenikAppApplication {
 	public static void main(String[] args) {
 //		// Citanje
 //		DigitalniZeleniSertifikatRepository digitalniZeleniSertifikatRepository = new DigitalniZeleniSertifikatRepository();
-//		DigitalniZeleniSertifikat dzs = digitalniZeleniSertifikatRepository.retrieveXML("7654321");
+//		DigitalniZeleniSertifikat dzs = digitalniZeleniSertifikatRepository.retrieveXML("1234567.xml");
 ////		System.out.println(dzs);
 //		// Pisanje
 //		DigitalniZeleniSertifikat.PodaciOSertifikatu podaci = dzs.getPodaciOSertifikatu();
