@@ -55,6 +55,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- Ovo sluzi za generisanje klasa na osnovu schema
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
     			<artifactId>maven-jaxb2-plugin</artifactId>
@@ -72,6 +73,7 @@
 					</schemaIncludes>
 				</configuration>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 
