@@ -1,7 +1,8 @@
 package com.imunizacija.ImunizacijaApp.repository;
 
+
+import com.imunizacija.ImunizacijaApp.repository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
-import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.ConnectionProperties;
 import org.exist.xmldb.EXistResource;
 import org.w3c.dom.Node;
 import org.xmldb.api.DatabaseManager;
@@ -13,60 +14,36 @@ import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.transform.OutputKeys;
 import java.io.IOException;
-import java.io.OutputStream;
 
 
 public abstract class StoreRetrieveXMLRepository {
-	
-	protected ConnectionProperties connectionProp;
-	
-	public StoreRetrieveXMLRepository() {
-	
-		// initialize database driver
-    	try {
-    		// load properties
-    		connectionProp = AuthenticationUtilities.setUpProperties();
-    		
+
+	protected static AuthenticationUtilities.ConnectionProperties connectionProp;
+
+	protected IdGeneratorPosInt idGenerator;
+
+	public StoreRetrieveXMLRepository(IdGeneratorPosInt idGenerator) {
+		this.idGenerator = idGenerator;
+	}
+
+	public static void registerDatabase(){
+		try {
+			// load properties
+			connectionProp = AuthenticationUtilities.setUpProperties();
+
 			System.out.println("[INFO] Loading driver class: " + connectionProp.driver);
 			Class<?> cl = Class.forName(connectionProp.driver);
-			
-			
+
+
 			// encapsulation of the database driver functionality
 			Database database = (Database) cl.newInstance();
 			database.setProperty("create-database", "true");
-			
+
 			// entry point for the API which enables you to get the Collection reference
 			DatabaseManager.registerDatabase(database);
-			
+
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | XMLDBException | IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	protected void storeXML(String collectionId, String documentId, OutputStream document) {
-		
-		// a collection of Resources stored within an XML database
-        Collection col = null;
-        XMLResource res = null;
-        
-        try { 
-        	
-        	System.out.println("[INFO] Retrieving the collection: " + collectionId);
-            col = getOrCreateCollection(collectionId);
-
-            System.out.println("[INFO] Inserting the document: " + documentId);
-            res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);
-            
-            res.setContent(document);
-            System.out.println("[INFO] Storing the document: " + res.getId());
-            
-            col.storeResource(res);
-            System.out.println("[INFO] Done.");
-            
-        } catch (XMLDBException e) {
-			e.printStackTrace();
-		} finally {
-			closeResources(col, res);
 		}
 	}
 
@@ -105,7 +82,7 @@ public abstract class StoreRetrieveXMLRepository {
 	protected Collection getOrCreateCollection(String collectionUri, int pathSegmentOffset) throws XMLDBException {
         
         Collection col = DatabaseManager.getCollection(connectionProp.uri + collectionUri, connectionProp.user, connectionProp.password);
-
+        
         // create the collection if it does not exist
         if(col == null) {
         
@@ -149,7 +126,7 @@ public abstract class StoreRetrieveXMLRepository {
         }
     }
 
-	private void closeResources(Collection col, XMLResource res) {
+	protected void closeResources(Collection col, XMLResource res) {
 		if(res != null) {
 			try {
 				((EXistResource)res).freeResources();

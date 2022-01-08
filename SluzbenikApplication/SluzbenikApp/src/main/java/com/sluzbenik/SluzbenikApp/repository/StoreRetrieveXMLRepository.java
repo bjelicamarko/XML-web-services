@@ -5,6 +5,8 @@ import java.io.OutputStream;
 
 import javax.xml.transform.OutputKeys;
 
+import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorDZS;
+import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorInterface;
 import org.exist.xmldb.EXistResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -20,58 +22,62 @@ import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities.ConnectionProper
 
 
 public abstract class StoreRetrieveXMLRepository {
-	
-	protected ConnectionProperties connectionProp;
-	
-	public StoreRetrieveXMLRepository() {
-	
-		// initialize database driver
-    	try {
-    		// load properties
-    		connectionProp = AuthenticationUtilities.setUpProperties();
-    		
+
+	protected static ConnectionProperties connectionProp;
+
+	protected IdGeneratorInterface idGenerator;
+
+	public StoreRetrieveXMLRepository(IdGeneratorInterface idGenerator) {
+		this.idGenerator = idGenerator;
+	}
+
+	public static void registerDatabase(){
+		try {
+			// load properties
+			connectionProp = AuthenticationUtilities.setUpProperties();
+
 			System.out.println("[INFO] Loading driver class: " + connectionProp.driver);
 			Class<?> cl = Class.forName(connectionProp.driver);
-			
-			
+
+
 			// encapsulation of the database driver functionality
 			Database database = (Database) cl.newInstance();
 			database.setProperty("create-database", "true");
-			
+
 			// entry point for the API which enables you to get the Collection reference
 			DatabaseManager.registerDatabase(database);
-			
+
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | XMLDBException | IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void storeXML(String collectionId, String documentId, OutputStream document) {
-		
-		// a collection of Resources stored within an XML database
-        Collection col = null;
-        XMLResource res = null;
-        
-        try { 
-        	
-        	System.out.println("[INFO] Retrieving the collection: " + collectionId);
-            col = getOrCreateCollection(collectionId);
-
-            System.out.println("[INFO] Inserting the document: " + documentId);
-            res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);
-            
-            res.setContent(document);
-            System.out.println("[INFO] Storing the document: " + res.getId());
-            
-            col.storeResource(res);
-            System.out.println("[INFO] Done.");
-            
-        } catch (XMLDBException e) {
-			e.printStackTrace();
-		} finally {
-			closeResources(col, res);
-		}
-	}
+//	protected void storeXML(String collectionId, String documentId, OutputStream document) {
+//
+//		// a collection of Resources stored within an XML database
+//        Collection col = null;
+//        XMLResource res = null;
+//
+//        try {
+//
+//        	System.out.println("[INFO] Retrieving the collection: " + collectionId);
+//            col = getOrCreateCollection(collectionId);
+//
+//            System.out.println("[INFO] Inserting the document: " + documentId);
+//            res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);
+//
+//            res.setContent(document);
+//            System.out.println("[INFO] Storing the document: " + res.getId());
+//
+//            col.storeResource(res);
+//            System.out.println("[INFO] Done.");
+//
+//        } catch (XMLDBException e) {
+//			e.printStackTrace();
+//		} finally {
+//			closeResources(col, res);
+//		}
+//	}
 
 	protected Node retrieveXML(String collectionId, String documentId) {
 		Collection col = null;
@@ -152,7 +158,7 @@ public abstract class StoreRetrieveXMLRepository {
         }
     }
 
-	private void closeResources(Collection col, XMLResource res) {
+	protected void closeResources(Collection col, XMLResource res) {
 		if(res != null) {
 			try {
 				((EXistResource)res).freeResources();
