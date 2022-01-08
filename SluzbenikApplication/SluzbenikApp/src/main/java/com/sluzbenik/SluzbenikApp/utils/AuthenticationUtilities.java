@@ -46,7 +46,7 @@ public class AuthenticationUtilities {
 		props.setProperty("conn.user", "admin");
 		props.setProperty("conn.password", "");
 		props.setProperty("conn.host", "localhost");
-		props.setProperty("conn.port", "8080");
+		props.setProperty("conn.port", "8081");
 		props.setProperty("conn.driver", "org.exist.xmldb.DatabaseImpl");
 		return new ConnectionProperties(props);
 	}
