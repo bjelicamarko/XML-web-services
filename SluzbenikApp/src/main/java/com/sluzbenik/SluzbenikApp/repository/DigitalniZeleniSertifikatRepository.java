@@ -21,27 +21,15 @@ import java.io.OutputStream;
 public class DigitalniZeleniSertifikatRepository extends StoreRetrieveXMLRepository {
 
     public void storeXML(DigitalniZeleniSertifikat digitalniZeleniSertifikat){
-        Collection col = null;
-        XMLResource res = null;
         OutputStream os = new ByteArrayOutputStream();
 
-        JAXBContext context = null;
         try {
-            context = JAXBContext.newInstance("com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat");
+            JAXBContext context = JAXBContext.newInstance("com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat");
 
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-//            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//            dbf.setNamespaceAware(true);
-//            DocumentBuilder db = dbf.newDocumentBuilder();
-//            Document doc = db.newDocument();
-
-            // marshal the contents to an output stream
-//            marshaller.marshal(digitalniZeleniSertifikat, doc);
             marshaller.marshal(digitalniZeleniSertifikat, os);
 
-//            super.storeXML("db/digitalni_zeleni_sertifikat", digitalniZeleniSertifikat.getPodaciOSertifikatu().getBrojSertifikata(), doc);
             super.storeXML("db/digitalni_zeleni_sertifikat", digitalniZeleniSertifikat.getPodaciOSertifikatu().getBrojSertifikata()+".xml", os);
 
         } catch (JAXBException e) {

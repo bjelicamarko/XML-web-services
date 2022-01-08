@@ -56,11 +56,7 @@ public abstract class StoreRetrieveXMLRepository {
         	
         	System.out.println("[INFO] Retrieving the collection: " + collectionId);
             col = getOrCreateCollection(collectionId);
-            
-            /*
-             *  create new XMLResource with a given id
-             *  an id is assigned to the new resource if left empty (null)
-             */
+
             System.out.println("[INFO] Inserting the document: " + documentId);
             res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);
             
@@ -73,7 +69,6 @@ public abstract class StoreRetrieveXMLRepository {
         } catch (XMLDBException e) {
 			e.printStackTrace();
 		} finally {
-        	//don't forget to clean up
 			closeResources(col, res);
 		}
 	}
