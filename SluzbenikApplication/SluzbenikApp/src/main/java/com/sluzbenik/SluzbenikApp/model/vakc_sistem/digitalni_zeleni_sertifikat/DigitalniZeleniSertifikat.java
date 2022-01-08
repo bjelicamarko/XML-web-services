@@ -17,6 +17,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.util.DozaSaUstanovom;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.util.LicniPodaciJMBG;
 
@@ -75,7 +77,7 @@ import com.sluzbenik.SluzbenikApp.model.vakc_sistem.util.LicniPodaciJMBG;
     "doze"
 })
 @XmlRootElement(name = "Digitalni_zeleni_sertifikat")
-public class DigitalniZeleniSertifikat {
+public class DigitalniZeleniSertifikat implements IdentifiableEntity {
 
     @XmlElement(name = "Podaci_o_primaocu", required = true)
     protected LicniPodaciJMBG podaciOPrimaocu;
@@ -83,6 +85,16 @@ public class DigitalniZeleniSertifikat {
     protected DigitalniZeleniSertifikat.PodaciOSertifikatu podaciOSertifikatu;
     @XmlElement(name = "Doza", required = true)
     protected List<DozaSaUstanovom> doze;
+
+    @Override
+    public String getXmlId() {
+        return podaciOSertifikatu.getBrojSertifikata();
+    }
+
+    @Override
+    public void setXmlId(String id) {
+        podaciOSertifikatu.setBrojSertifikata(id);
+    }
 
     /**
      * Gets the value of the podaciOPrimaocu property.

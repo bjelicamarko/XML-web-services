@@ -8,6 +8,8 @@
 
 package com.sluzbenik.SluzbenikApp.model.vakc_sistem.izvestaj;
 
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +111,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "datum"
 })
 @XmlRootElement(name = "Izvestaj")
-public class Izvestaj {
+public class Izvestaj implements IdentifiableEntity {
 
     @XmlElement(name = "Broj_dokumenata_o_interesovanju")
     protected int brojDokumenataOInteresovanju;
@@ -135,6 +137,17 @@ public class Izvestaj {
     @XmlAttribute(name = "Id", required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger id;
+
+    @Override
+    public String getXmlId(){
+        return id.toString();
+    }
+
+    @Override
+    public void setXmlId(String id){
+        this.id = new BigInteger(id);
+    }
+
 
     /**
      * Gets the value of the brojDokumenataOInteresovanju property.
