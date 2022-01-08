@@ -1,7 +1,6 @@
-package com.sluzbenik.SluzbenikApp.utils;
+package com.imunizacija.ImunizacijaApp.utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -46,7 +45,7 @@ public class AuthenticationUtilities {
 		props.setProperty("conn.user", "admin");
 		props.setProperty("conn.password", "");
 		props.setProperty("conn.host", "localhost");
-		props.setProperty("conn.port", "8081");
+		props.setProperty("conn.port", "8082");
 		props.setProperty("conn.driver", "org.exist.xmldb.DatabaseImpl");
 		return new ConnectionProperties(props);
 	}

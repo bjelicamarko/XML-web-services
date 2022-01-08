@@ -1,12 +1,8 @@
-package com.sluzbenik.SluzbenikApp.repository;
+package com.imunizacija.ImunizacijaApp.repository;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.xml.transform.OutputKeys;
-
+import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
+import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.ConnectionProperties;
 import org.exist.xmldb.EXistResource;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
@@ -15,8 +11,9 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
-import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
-import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities.ConnectionProperties;
+import javax.xml.transform.OutputKeys;
+import java.io.IOException;
+import java.io.OutputStream;
 
 
 public abstract class StoreRetrieveXMLRepository {
@@ -108,7 +105,7 @@ public abstract class StoreRetrieveXMLRepository {
 	protected Collection getOrCreateCollection(String collectionUri, int pathSegmentOffset) throws XMLDBException {
         
         Collection col = DatabaseManager.getCollection(connectionProp.uri + collectionUri, connectionProp.user, connectionProp.password);
-        
+
         // create the collection if it does not exist
         if(col == null) {
         
