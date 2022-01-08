@@ -8,6 +8,7 @@
 
 package com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Doza;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.LicniPodaciJMBG;
 
@@ -84,7 +85,7 @@ import java.util.List;
     "podaciOPotvrdi"
 })
 @XmlRootElement(name = "Potvrda_o_vakcinaciji")
-public class PotvrdaOVakcinaciji {
+public class PotvrdaOVakcinaciji implements IdentifiableEntity {
 
     @XmlElement(name = "Podaci_o_primaocu", required = true)
     protected LicniPodaciJMBG podaciOPrimaocu;
@@ -95,6 +96,16 @@ public class PotvrdaOVakcinaciji {
     @XmlAttribute(name = "Sifra_potvrde", required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger sifraPotvrde;
+
+    @Override
+    public String getXmlId() {
+        return sifraPotvrde.toString();
+    }
+
+    @Override
+    public void setXmlId(String id) {
+        this.sifraPotvrde = new BigInteger(id);
+    }
 
     /**
      * Gets the value of the podaciOPrimaocu property.

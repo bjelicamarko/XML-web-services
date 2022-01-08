@@ -21,12 +21,12 @@ public class SluzbenikAppApplication {
 //		IdGeneratorDZS idGeneratorDZS = new IdGeneratorDZS();
 //		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
 //
-//		//DZS REPO
+//		// DZS REPO
 //		GenericXMLRepository<DigitalniZeleniSertifikat> digitalniZeleniSertifikatRepository =
 //				new GenericXMLRepository<DigitalniZeleniSertifikat>(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS,idGeneratorDZS);
-//		//CITANJE
+//		// CITANJE
 //		DigitalniZeleniSertifikat dzs = digitalniZeleniSertifikatRepository.retrieveXML("1234567.xml");
-//		//EDITOVANJE - KREIRANJE NOVOG
+//		// EDITOVANJE - KREIRANJE NOVOG
 //		DigitalniZeleniSertifikat.PodaciOSertifikatu podaci = dzs.getPodaciOSertifikatu();
 //		podaci.setQrKod("idegasssssssssssssssssssssssssssssss");
 //		podaci.setBrojSertifikata("7654321");
@@ -35,12 +35,12 @@ public class SluzbenikAppApplication {
 //		digitalniZeleniSertifikatRepository.storeXML(dzs, true);
 //
 //
-//		//IZVESTAJ REPO
+//		// IZVESTAJ REPO
 //		GenericXMLRepository<Izvestaj> izvestajRepository =
 //				new GenericXMLRepository<Izvestaj>(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ,idGeneratorPosInt);
-//		//CITANJE
+//		// CITANJE
 //		Izvestaj izvestaj = izvestajRepository.retrieveXML("123123.xml");
-//		//EDITOVANJE - KREIRANJE NOVOG
+//		// EDITOVANJE - KREIRANJE NOVOG
 //		izvestaj.setBrojPrimljenihVakcina(30);
 //		// PISANJE
 //		izvestajRepository.storeXML(izvestaj, true);

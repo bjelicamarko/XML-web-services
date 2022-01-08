@@ -8,6 +8,7 @@
 
 package com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Drzavljanstvo;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Kontakt;
 
@@ -94,7 +95,7 @@ import java.util.List;
     "datum"
 })
 @XmlRootElement(name = "Interesovanje")
-public class Interesovanje {
+public class Interesovanje implements IdentifiableEntity {
 
     @XmlElement(name = "Drzavljanstvo", required = true)
     protected Drzavljanstvo drzavljanstvo;
@@ -116,6 +117,16 @@ public class Interesovanje {
     @XmlAttribute(name = "Id", required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger id;
+
+    @Override
+    public String getXmlId() {
+        return id.toString();
+    }
+
+    @Override
+    public void setXmlId(String id) {
+        this.id = new BigInteger(id);
+    }
 
     /**
      * Gets the value of the drzavljanstvo property.
