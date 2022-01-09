@@ -2,6 +2,9 @@ package com.imunizacija.ImunizacijaApp;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Drzavljanstvo;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
 import com.imunizacija.ImunizacijaApp.repository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.StoreRetrieveXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.id_generator.IdGeneratorPosInt;
@@ -41,6 +44,31 @@ public class ImunizacijaAppApplication {
 //		// PISANJE
 //		potvrdaOVakcinacijiGenericXMLRepository.storeXML(pov, true);
 
+
+//		// SAGLASNOST REPO
+//		GenericXMLRepository<Saglasnost> saglasnostGenericXMLRepository =
+//				new GenericXMLRepository<Saglasnost>(PACKAGE_PATH_SAGLASNOST,
+//						COLLECTION_PATH_SAGLASNOST, idGeneratorPosInt);
+//		// CITANJE
+//		Saglasnost saglasnost = saglasnostGenericXMLRepository.retrieveXML("4125125.xml");
+//		// EDITOVANJE - KREIRANJE NOVOG
+//		Drzavljanstvo novoDrzavljanstvo = saglasnost.getDrzavljanstvo();
+//		novoDrzavljanstvo.setJMBG("0201999404404");
+//		saglasnost.setDrzavljanstvo(novoDrzavljanstvo);
+//		// PISANJE
+//		saglasnostGenericXMLRepository.storeXML(saglasnost, false);
+
+//		// SAGLASNOST REPO
+//		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
+//				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
+//						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+//		// CITANJE
+//		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+//		// EDITOVANJE - KREIRANJE NOVOG
+//		String razlog = "Da nemam";
+//		zahtev.setRazlog(razlog);
+//		// PISANJE
+//		zahtevGenericXMLRepository.storeXML(zahtev, false);
 
 		SpringApplication.run(ImunizacijaAppApplication.class, args);
 	}

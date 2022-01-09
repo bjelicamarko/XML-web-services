@@ -8,6 +8,7 @@
 
 package com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.*;
 
 import javax.xml.bind.annotation.*;
@@ -228,7 +229,7 @@ import java.util.List;
     "oVakcinaciji"
 })
 @XmlRootElement(name = "Saglasnost")
-public class Saglasnost {
+public class Saglasnost implements IdentifiableEntity {
 
     @XmlElement(name = "Drzavljanstvo", required = true)
     protected Drzavljanstvo drzavljanstvo;
@@ -250,6 +251,16 @@ public class Saglasnost {
     @XmlAttribute(name = "Id", required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger id;
+
+    @Override
+    public String getXmlId() {
+        return id.toString();
+    }
+
+    @Override
+    public void setXmlId(String id) {
+        this.id = new BigInteger(id);
+    }
 
     /**
      * Gets the value of the drzavljanstvo property.
@@ -466,7 +477,6 @@ public class Saglasnost {
     public void setId(BigInteger value) {
         this.id = value;
     }
-
 
     /**
      * <p>Java class for anonymous complex type.

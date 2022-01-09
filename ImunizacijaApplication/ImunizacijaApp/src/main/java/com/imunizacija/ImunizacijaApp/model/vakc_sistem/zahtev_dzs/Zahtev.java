@@ -8,6 +8,7 @@
 
 package com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.LicniPodaciJMBGBrPasosa;
 
 import javax.xml.bind.annotation.*;
@@ -58,7 +59,7 @@ import java.math.BigInteger;
     "datum"
 })
 @XmlRootElement(name = "Zahtev")
-public class Zahtev {
+public class Zahtev implements IdentifiableEntity {
 
     @XmlElement(name = "Podnosilac", required = true)
     protected LicniPodaciJMBGBrPasosa podnosilac;
@@ -72,6 +73,16 @@ public class Zahtev {
     @XmlAttribute(name = "Id", required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger id;
+
+    @Override
+    public String getXmlId() {
+        return id.toString();
+    }
+
+    @Override
+    public void setXmlId(String id) {
+        this.id = new BigInteger(id);
+    }
 
     /**
      * Gets the value of the podnosilac property.
@@ -192,5 +203,4 @@ public class Zahtev {
     public void setId(BigInteger value) {
         this.id = value;
     }
-
 }
