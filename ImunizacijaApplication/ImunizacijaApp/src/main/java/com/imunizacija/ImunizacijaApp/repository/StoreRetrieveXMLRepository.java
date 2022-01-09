@@ -42,7 +42,7 @@ public abstract class StoreRetrieveXMLRepository {
 			// entry point for the API which enables you to get the Collection reference
 			DatabaseManager.registerDatabase(database);
 
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | XMLDBException | IOException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | XMLDBException e) {
 			e.printStackTrace();
 		}
 	}

@@ -40,7 +40,7 @@ public class AuthenticationUtilities {
 	 * 
 	 * @return the configuration object
 	 */
-	public static ConnectionProperties setUpProperties() throws IOException {
+	public static ConnectionProperties setUpProperties() {
 		Properties props = new Properties();
 		props.setProperty("conn.user", "admin");
 		props.setProperty("conn.password", "");
@@ -48,6 +48,50 @@ public class AuthenticationUtilities {
 		props.setProperty("conn.port", "8082");
 		props.setProperty("conn.driver", "org.exist.xmldb.DatabaseImpl");
 		return new ConnectionProperties(props);
+	}
+
+	/**
+	 * Connection parameters.
+	 */
+	static public class ConnectionPropertiesFusekiJena {
+
+		public String endpoint;
+		public String dataset;
+
+		public String queryEndpoint;
+		public String updateEndpoint;
+		public String dataEndpoint;
+
+		public ConnectionPropertiesFusekiJena(Properties props) {
+			super();
+
+			dataset = props.getProperty("conn.dataset").trim();
+			endpoint = props.getProperty("conn.endpoint").trim();
+
+			queryEndpoint = String.join("/", endpoint, dataset, props.getProperty("conn.query").trim());
+			updateEndpoint = String.join("/", endpoint, dataset, props.getProperty("conn.update").trim());
+			dataEndpoint = String.join("/", endpoint, dataset, props.getProperty("conn.data").trim());
+
+			System.out.println("[INFO] Parsing connection properties:");
+			System.out.println("[INFO] Query endpoint: " + queryEndpoint);
+			System.out.println("[INFO] Update endpoint: " + updateEndpoint);
+			System.out.println("[INFO] Graph store endpoint: " + dataEndpoint);
+		}
+	}
+
+	/**
+	 * Read the configuration properties for the example.
+	 *
+	 * @return the configuration object
+	 */
+	public static ConnectionPropertiesFusekiJena setUpPropertiesFusekiJena() {
+		Properties props = new Properties();
+		props.setProperty("conn.endpoint", "http://localhost:3030");
+		props.setProperty("conn.dataset", "ZahtevDataset");
+		props.setProperty("conn.query", "query");
+		props.setProperty("conn.update", "update");
+		props.setProperty("conn.data", "data");
+		return new ConnectionPropertiesFusekiJena(props);
 	}
 	
 }
