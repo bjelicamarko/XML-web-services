@@ -1,6 +1,5 @@
 package com.imunizacija.ImunizacijaApp.utils;
 
-import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -10,7 +9,7 @@ public class AuthenticationUtilities {
 	/**
 	 * Connection parameters.
 	 */
-	static public class ConnectionProperties {
+	static public class ConnectionPropertiesExist {
 
 		public String host;
 		public int port = -1;
@@ -19,7 +18,7 @@ public class AuthenticationUtilities {
 		public String driver;
 		public String uri;
 
-		public ConnectionProperties(Properties props) {
+		public ConnectionPropertiesExist(Properties props) {
 			super();
 			
 			user = props.getProperty("conn.user").trim();
@@ -40,14 +39,58 @@ public class AuthenticationUtilities {
 	 * 
 	 * @return the configuration object
 	 */
-	public static ConnectionProperties setUpProperties() throws IOException {
+	public static ConnectionPropertiesExist setUpProperties() {
 		Properties props = new Properties();
 		props.setProperty("conn.user", "admin");
 		props.setProperty("conn.password", "");
 		props.setProperty("conn.host", "localhost");
 		props.setProperty("conn.port", "8082");
 		props.setProperty("conn.driver", "org.exist.xmldb.DatabaseImpl");
-		return new ConnectionProperties(props);
+		return new ConnectionPropertiesExist(props);
+	}
+
+	/**
+	 * Connection parameters.
+	 */
+	static public class ConnectionPropertiesFusekiJena {
+
+		public String endpoint;
+		public String dataset;
+
+		public String queryEndpoint;
+		public String updateEndpoint;
+		public String dataEndpoint;
+
+		public ConnectionPropertiesFusekiJena(Properties props) {
+			super();
+
+			dataset = props.getProperty("conn.dataset").trim();
+			endpoint = props.getProperty("conn.endpoint").trim();
+
+			queryEndpoint = String.join("/", endpoint, dataset, props.getProperty("conn.query").trim());
+			updateEndpoint = String.join("/", endpoint, dataset, props.getProperty("conn.update").trim());
+			dataEndpoint = String.join("/", endpoint, dataset, props.getProperty("conn.data").trim());
+
+			System.out.println("[INFO] Parsing connection properties:");
+			System.out.println("[INFO] Query endpoint: " + queryEndpoint);
+			System.out.println("[INFO] Update endpoint: " + updateEndpoint);
+			System.out.println("[INFO] Graph store endpoint: " + dataEndpoint);
+		}
+	}
+
+	/**
+	 * Read the configuration properties for the example.
+	 *
+	 * @return the configuration object
+	 */
+	public static ConnectionPropertiesFusekiJena setUpPropertiesFusekiJena() {
+		Properties props = new Properties();
+		props.setProperty("conn.endpoint", "http://localhost:8083");
+		props.setProperty("conn.dataset", "ImunizacijaDataset");
+		props.setProperty("conn.query", "query");
+		props.setProperty("conn.update", "update");
+		props.setProperty("conn.data", "data");
+		return new ConnectionPropertiesFusekiJena(props);
 	}
 	
 }

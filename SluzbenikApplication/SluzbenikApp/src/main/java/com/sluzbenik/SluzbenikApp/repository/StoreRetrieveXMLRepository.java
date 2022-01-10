@@ -18,12 +18,12 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
 import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
-import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities.ConnectionProperties;
+import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities.ConnectionPropertiesExist;
 
 
 public abstract class StoreRetrieveXMLRepository {
 
-	protected static ConnectionProperties connectionProp;
+	protected static ConnectionPropertiesExist connectionProp;
 
 	protected IdGeneratorInterface idGenerator;
 
@@ -47,7 +47,7 @@ public abstract class StoreRetrieveXMLRepository {
 			// entry point for the API which enables you to get the Collection reference
 			DatabaseManager.registerDatabase(database);
 
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | XMLDBException | IOException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | XMLDBException e) {
 			e.printStackTrace();
 		}
 	}
