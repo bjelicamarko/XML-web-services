@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Izvestaj xmlns="http://www.vakc-sistem.rs/izvestaj"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.vakc-sistem.rs/izvestaj izvestaj.xsd" Od="2021-01-01" Do="2021-06-01" Id="1515124">
-    <Broj_dokumenata_o_interesovanju>123124</Broj_dokumenata_o_interesovanju>
-    <Broj_zahteva_za_sertifikatom>
-        <Pristigli>500</Pristigli>
-        <Izdato>350</Izdato>
-    </Broj_zahteva_za_sertifikatom>
-    <Broj_primljenih_vakcina>400</Broj_primljenih_vakcina>
-    <Broj_primnljenih_novovakcinisanih>200</Broj_primnljenih_novovakcinisanih>
+    xsi:schemaLocation="http://www.vakc-sistem.rs/izvestaj izvestaj.xsd" Od="2021-12-01" Do="2022-01-01" Id="123123">
+    <Broj_dokumenata_o_interesovanju>400</Broj_dokumenata_o_interesovanju>
+    <Broj_pristiglih_zahteva_za_DZS>300</Broj_pristiglih_zahteva_za_DZS>
+    <Broj_izdatih_zahteva_za_DZS>250</Broj_izdatih_zahteva_za_DZS>
+    <Broj_primljenih_vakcina>380</Broj_primljenih_vakcina>
+    <Broj_primnljenih_novovakcinisanih>120</Broj_primnljenih_novovakcinisanih>
     <Proizvodjaci>
-        <Vakcina Naziv_proizvodjaca="Pfizer">100</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sinopharm">50</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sputnik-V">250</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
     </Proizvodjaci>
-    <Datum>2021-12-07</Datum>
+    <Datum>2022-01-01</Datum>
 </Izvestaj>

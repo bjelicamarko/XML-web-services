@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Interesovanje xmlns="http://www.vakc-sistem.rs/interesovanje"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.vakc-sistem.rs/interesovanje interesovanje.xsd"
-    Id="123123">
+    xmlns:util="http://www.vakc-sistem.rs/util"
+    xsi:schemaLocation="http://www.vakc-sistem.rs/interesovanje interesovanje.xsd" Id="2312312">
     <Drzavljanstvo>
-        <Domace_drzavljanstvo>
-            <JMBG>0101999103012</JMBG>
-        </Domace_drzavljanstvo>
+        <util:JMBG>0101999404404</util:JMBG>
     </Drzavljanstvo>
     <Ime>Marko</Ime>
-    <Prezime>Marković</Prezime>
+    <Prezime>Markovic</Prezime>
     <Kontakt>
-        <Broj_telefona>062123456</Broj_telefona>
-        <Broj_fiksnosg_telefona>695421412</Broj_fiksnosg_telefona>
-        <Email_adresa>markomarkovic@gmail.com</Email_adresa>
+        <Broj_telefona xmlns="http://www.vakc-sistem.rs/util">1245125125</Broj_telefona>
+        <Broj_fiksnosg_telefona xmlns="http://www.vakc-sistem.rs/util">858584858</Broj_fiksnosg_telefona>
+        <Email_adresa xmlns="http://www.vakc-sistem.rs/util">markomarkovic@gmail.rs</Email_adresa>
     </Kontakt>
-    <Opstina_vakcinisanja>Novi Sad</Opstina_vakcinisanja>
-    <Vrsta_vakcine>
-        <Vakcina Tip="Pfizer"/>
-        <Vakcina Tip="Sinopharm"/>
-    </Vrsta_vakcine>
+    <Opstina_vakcinisanja>Becej</Opstina_vakcinisanja>
+    <Vakcina Tip=""/>
     <Dobrovoljni_davalac>Da</Dobrovoljni_davalac>
-    <Datum>2021-12-05</Datum>
+    <Datum>2022-01-07</Datum>
 </Interesovanje>
