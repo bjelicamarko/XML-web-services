@@ -93,67 +93,63 @@ public class ImunizacijaAppApplication {
 //		zahtevGenericXMLRepository.storeXML(zahtev, false);
 
 /** FUSEKI PRIMER NA DOLE **/
-//		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
-//				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
-//						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
-//		// CITANJE
-//		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
-//		String PREDICATE_NAMESPACE = "http://www.vakc-sistem.rs/predicate";
-//		String ZAHTEV_NAMED_GRAPH_URI = "/zahtev/metadata";
-//		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
-//
-//
-//		Model model = ModelFactory.createDefaultModel();
-//		model.setNsPrefix("pred", PREDICATE_NAMESPACE);
-//
-//		Resource resource = model.createResource("http://www.vakc-sistem.rs/zahtev-dzs/" + zahtev.getId());
-//
-//		Property createdAt = model.createProperty(PREDICATE_NAMESPACE, "createdAt");
-//		Literal date = model.createLiteral(zahtev.getDatum().toString());
-//
-//		Property createdIn = model.createProperty(PREDICATE_NAMESPACE, "createdIn");
-//		Literal place = model.createLiteral(zahtev.getMesto());
-//
-//		Property createdBy = model.createProperty(PREDICATE_NAMESPACE, "createdBy");
-//		Resource objectResource = model.createResource("http://www.vakc-sistem.rs/person/" + zahtev.getPodnosilac().getIme()
-//		+ "_" + zahtev.getPodnosilac().getPrezime());
-//
-//		Property identifiedWith = model.createProperty(PREDICATE_NAMESPACE, "identifiedWith");
-//		Literal identifier = model.createLiteral(zahtev.getPodnosilac().getJMBG());
-//
-//		// Adding the statements to the model
-//		Statement statement1 = model.createStatement(resource, createdAt, date);
-//		Statement statement2 = model.createStatement(resource, createdIn, place);
-//		Statement statement3 = model.createStatement(resource, createdBy, objectResource);
-//		Statement statement4 = model.createStatement(objectResource, identifiedWith, identifier);
-//
-//		model.add(statement1);
-//		model.add(statement2);
-//		model.add(statement3);
-//		model.add(statement4);
-//
-//		model.write(System.out, SparqlUtil.NTRIPLES);
-//
-//		// Issuing the SPARQL update...
-//		ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		model.write(out, SparqlUtil.NTRIPLES);
-//
-//		// Updating the named graph with the triples from RDF model
-//		System.out.println("[INFO] Inserting the triples to a named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
-//		String sparqlUpdate = SparqlUtil.insertData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, out.toString());
-//		System.out.println(sparqlUpdate);
-//
-//		HttpClient hc = authHttpClient("admin", "juNKJYoOKzCx7Bv");
-//
-//		// UpdateRequest represents a unit of execution
-//		UpdateRequest update = UpdateFactory.create(sparqlUpdate);
-//
-//		// UpdateProcessor sends update request to a remote SPARQL update service.
-//		UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint, hc);
-//		processor.execute();
-//
-//
-//
+		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
+				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
+						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+		// CITANJE
+		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+		String PREDICATE_NAMESPACE = "http://www.vakc-sistem.rs/predicate/";
+		String ZAHTEV_NAMED_GRAPH_URI = "/zahtev/metadata";
+		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+
+
+		Model model = ModelFactory.createDefaultModel();
+		model.setNsPrefix("pred", PREDICATE_NAMESPACE);
+
+		Resource resource = model.createResource("http://www.vakc-sistem.rs/zahtev-dzs/" + zahtev.getId());
+
+		Property createdAt = model.createProperty(PREDICATE_NAMESPACE, "createdAt");
+		Literal date = model.createLiteral(zahtev.getDatum().toString());
+
+		Property createdIn = model.createProperty(PREDICATE_NAMESPACE, "createdIn");
+		Literal place = model.createLiteral(zahtev.getMesto());
+
+		Property createdBy = model.createProperty(PREDICATE_NAMESPACE, "createdBy");
+		Resource objectResource = model.createResource("http://www.vakc-sistem.rs/person/" + zahtev.getPodnosilac().getIme()
+		+ "_" + zahtev.getPodnosilac().getPrezime());
+
+
+		// Adding the statements to the model
+		Statement statement1 = model.createStatement(resource, createdAt, date);
+		Statement statement2 = model.createStatement(resource, createdIn, place);
+		Statement statement3 = model.createStatement(resource, createdBy, objectResource);
+
+		model.add(statement1);
+		model.add(statement2);
+		model.add(statement3);
+
+		model.write(System.out, SparqlUtil.NTRIPLES);
+
+		// Issuing the SPARQL update...
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		model.write(out, SparqlUtil.NTRIPLES);
+
+		// Updating the named graph with the triples from RDF model
+		System.out.println("[INFO] Inserting the triples to a named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
+		String sparqlUpdate = SparqlUtil.insertData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, out.toString());
+		System.out.println(sparqlUpdate);
+
+		HttpClient hc = authHttpClient("admin", "pw123");
+
+		// UpdateRequest represents a unit of execution
+		UpdateRequest update = UpdateFactory.create(sparqlUpdate);
+
+		// UpdateProcessor sends update request to a remote SPARQL update service.
+		UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint, hc);
+		processor.execute();
+
+		roknem(idGeneratorPosInt);
+
 //		// Issuing a simple SPARQL query to make sure the changes were made...
 //		System.out.println("[INFO] Making sure the changes were made in the named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
 //		String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, "?s ?p ?o");
@@ -166,8 +162,90 @@ public class ImunizacijaAppApplication {
 //		ResultSetFormatter.out(System.out, results);
 //
 //		query.close();
+//
+
+//      Issuing a simple SPARQL query to make sure the changes were made...
+		System.out.println("[INFO] Making sure the changes were made in the named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
+		String sparqlQuery = "SELECT *\n" +
+				"FROM <http://localhost:8083/ZahtevDataset/data/zahtev/metadata>\n" +
+				"FROM NAMED <http://localhost:8083/ZahtevDataset/data/person/metadata>\n" +
+				"WHERE {\n" +
+				"?zahtev <http://www.vakc-sistem.rs/predicate/createdBy> ?person .\n" +
+				"GRAPH <http://localhost:8083/ZahtevDataset/data/person/metadata> " +
+				"{ ?person <http://www.vakc-sistem.rs/predicate/identifiedWith> ?id} .\n" +
+				"}\n";
+
+
+		// Create a QueryExecution that will access a SPARQL service over HTTP
+		QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+		// Query the collection, dump output response with the use of ResultSetFormatter
+		ResultSet results = query.execSelect();
+		ResultSetFormatter.out(System.out, results);
+
+		query.close();
 
 		SpringApplication.run(ImunizacijaAppApplication.class, args);
+	}
+
+	private static void roknem(IdGeneratorPosInt idGeneratorPosInt) {
+		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
+				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
+						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+		// CITANJE
+		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+		String PREDICATE_NAMESPACE = "http://www.vakc-sistem.rs/predicate/";
+		String ZAHTEV_NAMED_GRAPH_URI = "/person/metadata";
+		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+
+
+		Model model = ModelFactory.createDefaultModel();
+		model.setNsPrefix("pred", PREDICATE_NAMESPACE);
+
+		Resource objectResource = model.createResource("http://www.vakc-sistem.rs/person/" + zahtev.getPodnosilac().getIme()
+				+ "_" + zahtev.getPodnosilac().getPrezime());
+
+		Property identifiedWith = model.createProperty(PREDICATE_NAMESPACE, "identifiedWith");
+		Literal identifier = model.createLiteral(zahtev.getPodnosilac().getJMBG());
+
+		// Adding the statements to the model
+		Statement statement4 = model.createStatement(objectResource, identifiedWith, identifier);
+
+		model.add(statement4);
+
+		model.write(System.out, SparqlUtil.NTRIPLES);
+
+		// Issuing the SPARQL update...
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		model.write(out, SparqlUtil.NTRIPLES);
+
+		// Updating the named graph with the triples from RDF model
+		System.out.println("[INFO] Inserting the triples to a named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
+		String sparqlUpdate = SparqlUtil.insertData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, out.toString());
+		System.out.println(sparqlUpdate);
+
+		HttpClient hc = authHttpClient("admin", "pw123");
+
+		// UpdateRequest represents a unit of execution
+		UpdateRequest update = UpdateFactory.create(sparqlUpdate);
+
+		// UpdateProcessor sends update request to a remote SPARQL update service.
+		UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint, hc);
+		processor.execute();
+
+
+//		// Issuing a simple SPARQL query to make sure the changes were made...
+//		System.out.println("[INFO] Making sure the changes were made in the named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
+//		String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, "?s ?p ?o");
+//
+//		// Create a QueryExecution that will access a SPARQL service over HTTP
+//		QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+//
+//		// Query the collection, dump output response with the use of ResultSetFormatter
+//		ResultSet results = query.execSelect();
+//		ResultSetFormatter.out(System.out, results);
+//
+//		query.close();
 	}
 
 	private static HttpClient authHttpClient(String user, String password) {

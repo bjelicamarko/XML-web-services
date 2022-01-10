@@ -86,7 +86,7 @@ public class AuthenticationUtilities {
 	 */
 	public static ConnectionPropertiesFusekiJena setUpPropertiesFusekiJena() {
 		Properties props = new Properties();
-		props.setProperty("conn.endpoint", "http://localhost:3030");
+		props.setProperty("conn.endpoint", "http://localhost:8083");
 		props.setProperty("conn.dataset", "ZahtevDataset");
 		props.setProperty("conn.query", "query");
 		props.setProperty("conn.update", "update");
