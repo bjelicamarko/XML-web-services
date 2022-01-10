@@ -46,6 +46,8 @@ public class SluzbenikAppApplication {
 //		izvestajRepository.storeXML(izvestaj, true);
 
 
+
+
 		SpringApplication.run(SluzbenikAppApplication.class, args);
 	}
 }

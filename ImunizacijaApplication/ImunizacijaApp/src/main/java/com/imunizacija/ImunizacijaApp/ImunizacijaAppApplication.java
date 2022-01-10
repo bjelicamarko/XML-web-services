@@ -1,9 +1,5 @@
 package com.imunizacija.ImunizacijaApp;
 
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Drzavljanstvo;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
 import com.imunizacija.ImunizacijaApp.repository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.StoreRetrieveXMLRepository;
@@ -31,7 +27,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
@@ -148,7 +143,7 @@ public class ImunizacijaAppApplication {
 		UpdateProcessor processor = UpdateExecutionFactory.createRemote(update, conn.updateEndpoint, hc);
 		processor.execute();
 
-		roknem(idGeneratorPosInt);
+		personMetadata(idGeneratorPosInt);
 
 //		// Issuing a simple SPARQL query to make sure the changes were made...
 //		System.out.println("[INFO] Making sure the changes were made in the named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
@@ -188,7 +183,7 @@ public class ImunizacijaAppApplication {
 		SpringApplication.run(ImunizacijaAppApplication.class, args);
 	}
 
-	private static void roknem(IdGeneratorPosInt idGeneratorPosInt) {
+	private static void personMetadata(IdGeneratorPosInt idGeneratorPosInt) {
 		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
 				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
 						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);

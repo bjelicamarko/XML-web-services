@@ -1,6 +1,5 @@
 package com.imunizacija.ImunizacijaApp.utils;
 
-import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -10,7 +9,7 @@ public class AuthenticationUtilities {
 	/**
 	 * Connection parameters.
 	 */
-	static public class ConnectionProperties {
+	static public class ConnectionPropertiesExist {
 
 		public String host;
 		public int port = -1;
@@ -19,7 +18,7 @@ public class AuthenticationUtilities {
 		public String driver;
 		public String uri;
 
-		public ConnectionProperties(Properties props) {
+		public ConnectionPropertiesExist(Properties props) {
 			super();
 			
 			user = props.getProperty("conn.user").trim();
@@ -40,14 +39,14 @@ public class AuthenticationUtilities {
 	 * 
 	 * @return the configuration object
 	 */
-	public static ConnectionProperties setUpProperties() {
+	public static ConnectionPropertiesExist setUpProperties() {
 		Properties props = new Properties();
 		props.setProperty("conn.user", "admin");
 		props.setProperty("conn.password", "");
 		props.setProperty("conn.host", "localhost");
 		props.setProperty("conn.port", "8082");
 		props.setProperty("conn.driver", "org.exist.xmldb.DatabaseImpl");
-		return new ConnectionProperties(props);
+		return new ConnectionPropertiesExist(props);
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class AuthenticationUtilities {
 	public static ConnectionPropertiesFusekiJena setUpPropertiesFusekiJena() {
 		Properties props = new Properties();
 		props.setProperty("conn.endpoint", "http://localhost:8083");
-		props.setProperty("conn.dataset", "ZahtevDataset");
+		props.setProperty("conn.dataset", "ImunizacijaDataset");
 		props.setProperty("conn.query", "query");
 		props.setProperty("conn.update", "update");
 		props.setProperty("conn.data", "data");

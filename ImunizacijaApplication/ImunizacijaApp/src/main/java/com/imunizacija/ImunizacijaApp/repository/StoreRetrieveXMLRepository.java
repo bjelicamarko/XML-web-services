@@ -13,12 +13,11 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.transform.OutputKeys;
-import java.io.IOException;
 
 
 public abstract class StoreRetrieveXMLRepository {
 
-	protected static AuthenticationUtilities.ConnectionProperties connectionProp;
+	protected static AuthenticationUtilities.ConnectionPropertiesExist connectionProp;
 
 	protected IdGeneratorPosInt idGenerator;
 
