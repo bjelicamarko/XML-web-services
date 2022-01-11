@@ -1,7 +1,7 @@
-package com.imunizacija.ImunizacijaApp.repository;
+package com.imunizacija.ImunizacijaApp.repository.xmlRepository;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
-import com.imunizacija.ImunizacijaApp.repository.id_generator.IdGeneratorPosInt;
+import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
