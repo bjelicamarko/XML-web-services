@@ -1,7 +1,9 @@
 package com.imunizacija.ImunizacijaApp;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.StoreRetrieveXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -19,16 +21,26 @@ public class ImunizacijaAppApplication {
 		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
 
 		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
-		PotvrdaExtractMetadata potvrdaExtractMetadata = new PotvrdaExtractMetadata(conn);
 
-		GenericXMLRepository<PotvrdaOVakcinaciji> potvrdaOVakcinacijiGenericXMLRepository =
-				new GenericXMLRepository<PotvrdaOVakcinaciji>(PACKAGE_PATH_POTVRDA,
-						COLLECTION_PATH_POTVRDA, idGeneratorPosInt);
-		PotvrdaOVakcinaciji potvrda = potvrdaOVakcinacijiGenericXMLRepository.retrieveXML("532235532.xml");
+		// EKSTRAKCIJA POTVRDA
+//		PotvrdaExtractMetadata potvrdaExtractMetadata = new PotvrdaExtractMetadata(conn);
+//		GenericXMLRepository<PotvrdaOVakcinaciji> potvrdaOVakcinacijiGenericXMLRepository =
+//				new GenericXMLRepository<PotvrdaOVakcinaciji>(PACKAGE_PATH_POTVRDA,
+//						COLLECTION_PATH_POTVRDA, idGeneratorPosInt);
+//		PotvrdaOVakcinaciji potvrda = potvrdaOVakcinacijiGenericXMLRepository.retrieveXML("532235532.xml");
+//
+//		potvrdaExtractMetadata.extract(potvrda);
 
-		potvrdaExtractMetadata.extract(potvrda);
-		System.out.println("djura");
+		// EKSTRAKCIJA ZAHTJEV
+		ZahtevExtractMetadata zahtevExtractMetadata = new ZahtevExtractMetadata(conn);
 
+		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
+				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
+						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+
+		zahtevExtractMetadata.extractData(zahtev);
+		
 //		// INTERESOVANJE REPO
 //		GenericXMLRepository<Interesovanje> interesovanjeRepository =
 //				new GenericXMLRepository<Interesovanje>(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE,

@@ -18,16 +18,14 @@ public class Constants {
     public static final String ROOT_PATH = "http://www.vakc-sistem.rs/";
 
     public static final String OSOBA_NAMESPACE_PATH = ROOT_PATH + "osoba/";
-
     public static final String DOZA_NAMESPACE_PATH = ROOT_PATH + "doza/";
-
     public static final String POTVRDA_NAMESPACE_PATH = ROOT_PATH + "potvrda-o-vakcinaciji/";
+    public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
 
     public static final String PREDICATE_NAMESPACE = ROOT_PATH + "predicate/";
 
     public static final String POTVRDA_NAMED_GRAPH_URI = "/potvrda_o_vakcinaciji/metadata";
-
     public static final String OSOBA_NAMED_GRAPH_URI = "/osoba/metadata";
-
     public static final String DOZA_NAMED_GRAPH_URI = "/doza/metadata";
+    public static final String ZAHTEV_NAMED_GRAPH_URI = "/zahtev/metadata";
 }
