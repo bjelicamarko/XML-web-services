@@ -1,4 +1,4 @@
-package com.sluzbenik.SluzbenikApp.repository.id_generator;
+package com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator;
 
 public class IdGeneratorPosInt implements IdGeneratorInterface{
     @Override

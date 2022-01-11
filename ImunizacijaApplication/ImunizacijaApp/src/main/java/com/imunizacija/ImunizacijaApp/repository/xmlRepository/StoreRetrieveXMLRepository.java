@@ -1,7 +1,7 @@
-package com.imunizacija.ImunizacijaApp.repository;
+package com.imunizacija.ImunizacijaApp.repository.xmlRepository;
 
 
-import com.imunizacija.ImunizacijaApp.repository.id_generator.IdGeneratorPosInt;
+import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import org.exist.xmldb.EXistResource;
 import org.w3c.dom.Node;

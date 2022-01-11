@@ -1,17 +1,8 @@
 package com.sluzbenik.SluzbenikApp;
 
-import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
-import com.sluzbenik.SluzbenikApp.model.vakc_sistem.izvestaj.Izvestaj;
-import com.sluzbenik.SluzbenikApp.repository.GenericXMLRepository;
-import com.sluzbenik.SluzbenikApp.repository.StoreRetrieveXMLRepository;
-import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorDZS;
-import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorPosInt;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.StoreRetrieveXMLRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.math.BigInteger;
-
-import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 
 @SpringBootApplication
 public class SluzbenikAppApplication {

@@ -1,7 +1,7 @@
-package com.imunizacija.ImunizacijaApp.repository;
+package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
-import com.imunizacija.ImunizacijaApp.repository.id_generator.IdGeneratorPosInt;
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorInterface;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -18,8 +18,8 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
     private final String packagePath;
     private final String collectionPath;
 
-    public GenericXMLRepository (String packagePath, String collectionPath, IdGeneratorPosInt idGeneratorPosInt){
-        super(idGeneratorPosInt);
+    public GenericXMLRepository (String packagePath, String collectionPath, IdGeneratorInterface idGeneratorInterface){
+        super(idGeneratorInterface);
         this.packagePath = packagePath;
         this.collectionPath = collectionPath;
     }

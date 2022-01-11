@@ -1,4 +1,4 @@
-package com.imunizacija.ImunizacijaApp.repository.id_generator;
+package com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator;
 
 public class IdGeneratorPosInt{
 
