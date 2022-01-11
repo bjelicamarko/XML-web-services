@@ -1,14 +1,9 @@
-package com.sluzbenik.SluzbenikApp.repository;
-
-import java.io.IOException;
-import java.io.OutputStream;
+package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
 import javax.xml.transform.OutputKeys;
 
-import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorDZS;
-import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorInterface;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorInterface;
 import org.exist.xmldb.EXistResource;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;

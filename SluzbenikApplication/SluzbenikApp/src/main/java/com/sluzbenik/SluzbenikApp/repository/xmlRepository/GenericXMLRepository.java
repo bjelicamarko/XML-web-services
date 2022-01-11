@@ -1,8 +1,7 @@
-package com.sluzbenik.SluzbenikApp.repository;
+package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
-import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
-import com.sluzbenik.SluzbenikApp.repository.id_generator.IdGeneratorInterface;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorInterface;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
