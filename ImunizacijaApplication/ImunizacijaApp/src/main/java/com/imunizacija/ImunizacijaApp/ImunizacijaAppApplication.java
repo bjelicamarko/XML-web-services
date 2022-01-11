@@ -1,7 +1,9 @@
 package com.imunizacija.ImunizacijaApp;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
@@ -32,14 +34,24 @@ public class ImunizacijaAppApplication {
 //		potvrdaExtractMetadata.extract(potvrda);
 
 		// EKSTRAKCIJA ZAHTJEV
-		ZahtevExtractMetadata zahtevExtractMetadata = new ZahtevExtractMetadata(conn);
+//		ZahtevExtractMetadata zahtevExtractMetadata = new ZahtevExtractMetadata(conn);
+//
+//		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
+//				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
+//						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+//		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+//
+//		zahtevExtractMetadata.extractData(zahtev);
 
-		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
-				new GenericXMLRepository<Zahtev>(PACKAGE_PATH_ZAHTEV_DZS,
-						COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
-		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+		// EKSTRAKCIJA INTERESOVANJE
+		InteresovanjeExtractMetadata interesovanjeExtractMetadata = new InteresovanjeExtractMetadata(conn);
 
-		zahtevExtractMetadata.extractData(zahtev);
+		GenericXMLRepository<Interesovanje> interesovanjeRepository =
+				new GenericXMLRepository<Interesovanje>(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE,
+						idGeneratorPosInt);
+
+		Interesovanje i = interesovanjeRepository.retrieveXML("2312312.xml");
+		interesovanjeExtractMetadata.extract(i);
 		
 //		// INTERESOVANJE REPO
 //		GenericXMLRepository<Interesovanje> interesovanjeRepository =

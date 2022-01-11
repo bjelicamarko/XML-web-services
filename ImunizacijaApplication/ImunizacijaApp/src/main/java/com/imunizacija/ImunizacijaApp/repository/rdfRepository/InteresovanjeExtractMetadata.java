@@ -15,7 +15,7 @@ public class InteresovanjeExtractMetadata extends ExtractMetadata{
         super(conn);
     }
 
-    public void extractMetadata(Interesovanje interesovanje) {
+    public void extract(Interesovanje interesovanje) {
         Model model = createModel();
 
         Resource resource = model.createResource(INTERESOVANJE_NAMESPACE_PATH + interesovanje.getXmlId());
@@ -24,12 +24,37 @@ public class InteresovanjeExtractMetadata extends ExtractMetadata{
         Literal date = model.createLiteral(interesovanje.getDatum().toString());
         model.add(model.createStatement(resource, createdWhen, date));
 
-        //Korisnik podneo interesovanje -> dovrsi
+        super.modelWrite(model, INTERESOVANJE_NAMED_GRAPH_URI);
+
+        extractForPerson(interesovanje, resource);
+    }
+
+    private void extractForPerson(Interesovanje interesovanje, Resource interesovanjeResource) {
+        Model model = createModel();
+
         String personIdentifier = returnPersonIdentifier(interesovanje);
         Resource personResource = model.createResource(OSOBA_NAMESPACE_PATH + personIdentifier);
+        Property issued = model.createProperty(PREDICATE_NAMESPACE, "issued");
+        model.add(model.createStatement(personResource, issued, interesovanjeResource));
+
+        Property nameIs = model.createProperty(PREDICATE_NAMESPACE, "nameIs");
+        Literal name = model.createLiteral(interesovanje.getIme());
+        model.add(model.createStatement(personResource, nameIs, name));
+
+        Property lastnameIs = model.createProperty(PREDICATE_NAMESPACE, "lastnameIs");
+        Literal lastname = model.createLiteral(interesovanje.getPrezime());
+        model.add(model.createStatement(personResource, lastnameIs, lastname));
+
+        Property hasEmail = model.createProperty(PREDICATE_NAMESPACE, "hasEmail");
+        Literal email = model.createLiteral(interesovanje.getKontakt().getEmailAdresa());
+        model.add(model.createStatement(personResource, hasEmail, email));
+
+        super.modelWrite(model, OSOBA_NAMED_GRAPH_URI);
     }
 
     private String returnPersonIdentifier(Interesovanje interesovanje) {
+        /** Handle exception if all null **/
+
         String jmbg = interesovanje.getDrzavljanstvo().getJMBG();
         if(jmbg != null) return jmbg;
 
