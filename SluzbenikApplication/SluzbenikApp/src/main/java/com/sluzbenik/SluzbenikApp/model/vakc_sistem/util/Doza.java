@@ -77,7 +77,7 @@ public class Doza {
     protected String proizvodjac;
     @XmlElement(name = "Tip", required = true)
     protected String tip;
-    @XmlAttribute(name = "Redni_broj")
+    @XmlAttribute(name = "Redni_broj", required = true)
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger redniBroj;
 

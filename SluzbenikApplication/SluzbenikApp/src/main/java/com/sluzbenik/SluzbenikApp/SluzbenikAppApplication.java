@@ -1,43 +1,33 @@
 package com.sluzbenik.SluzbenikApp;
 
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.StoreRetrieveXMLRepository;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 
 @SpringBootApplication
 public class SluzbenikAppApplication {
 
 	public static void main(String[] args) {
-		StoreRetrieveXMLRepository.registerDatabase();
+//		StoreRetrieveXMLRepository.registerDatabase();
 //		IdGeneratorDZS idGeneratorDZS = new IdGeneratorDZS();
-//		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
 //
-//		// DZS REPO
-//		GenericXMLRepository<DigitalniZeleniSertifikat> digitalniZeleniSertifikatRepository =
-//				new GenericXMLRepository<DigitalniZeleniSertifikat>(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS,idGeneratorDZS);
-//		// CITANJE
-//		DigitalniZeleniSertifikat dzs = digitalniZeleniSertifikatRepository.retrieveXML("1234567.xml");
-//		// EDITOVANJE - KREIRANJE NOVOG
-//		DigitalniZeleniSertifikat.PodaciOSertifikatu podaci = dzs.getPodaciOSertifikatu();
-//		podaci.setQrKod("idegasssssssssssssssssssssssssssssss");
-//		podaci.setBrojSertifikata("7654321");
-//		dzs.setPodaciOSertifikatu(podaci);
-//		// PISANJE
-//		digitalniZeleniSertifikatRepository.storeXML(dzs, true);
+//		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+//		DzsExtractMetadata dzsExtractMetadata = new DzsExtractMetadata(conn);
 //
+//		GenericXMLRepository<DigitalniZeleniSertifikat> dzsGenericXMLRepository =
+//				new GenericXMLRepository<>(PACKAGE_PATH_DZS,
+//						COLLECTION_PATH_DZS, idGeneratorDZS);
+//		DigitalniZeleniSertifikat dzs = dzsGenericXMLRepository.retrieveXML("1234567.xml");
 //
-//		// IZVESTAJ REPO
-//		GenericXMLRepository<Izvestaj> izvestajRepository =
-//				new GenericXMLRepository<Izvestaj>(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ,idGeneratorPosInt);
-//		// CITANJE
-//		Izvestaj izvestaj = izvestajRepository.retrieveXML("123123.xml");
-//		// EDITOVANJE - KREIRANJE NOVOG
-//		izvestaj.setBrojPrimljenihVakcina(30);
-//		// PISANJE
-//		izvestajRepository.storeXML(izvestaj, true);
-
-
-
+//		dzsExtractMetadata.extract(dzs, "0102998543435");
 
 		SpringApplication.run(SluzbenikAppApplication.class, args);
 	}
