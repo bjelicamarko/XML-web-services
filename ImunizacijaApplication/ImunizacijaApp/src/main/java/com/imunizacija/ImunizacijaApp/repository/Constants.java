@@ -21,6 +21,7 @@ public class Constants {
     public static final String DOZA_NAMESPACE_PATH = ROOT_PATH + "doza/";
     public static final String POTVRDA_NAMESPACE_PATH = ROOT_PATH + "potvrda-o-vakcinaciji/";
     public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
+    public static final String INTERESOVANJE_NAMESPACE_PATH = ROOT_PATH + "interesovanje/";
 
     public static final String PREDICATE_NAMESPACE = ROOT_PATH + "predicate/";
 
@@ -28,4 +29,5 @@ public class Constants {
     public static final String OSOBA_NAMED_GRAPH_URI = "/osoba/metadata";
     public static final String DOZA_NAMED_GRAPH_URI = "/doza/metadata";
     public static final String ZAHTEV_NAMED_GRAPH_URI = "/zahtev/metadata";
+    public static final String INTERESOVANJE_NAMED_GRAPH_URI = "/interesovanje/metadata";
 }
