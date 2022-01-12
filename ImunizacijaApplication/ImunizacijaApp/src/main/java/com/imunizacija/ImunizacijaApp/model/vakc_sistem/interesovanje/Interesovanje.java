@@ -119,6 +119,21 @@ public class Interesovanje implements IdentifiableEntity {
     protected BigInteger id;
 
     @Override
+    public String toString() {
+        return "Interesovanje{" +
+                "drzavljanstvo=" + drzavljanstvo +
+                ", ime='" + ime + '\'' +
+                ", prezime='" + prezime + '\'' +
+                ", kontakt=" + kontakt +
+                ", opstinaVakcinisanja='" + opstinaVakcinisanja + '\'' +
+                ", vakcine=" + vakcine +
+                ", dobrovoljniDavalac='" + dobrovoljniDavalac + '\'' +
+                ", datum=" + datum +
+                ", id=" + id +
+                '}';
+    }
+
+    @Override
     public String getXmlId() {
         return id.toString();
     }

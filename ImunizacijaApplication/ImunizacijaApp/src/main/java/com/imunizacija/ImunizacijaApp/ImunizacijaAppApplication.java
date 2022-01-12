@@ -8,6 +8,7 @@ import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeExtr
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.StoreRetrieveXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -21,6 +22,23 @@ import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 public class ImunizacijaAppApplication {
 
 	public static void main(String[] args) {
+		GenericXMLReaderWriter<Zahtev> zahtevXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_ZAHTEV_DZS, XML_SCHEMA_PATH_ZAHTEV);
+		Zahtev zahtevFromXml = zahtevXMLReaderWriter.readFromXml("data/xml_example/zahtev_za_izdavanje_zelenog.xml");
+
+		GenericXMLReaderWriter<Interesovanje> interesovanjeXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_INTERESOVANJE, XML_SCHEMA_PATH_INTERESOVANJE);
+		Interesovanje interesovanjeFromXml = interesovanjeXMLReaderWriter.readFromXml("data/xml_example/interesovanje.xml");
+
+		GenericXMLReaderWriter<Saglasnost> saglasnostXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_SAGLASNOST, XML_SCHEMA_PATH_SAGLASNOST);
+		Saglasnost saglasnostFromXml = saglasnostXMLReaderWriter.readFromXml("data/xml_example/saglasnost_za_imunizaciju.xml");
+
+		GenericXMLReaderWriter<PotvrdaOVakcinaciji> potvrdaXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_POTVRDA, XML_SCHEMA_PATH_POTVRDA);
+		PotvrdaOVakcinaciji potvrdaOVakcinacijiFromXml = potvrdaXMLReaderWriter.readFromXml("data/xml_example/potvrda_o_vakcinaciji.xml");
+
+		zahtevXMLReaderWriter.writeToXml(zahtevFromXml, XML_WRITE_BASE_PATH);
+		interesovanjeXMLReaderWriter.writeToXml(interesovanjeFromXml, XML_WRITE_BASE_PATH);
+		saglasnostXMLReaderWriter.writeToXml(saglasnostFromXml, XML_WRITE_BASE_PATH);
+		potvrdaXMLReaderWriter.writeToXml(potvrdaOVakcinacijiFromXml, XML_WRITE_BASE_PATH);
+
 		StoreRetrieveXMLRepository.registerDatabase();
 		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
 

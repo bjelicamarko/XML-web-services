@@ -265,6 +265,20 @@ public class Saglasnost implements IdentifiableEntity {
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger id;
 
+    @Override
+    public String toString() {
+        return "Saglasnost{" +
+                "drzavljanstvo=" + drzavljanstvo +
+                ", licniPodaci=" + licniPodaci +
+                ", kontakt=" + kontakt +
+                ", zaposlenje=" + zaposlenje +
+                ", socijalnaZastita=" + socijalnaZastita +
+                ", izjava=" + izjava +
+                ", datum=" + datum +
+                ", oVakcinaciji=" + oVakcinaciji +
+                ", id=" + id +
+                '}';
+    }
 
     @Override
     public String getXmlId() {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Potvrda_o_vakcinaciji xmlns="http://www.vakc-sistem.rs/util" xmlns:ns2="http://www.vakc-sistem.rs/potvrda-o-vakcinaciji" Sifra_potvrde="1245125">
+    <ns2:Podaci_o_primaocu>
+        <Ime>Marko</Ime>
+        <Prezime>Markovic</Prezime>
+        <Datum_rodjenja>1999-01-01</Datum_rodjenja>
+        <Pol>Musko</Pol>
+        <JMBG>0101999404404</JMBG>
+    </ns2:Podaci_o_primaocu>
+    <ns2:Podaci_o_vakcini>
+        <ns2:Doza Redni_broj="1">
+            <Datum>2022-01-07</Datum>
+            <Serija>12312421</Serija>
+            <Proizvodjac>BionTech</Proizvodjac>
+            <Tip>Pfizer</Tip>
+            <Ustanova>Dom Zdravlja "Novi Sad"</Ustanova>
+        </ns2:Doza>
+    </ns2:Podaci_o_vakcini>
+    <ns2:Podaci_o_potvrdi>
+        <ns2:Datum_izdavanja>2022-01-10</ns2:Datum_izdavanja>
+        <ns2:QRCode>http://www.vakc-sistem.rs/potvrda-o-vakcinaciji/qr1</ns2:QRCode>
+    </ns2:Podaci_o_potvrdi>
+</ns2:Potvrda_o_vakcinaciji>
