@@ -27,7 +27,7 @@ public class SluzbenikAppApplication {
 //						COLLECTION_PATH_DZS, idGeneratorDZS);
 //		DigitalniZeleniSertifikat dzs = dzsGenericXMLRepository.retrieveXML("1234567.xml");
 //
-//		dzsExtractMetadata.extract(dzs, "0102998543435");
+//		dzsExtractMetadata.extract(dzs);
 
 		SpringApplication.run(SluzbenikAppApplication.class, args);
 	}
