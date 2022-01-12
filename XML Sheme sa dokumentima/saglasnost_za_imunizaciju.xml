@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:util="http://www.vakc-sistem.rs/util"
     xsi:schemaLocation="http://www.vakc-sistem.rs/saglasnost-za-imunizaciju saglasnost_za_imunizaciju.xsd" Id="4125125">
-    <Drzavljanstvo>
+    <Drzavljanstvo Tip="DOMACE">
         <util:JMBG>0101999404404</util:JMBG>
     </Drzavljanstvo>
     <Licni_podaci>

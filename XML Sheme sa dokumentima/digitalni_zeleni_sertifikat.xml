@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Digitalni_zeleni_sertifikat xmlns="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat digitalni_zeleni_sertifikat.xsd">
+    xsi:schemaLocation="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat digitalni_zeleni_sertifikat.xsd" Id_sluzbenika="0202998412421">
     <Podaci_o_primaocu>
         <Ime xmlns="http://www.vakc-sistem.rs/util">Marko</Ime>
         <Prezime xmlns="http://www.vakc-sistem.rs/util">Markovic</Prezime>

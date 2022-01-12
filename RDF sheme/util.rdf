@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xml:lang="en"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    
+    <!-- Klase kojima su opisani dokumenti u sistemu -->
+    <rdfs:Class rdf:ID="Interesovanje"></rdfs:Class>
+    
+    <rdfs:Class rdf:ID="SaglasnostZaImunizaciju"></rdfs:Class>
+    
+    <rdfs:Class rdf:ID="PotvrdaOVakcinaciji"></rdfs:Class>
+    
+    <rdfs:Class rdf:ID="ZahtevZaDigitalniZeleniSertifikat"></rdfs:Class>
+    
+    <rdfs:Class rdf:ID="DigitalniZeleniSertifikat"></rdfs:Class>
+    
+    <!-- Klasa kojom su opisani svi korisnici -->
+    <rdfs:Class rdf:ID="Osoba"></rdfs:Class>
+    
+    <!-- Klasa kojom su opisane doze vakcina -->
+    <rdfs:Class rdf:ID="Doza"></rdfs:Class>
+    
+</rdf:RDF>

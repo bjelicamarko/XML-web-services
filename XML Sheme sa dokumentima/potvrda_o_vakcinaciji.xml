@@ -10,7 +10,7 @@
         <JMBG xmlns="http://www.vakc-sistem.rs/util">0101999404404</JMBG>
     </Podaci_o_primaocu>
     <Podaci_o_vakcini>
-        <Doza>
+        <Doza Redni_broj="1">
             <Datum xmlns="http://www.vakc-sistem.rs/util">2022-01-07</Datum>
             <Serija xmlns="http://www.vakc-sistem.rs/util">12312421</Serija>
             <Proizvodjac xmlns="http://www.vakc-sistem.rs/util">BionTech</Proizvodjac>
