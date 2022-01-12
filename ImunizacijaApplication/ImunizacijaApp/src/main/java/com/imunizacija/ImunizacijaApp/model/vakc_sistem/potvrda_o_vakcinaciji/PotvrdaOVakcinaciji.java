@@ -97,6 +97,16 @@ public class PotvrdaOVakcinaciji implements IdentifiableEntity {
     protected BigInteger sifraPotvrde;
 
     @Override
+    public String toString() {
+        return "PotvrdaOVakcinaciji{" +
+                "podaciOPrimaocu=" + podaciOPrimaocu +
+                ", podaciOVakcini=" + podaciOVakcini +
+                ", podaciOPotvrdi=" + podaciOPotvrdi +
+                ", sifraPotvrde=" + sifraPotvrde +
+                '}';
+    }
+
+    @Override
     public String getXmlId() {
         return sifraPotvrde.toString();
     }

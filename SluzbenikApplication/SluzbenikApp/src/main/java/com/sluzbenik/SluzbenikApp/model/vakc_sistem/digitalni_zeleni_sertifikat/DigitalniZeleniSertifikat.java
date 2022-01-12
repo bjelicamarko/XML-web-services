@@ -97,6 +97,16 @@ public class DigitalniZeleniSertifikat implements IdentifiableEntity {
     protected String idSluzbenika;
 
     @Override
+    public String toString() {
+        return "DigitalniZeleniSertifikat{" +
+                "podaciOPrimaocu=" + podaciOPrimaocu +
+                ", podaciOSertifikatu=" + podaciOSertifikatu +
+                ", doze=" + doze +
+                ", idSluzbenika='" + idSluzbenika + '\'' +
+                '}';
+    }
+
+    @Override
     public String getXmlId() {
         return podaciOSertifikatu.getBrojSertifikata();
     }

@@ -139,6 +139,22 @@ public class Izvestaj implements IdentifiableEntity {
     protected BigInteger id;
 
     @Override
+    public String toString() {
+        return "Izvestaj{" +
+                "brojDokumenataOInteresovanju=" + brojDokumenataOInteresovanju +
+                ", brojPristiglihZahtevaZaDZS=" + brojPristiglihZahtevaZaDZS +
+                ", brojIzdatihZahtevaZaDZS=" + brojIzdatihZahtevaZaDZS +
+                ", brojPrimljenihVakcina=" + brojPrimljenihVakcina +
+                ", brojPrimnljenihNovovakcinisanih=" + brojPrimnljenihNovovakcinisanih +
+                ", proizvodjaci=" + proizvodjaci +
+                ", datum=" + datum +
+                ", od=" + od +
+                ", _do=" + _do +
+                ", id=" + id +
+                '}';
+    }
+
+    @Override
     public String getXmlId(){
         return id.toString();
     }

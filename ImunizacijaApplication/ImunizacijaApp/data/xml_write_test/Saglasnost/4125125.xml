@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Saglasnost xmlns="http://www.vakc-sistem.rs/saglasnost-za-imunizaciju" xmlns:ns2="http://www.vakc-sistem.rs/util" Id="4125125">
+    <Drzavljanstvo Tip="DOMACE">
+        <ns2:JMBG>0101999404404</ns2:JMBG>
+    </Drzavljanstvo>
+    <Licni_podaci>
+        <ns2:Ime>Marko</ns2:Ime>
+        <ns2:Prezime>Markovic</ns2:Prezime>
+        <ns2:Datum_rodjenja>1999-01-01</ns2:Datum_rodjenja>
+        <ns2:Pol>Musko</ns2:Pol>
+        <ns2:Ime_roditelja>Petar</ns2:Ime_roditelja>
+        <ns2:Mesto_rodjenja>Mostar</ns2:Mesto_rodjenja>
+        <ns2:Adresa>
+            <ns2:Ulica>
+                <ns2:Naziv>Save Mrkalja</ns2:Naziv>
+                <ns2:Broj>100</ns2:Broj>
+            </ns2:Ulica>
+            <ns2:Naselje>Liman</ns2:Naselje>
+            <ns2:Mesto>Novi Sad</ns2:Mesto>
+            <ns2:Opstina>Novi Sad</ns2:Opstina>
+            <ns2:Grad>Novi Sad</ns2:Grad>
+        </ns2:Adresa>
+    </Licni_podaci>
+    <Kontakt>
+        <ns2:Broj_telefona>1245125125</ns2:Broj_telefona>
+        <ns2:Broj_fiksnosg_telefona>858584858</ns2:Broj_fiksnosg_telefona>
+        <ns2:Email_adresa>markomarkovic@gmail.rs</ns2:Email_adresa>
+    </Kontakt>
+    <Zaposlenje>
+        <Radni_status>Zaposlen</Radni_status>
+        <Zanimanje>Drugo</Zanimanje>
+    </Zaposlenje>
+    <Izjava>
+        <Saglasan>Da</Saglasan>
+        <Imunoloski_lek>Pfizer</Imunoloski_lek>
+    </Izjava>
+    <Datum>2022-01-08</Datum>
+</Saglasnost>

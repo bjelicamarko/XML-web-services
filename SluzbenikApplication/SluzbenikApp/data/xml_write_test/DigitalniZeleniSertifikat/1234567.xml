@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Digitalni_zeleni_sertifikat xmlns="http://www.vakc-sistem.rs/util" xmlns:ns2="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat" Id_sluzbenika="0202998412421">
+    <ns2:Podaci_o_primaocu>
+        <Ime>Marko</Ime>
+        <Prezime>Markovic</Prezime>
+        <Datum_rodjenja>1999-01-01</Datum_rodjenja>
+        <Pol>Musko</Pol>
+        <JMBG>0101999103012</JMBG>
+    </ns2:Podaci_o_primaocu>
+    <ns2:Podaci_o_sertifikatu>
+        <ns2:Broj_sertifikata>1234567</ns2:Broj_sertifikata>
+        <ns2:Datum_izdavanja_sertifikata>2021-12-08</ns2:Datum_izdavanja_sertifikata>
+        <ns2:Qr_kod>http://www.vakc-sistem.rs/qr-codes/Qr1</ns2:Qr_kod>
+    </ns2:Podaci_o_sertifikatu>
+    <ns2:Doza Redni_broj="1">
+        <Datum>2021-10-08</Datum>
+        <Serija>12341245</Serija>
+        <Proizvodjac>BIONTECH</Proizvodjac>
+        <Tip>Pfizer</Tip>
+        <Ustanova>Dom zdravlja "Novi Sad"</Ustanova>
+    </ns2:Doza>
+</ns2:Digitalni_zeleni_sertifikat>

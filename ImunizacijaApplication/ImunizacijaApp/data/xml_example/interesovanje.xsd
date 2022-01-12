@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="1.0" elementFormDefault="qualified"
+    targetNamespace="http://www.vakc-sistem.rs/interesovanje"
+    xmlns="http://www.vakc-sistem.rs/interesovanje" xmlns:util="http://www.vakc-sistem.rs/util">
+    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="Util.xsd"/>
+    <xs:element name="Interesovanje">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"> </xs:element>
+                <xs:element name="Ime">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="2"/>
+                            <xs:maxLength value="20"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Prezime">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="2"/>
+                            <xs:maxLength value="20"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Kontakt" type="util:Kontakt"> </xs:element>
+                <xs:element name="Opstina_vakcinisanja">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="1" name="Vakcina">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <jxb:property name="Vakcine"/>
+                            </xs:appinfo>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:attribute name="Tip" use="required"/>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+                <xs:element minOccurs="1" name="Dobrovoljni_davalac">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="Da"/>
+                            <xs:enumeration value="Ne"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Datum" type="xs:date"/>
+            </xs:sequence>
+            <xs:attribute name="Id" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

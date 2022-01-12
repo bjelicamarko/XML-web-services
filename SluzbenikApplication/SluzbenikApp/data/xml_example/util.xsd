@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    targetNamespace="http://www.vakc-sistem.rs/util"
+    xmlns="http://www.vakc-sistem.rs/util">
+    <xs:complexType name="Drzavljanstvo">
+        <xs:choice>
+            <xs:element name="JMBG">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Br_pasosa">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern
+                            value="^[A-Z0-9&lt;]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9&lt;]{14}[0-9]{2}$"
+                        />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Evidencioni_broj_stranca">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="Tip" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="DOMACE"/>
+                    <xs:enumeration value="STRANO_SA_BORAVKOM"/>
+                    <xs:enumeration value="STRANO_BEZ_BORAVKA"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="Adresa">
+        <xs:all>
+            <xs:element name="Ulica">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Naziv">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="2"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="Broj">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:int">
+                                    <xs:minInclusive value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Naselje">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Mesto">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Opstina">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Grad">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="Kontakt">
+        <xs:sequence>
+            <xs:element name="Broj_telefona">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[0-9]{7,12}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Broj_fiksnosg_telefona">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[0-9]{7,10}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Email_adresa">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="Pol">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Musko"/>
+            <xs:enumeration value="Zensko"/>
+            <xs:enumeration value="Ostalo"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType abstract="true" name="Licni_podaci">
+        <xs:sequence>
+            <xs:element name="Ime">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="2"/>
+                        <xs:maxLength value="20"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Prezime">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="2"/>
+                        <xs:maxLength value="20"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Datum_rodjenja" type="xs:date"/>
+            <xs:element name="Pol">
+                <xs:simpleType>
+                    <xs:restriction base="Pol"> </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Licni_podaci_JMBG">
+        <xs:complexContent>
+            <xs:extension base="Licni_podaci">
+                <xs:sequence>
+                    <xs:element name="JMBG">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:pattern
+                                    value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Licni_podaci_JMBG_BrPasosa">
+        <xs:complexContent>
+            <xs:extension base="Licni_podaci_JMBG">
+                <xs:sequence>
+                    <xs:element minOccurs="1" name="Broj_pasosa">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="6"/>
+                                <xs:maxLength value="20"/>
+                                <xs:pattern value="[0-9A-Z]+"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Licni_podaci_detaljnije">
+        <xs:complexContent>
+            <xs:extension base="Licni_podaci">
+                <xs:sequence>
+                    <xs:element name="Ime_roditelja">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="2"/>
+                                <xs:maxLength value="20"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Mesto_rodjenja">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="2"/>
+                                <xs:maxLength value="20"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Adresa" type="Adresa"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="Radni_status">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Zaposlen"/>
+            <xs:enumeration value="Nezaposlen"/>
+            <xs:enumeration value="Penzioner"/>
+            <xs:enumeration value="Ucenik"/>
+            <xs:enumeration value="Dete"/>
+            <xs:enumeration value="Student"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Doza">
+        <xs:sequence>
+            <xs:element name="Datum" type="xs:date"/>
+            <xs:element name="Serija">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="8"/>
+                        <xs:minLength value="6"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Proizvodjac" type="xs:string"> </xs:element>
+            <xs:element name="Tip">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Redni_broj" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="Doza_sa_ustanovom">
+        <xs:complexContent>
+            <xs:extension base="Doza">
+                <xs:sequence>
+                    <xs:element name="Ustanova">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Doza_detaljnije">
+        <xs:complexContent>
+            <xs:extension base="Doza">
+                <xs:sequence>
+                    <xs:element name="Ekstremitet">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="DR"/>
+                                <xs:enumeration value="LR"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Nezeljena_rekacija">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

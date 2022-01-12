@@ -7,6 +7,12 @@ public class Constants {
     public static final String PACKAGE_PATH_IZVESTAJ = "com.sluzbenik.SluzbenikApp.model.vakc_sistem.izvestaj";
     public static final String COLLECTION_PATH_IZVESTAJ = "db/izvestaj";
 
+    //XML read write
+    public static final String XML_SCHEMA_PATH_DZS = "data/xml_example/digitalni_zeleni_sertifikat.xsd";
+    public static final String XML_SCHEMA_PATH_IZVESTAJ = "data/xml_example/izvestaj.xsd";
+
+    public static final String XML_WRITE_BASE_PATH = "data/xml_write_test/";
+
     // RDF
     public static final String ROOT_PATH = "http://www.vakc-sistem.rs/";
 
