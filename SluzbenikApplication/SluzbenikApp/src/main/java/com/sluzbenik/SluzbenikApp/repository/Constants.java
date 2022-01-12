@@ -19,4 +19,6 @@ public class Constants {
     public static final String OSOBA_NAMED_GRAPH_URI = "/osoba/metadata";
 
     public static final String DZS_NAMED_GRAPH_URI = "/dzs/metadata";
+
+    public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
 }

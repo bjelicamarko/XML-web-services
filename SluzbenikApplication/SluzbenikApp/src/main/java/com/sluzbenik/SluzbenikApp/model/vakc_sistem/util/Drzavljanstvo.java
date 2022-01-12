@@ -77,7 +77,7 @@ public class Drzavljanstvo {
     protected String brPasosa;
     @XmlElement(name = "Evidencioni_broj_stranca")
     protected String evidencioniBrojStranca;
-    @XmlAttribute(name = "Tip")
+    @XmlAttribute(name = "Tip", required = true)
     protected String tip;
 
     /**
