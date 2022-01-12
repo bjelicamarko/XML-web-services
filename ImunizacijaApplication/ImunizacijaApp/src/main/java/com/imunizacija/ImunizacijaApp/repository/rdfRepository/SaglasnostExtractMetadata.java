@@ -9,7 +9,7 @@ import org.apache.jena.rdf.model.Resource;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
-public class SaglasnostExtractMetadata extends ExtractMetadata{
+public class SaglasnostExtractMetadata extends ExtractMetadata {
 
     public SaglasnostExtractMetadata(AuthenticationUtilities.ConnectionPropertiesFusekiJena conn) {
         super(conn);
@@ -43,6 +43,11 @@ public class SaglasnostExtractMetadata extends ExtractMetadata{
         Resource person = model.createResource(OSOBA_NAMESPACE_PATH + idOsobe);
         model.add(model.createStatement(resource, issuedTo, person));
 
+        if(saglasnost.getOVakcinaciji() != null) {
+            Property issuedBy = model.createProperty(PREDICATE_NAMESPACE, "issuedBy");
+            Resource doc = model.createResource(OSOBA_NAMESPACE_PATH + saglasnost.getOVakcinaciji().getPodaciOLekaru().getJMBG());
+            model.add(model.createStatement(resource, issuedBy, doc));
+        }
         super.modelWrite(model, SAGLANOST_NAMED_GRAPH_URI);
     }
 }
