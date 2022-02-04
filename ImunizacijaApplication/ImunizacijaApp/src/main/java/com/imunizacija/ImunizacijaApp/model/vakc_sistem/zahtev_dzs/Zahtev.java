@@ -75,6 +75,17 @@ public class Zahtev implements IdentifiableEntity {
     protected BigInteger id;
 
     @Override
+    public String toString() {
+        return "Zahtev{" +
+                "podnosilac=" + podnosilac +
+                ", razlog='" + razlog + '\'' +
+                ", mesto='" + mesto + '\'' +
+                ", datum=" + datum +
+                ", id=" + id +
+                '}';
+    }
+
+    @Override
     public String getXmlId() {
         return id.toString();
     }

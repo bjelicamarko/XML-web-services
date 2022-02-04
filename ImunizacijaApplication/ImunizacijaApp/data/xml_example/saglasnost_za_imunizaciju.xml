@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Saglasnost xmlns="http://www.vakc-sistem.rs/saglasnost-za-imunizaciju"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.vakc-sistem.rs/util"
+    xsi:schemaLocation="http://www.vakc-sistem.rs/saglasnost-za-imunizaciju saglasnost_za_imunizaciju.xsd" Id="4125125">
+    <Drzavljanstvo Tip="DOMACE">
+        <util:JMBG>0101999404404</util:JMBG>
+    </Drzavljanstvo>
+    <Licni_podaci>
+        <Ime xmlns="http://www.vakc-sistem.rs/util">Marko</Ime>
+        <Prezime xmlns="http://www.vakc-sistem.rs/util">Markovic</Prezime>
+        <Datum_rodjenja xmlns="http://www.vakc-sistem.rs/util">1999-01-01</Datum_rodjenja>
+        <Pol xmlns="http://www.vakc-sistem.rs/util">Musko</Pol>
+        <Ime_roditelja xmlns="http://www.vakc-sistem.rs/util">Petar</Ime_roditelja>
+        <Mesto_rodjenja xmlns="http://www.vakc-sistem.rs/util">Mostar</Mesto_rodjenja>
+        <Adresa xmlns="http://www.vakc-sistem.rs/util">
+            <Ulica>
+                <Naziv>Save Mrkalja</Naziv>
+                <Broj>100</Broj>
+            </Ulica>
+            <Naselje>Liman</Naselje>
+            <Mesto>Novi Sad</Mesto>
+            <Opstina>Novi Sad</Opstina>
+            <Grad>Novi Sad</Grad>
+        </Adresa>
+    </Licni_podaci>
+    <Kontakt>
+        <Broj_telefona xmlns="http://www.vakc-sistem.rs/util">1245125125</Broj_telefona>
+        <Broj_fiksnosg_telefona xmlns="http://www.vakc-sistem.rs/util">858584858</Broj_fiksnosg_telefona>
+        <Email_adresa xmlns="http://www.vakc-sistem.rs/util">markomarkovic@gmail.rs</Email_adresa>
+    </Kontakt>
+    <Zaposlenje>
+        <Radni_status>Zaposlen</Radni_status>
+        <Zanimanje>Drugo</Zanimanje>
+    </Zaposlenje>
+    <Izjava>
+        <Saglasan>Da</Saglasan>
+        <Imunoloski_lek>Pfizer</Imunoloski_lek>
+    </Izjava>
+    <Datum>2022-01-08</Datum>
+</Saglasnost>

@@ -122,11 +122,21 @@
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:element>
+                                        <xs:element name="JMBG">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:pattern
+                                                  value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"
+                                                  />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
                             <xs:sequence>
-                                <xs:element maxOccurs="unbounded" minOccurs="1" name="Doza" type="util:Doza_detaljnije">
+                                <xs:element maxOccurs="unbounded" minOccurs="1" name="Doza"
+                                    type="util:Doza_detaljnije">
                                     <xs:annotation>
                                         <xs:appinfo>
                                             <jxb:property name="Doze"/>
@@ -138,12 +148,13 @@
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:sequence>
-                                            <xs:element maxOccurs="unbounded" minOccurs="1" name="Privremena_kontraindikacija">
-	                                            <xs:annotation>
-	                                              <xs:appinfo>
+                                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                                name="Privremena_kontraindikacija">
+                                                <xs:annotation>
+                                                  <xs:appinfo>
 	                                                    <jxb:property name="Privremene_kontraindikacije"/>
 	                                                </xs:appinfo>
-	                                            </xs:annotation>
+                                                </xs:annotation>
                                                 <xs:complexType>
                                                   <xs:sequence>
                                                   <xs:element name="Datum" type="xs:date"/>

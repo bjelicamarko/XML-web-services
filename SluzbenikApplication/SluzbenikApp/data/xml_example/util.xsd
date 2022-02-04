@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
-    vc:minVersion="1.1" targetNamespace="http://www.vakc-sistem.rs/util"
+    elementFormDefault="qualified"
+    targetNamespace="http://www.vakc-sistem.rs/util"
     xmlns="http://www.vakc-sistem.rs/util">
     <xs:complexType name="Drzavljanstvo">
         <xs:choice>
@@ -29,7 +29,7 @@
                 </xs:simpleType>
             </xs:element>
         </xs:choice>
-        <xs:attribute name="Tip"  use="required">
+        <xs:attribute name="Tip" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="DOMACE"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
-    jxb:version="1.0" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-    elementFormDefault="qualified" vc:minVersion="1.1"
+    jxb:version="1.0"
+    elementFormDefault="qualified"
     targetNamespace="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat"
     xmlns="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat"
     xmlns:util="http://www.vakc-sistem.rs/util">
@@ -42,6 +42,13 @@
                     </xs:element>
                 </xs:sequence>
             </xs:sequence>
+            <xs:attribute name="Id_sluzbenika" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
 </xs:schema>

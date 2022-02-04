@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:Interesovanje xmlns="http://www.vakc-sistem.rs/util" xmlns:ns2="http://www.vakc-sistem.rs/interesovanje" Id="2312312">
+    <ns2:Drzavljanstvo Tip="DOMACE">
+        <JMBG>0101999404404</JMBG>
+    </ns2:Drzavljanstvo>
+    <ns2:Ime>Marko</ns2:Ime>
+    <ns2:Prezime>Markovic</ns2:Prezime>
+    <ns2:Kontakt>
+        <Broj_telefona>1245125125</Broj_telefona>
+        <Broj_fiksnosg_telefona>858584858</Broj_fiksnosg_telefona>
+        <Email_adresa>markomarkovic@gmail.rs</Email_adresa>
+    </ns2:Kontakt>
+    <ns2:Opstina_vakcinisanja>Becej</ns2:Opstina_vakcinisanja>
+    <ns2:Vakcina Tip="Pfizer"/>
+    <ns2:Dobrovoljni_davalac>Da</ns2:Dobrovoljni_davalac>
+    <ns2:Datum>2022-01-07</ns2:Datum>
+</ns2:Interesovanje>

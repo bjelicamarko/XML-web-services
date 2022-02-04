@@ -15,7 +15,7 @@ public class DzsExtractMetadata extends ExtractMetadata {
     }
 
     /** String idSluzbenika - unique id from logged user **/
-    public void extract(DigitalniZeleniSertifikat digitalniZeleniSertifikat, String idSluzbenika) {
+    public void extract(DigitalniZeleniSertifikat digitalniZeleniSertifikat, String idZahteva) {
         Model model = createModel();
 
         Resource resource = model.createResource(DZS_NAMESPACE_PATH + digitalniZeleniSertifikat.getXmlId());
@@ -29,8 +29,12 @@ public class DzsExtractMetadata extends ExtractMetadata {
         model.add(model.createStatement(resource, issuedTo, person));
 
         Property createdBy = model.createProperty(PREDICATE_NAMESPACE, "createdBy");
-        Resource sluzbenik = model.createResource(OSOBA_NAMESPACE_PATH + idSluzbenika);
+        Resource sluzbenik = model.createResource(OSOBA_NAMESPACE_PATH + digitalniZeleniSertifikat.getIdSluzbenika());
         model.add(model.createStatement(resource, createdBy, sluzbenik));
+
+        Property refBy = model.createProperty(PREDICATE_NAMESPACE, "refBy");
+        Resource zahtevRef = model.createResource(ZAHTEV_NAMESPACE_PATH + idZahteva);
+        model.add(model.createStatement(resource, refBy, zahtevRef));
 
         super.modelWrite(model, DZS_NAMED_GRAPH_URI);
     }
