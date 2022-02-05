@@ -2,6 +2,8 @@ package com.imunizacija.ImunizacijaApp.repository.xmlRepository;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -13,13 +15,21 @@ import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
+import static com.imunizacija.ImunizacijaApp.repository.Constants.COLLECTION_PATH_INTERESOVANJE;
+import static com.imunizacija.ImunizacijaApp.repository.Constants.PACKAGE_PATH_INTERESOVANJE;
+
+@Component
+@Scope("prototype") // kreira novu instancu na svaki @Autowired
 public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRetrieveXMLRepository {
 
-    private final String packagePath;
-    private final String collectionPath;
+    public String packagePath;
+    public String collectionPath;
+    public IdGeneratorPosInt idGenerator;
 
-    public GenericXMLRepository (String packagePath, String collectionPath, IdGeneratorPosInt idGeneratorPosInt){
-        super(idGeneratorPosInt);
+    public GenericXMLRepository() {}
+
+    public void setRepositoryParams(String packagePath, String collectionPath, IdGeneratorPosInt idGenerator){
+        this.idGenerator = idGenerator;
         this.packagePath = packagePath;
         this.collectionPath = collectionPath;
     }

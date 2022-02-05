@@ -4,6 +4,7 @@ package com.imunizacija.ImunizacijaApp.repository.xmlRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import org.exist.xmldb.EXistResource;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
@@ -14,16 +15,13 @@ import org.xmldb.api.modules.XMLResource;
 
 import javax.xml.transform.OutputKeys;
 
-
 public abstract class StoreRetrieveXMLRepository {
 
 	protected static AuthenticationUtilities.ConnectionPropertiesExist connectionProp;
-
-	protected IdGeneratorPosInt idGenerator;
-
-	public StoreRetrieveXMLRepository(IdGeneratorPosInt idGenerator) {
-		this.idGenerator = idGenerator;
-	}
+//
+//	public StoreRetrieveXMLRepository(IdGeneratorPosInt idGenerator) {
+//		this.idGenerator = idGenerator;
+//	}
 
 	public static void registerDatabase(){
 		try {
