@@ -1,15 +1,11 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.service.InteresovanjeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
 @RestController
 @RequestMapping("api/interesovanje")
