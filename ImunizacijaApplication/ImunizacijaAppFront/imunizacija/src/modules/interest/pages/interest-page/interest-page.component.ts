@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
+import { ConformationDialogComponent } from 'src/modules/shared/components/conformation-dialog/conformation-dialog.component';
 import { emailValidator } from 'src/modules/shared/directives/custom-validators/email-validator';
 import { jmbgValidator } from 'src/modules/shared/directives/custom-validators/jmbg-validator';
 import { pasosValidator } from 'src/modules/shared/directives/custom-validators/pasos-validator';
@@ -62,7 +64,7 @@ export class InterestPageComponent {
     }
   }
 
-  constructor(private fb: FormBuilder,  private snackBarService: SnackBarService, 
+  constructor(public dialog: MatDialog, private fb: FormBuilder,  private snackBarService: SnackBarService, 
     private interestService: InterestService) { 
     this.registrationFormGroup = this.fb.group({
       firstName: ['', Validators.required],
@@ -78,6 +80,20 @@ export class InterestPageComponent {
 
   get f() {
     return this.registrationFormGroup.controls;
+  }
+
+  createInterestWithConformation() {
+    this.dialog.open(ConformationDialogComponent, {
+      data: 
+      { 
+        naslov: "Podnosenje interesovanja",
+        message: "Jeste sigurni da zelite da podnesete novi zahtev za vakcinisanje."
+      },
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.createInterest();
+      }
+    });
   }
 
   createInterest() {
@@ -106,6 +122,7 @@ export class InterestPageComponent {
     this.interestService.createInterest(this.getNewInterest(arrayOfVaccine))
         .subscribe(response => {
           this.snackBarService.openSnackBar(response.body as string);
+          this.resetStateOfForm();
         });
 
   }
@@ -128,7 +145,7 @@ export class InterestPageComponent {
         Opstina_vakcinisanja: this.registrationFormGroup.get('town')?.value, 
         Vakcina: arrayOfVaccine, 
         Dobrovoljni_davalac: this.registrationFormGroup.get('donator')?.value, 
-        Datum: moment(Date.now()).format('DD-MM-YYYY')
+        Datum: moment(Date.now()).format('YYYY-MM-DD')
       }
     };
     return interesovanje;
@@ -183,5 +200,19 @@ export class InterestPageComponent {
     if (index !== -1) {
         this.checkedValues.splice(index, 1);
     }
+  }
+
+  resetStateOfForm() {
+    this.registrationFormGroup = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, emailValidator()]],
+      phoneNumber: ['', Validators.required],
+      homeNumber: [''],
+      town: ['Novi Sad', Validators.required],
+      userId: ['', [Validators.required, jmbgValidator()]],
+      donator: ['Da', Validators.required]
+    });
+    this.resetCheckedValues();
   }
 }
