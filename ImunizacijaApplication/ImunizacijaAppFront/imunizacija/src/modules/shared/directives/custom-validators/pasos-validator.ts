@@ -12,6 +12,10 @@ export function pasosValidator(): ValidatorFn {
       return null;
     }
 
+    // if (/^abc/.test(value)) {
+    //   return null;
+    // }
+
     return { pasos: { invalid: true } };
   };
 }
