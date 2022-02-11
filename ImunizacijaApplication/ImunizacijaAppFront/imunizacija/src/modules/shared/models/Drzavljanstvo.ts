@@ -1,6 +1,6 @@
 export interface Drzavljanstvo {
-    jmbg: string,
-    brPasosa: string,
-    evidencioniBrojStranca: string,
-    tip: string 
+    "util:JMBG"?: string,
+    "util:Br_pasosa"?: string,
+    "util:Evidencioni_broj_stranca"?: string,
+    "@": { Tip: string }
 }

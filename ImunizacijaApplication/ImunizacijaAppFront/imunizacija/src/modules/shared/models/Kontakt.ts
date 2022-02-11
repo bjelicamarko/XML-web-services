@@ -1,5 +1,8 @@
 export interface Kontakt {
-    brojTelefona: string,
-    brojFiksnosgTelefona: string,
-    emailAdresa: string
+    Broj_telefona: { "@": { }, 
+        "#": ''},
+    Broj_fiksnosg_telefona: { "@": { },
+        "#": ''},
+    Email_adresa: { "@": { },
+        "#": ''}
 }

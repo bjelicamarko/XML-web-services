@@ -26,4 +26,9 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     public Interesovanje findOneById(String id) {
         return repository.retrieveXML(id);
     }
+
+    @Override
+    public void createNewInterest(Interesovanje interesovanje) {
+        this.repository.storeXML(interesovanje, true);
+    }
 }
