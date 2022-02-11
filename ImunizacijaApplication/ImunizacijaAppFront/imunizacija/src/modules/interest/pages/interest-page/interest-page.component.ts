@@ -81,6 +81,11 @@ export class InterestPageComponent {
   }
 
   createInterest() {
+    if (this.checkedValues.length === 0) {
+      this.snackBarService.openSnackBar("Morate izabrati bar jednu vakcinu.");
+      return;
+    }
+
     if (this.selectedValue === 'Drzavljanin Republike Srbije') {  
       this.Drzavljanstvo['util:JMBG'] = this.registrationFormGroup.get('userId')?.value;
     } else if (this.selectedValue === 'Strani drzavljanin sa boravkom u RS') {
@@ -98,6 +103,14 @@ export class InterestPageComponent {
       arrayOfVaccine.push({"@": {Tip: value}})
     })
 
+    this.interestService.createInterest(this.getNewInterest(arrayOfVaccine))
+        .subscribe(response => {
+          this.snackBarService.openSnackBar(response.body as string);
+        });
+
+  }
+
+  getNewInterest(arrayOfVaccine: Vakcina[]): Interesovanje {
     let interesovanje : Interesovanje = { 
       Interesovanje: 
       {
@@ -118,13 +131,7 @@ export class InterestPageComponent {
         Datum: moment(Date.now()).format('DD-MM-YYYY')
       }
     };
-      
-    console.log(interesovanje);
-    this.interestService.createInterest(interesovanje)
-        .subscribe(response => {
-          this.snackBarService.openSnackBar(response.body as string);
-        });
-
+    return interesovanje;
   }
 
   checkSubmit() {
