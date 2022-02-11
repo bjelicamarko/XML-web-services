@@ -12,50 +12,13 @@ const routes: Routes = [
       {
         path: "register",
         component: RegistrationPageComponent,
-      }
+      },
+      {
+        path: "interest",
+        loadChildren: () => 
+          import("./../interest/interest.module").then((m) => m.InterestModule),
+      },
     ]
-    // children: [
-    //   {
-    //     path: "tables",
-    //     loadChildren: () =>
-    //       import("./../tables/tables.module").then((m) => m.TablesModule),
-    //   },
-    //   {
-    //     path: "auth",
-    //     loadChildren: () =>
-    //       import("./../auth/auth.module").then((m) => m.AuthModule),
-    //   },
-    //   {
-    //     path: "reports",
-    //     loadChildren: () =>
-    //       import("./../reports/reports.module").then((m) => m.ReportsModule),
-    //   },
-    //   {
-    //     path: "orders",
-    //     loadChildren: () =>
-    //       import("./../orders/orders.module").then((m) => m.OrdersModule),
-    //   },
-    //   {
-    //     path: "employees",
-    //     loadChildren: () =>
-    //       import("./../employees/employees.module").then((m) => m.EmployeesModule),
-    //   },
-    //   {
-    //     path: "items",
-    //     loadChildren: () =>
-    //       import("./../items/items.module").then((m) => m.ItemsModule),
-    //   },
-    //   {
-    //     path: "menus",
-    //     loadChildren: () =>
-    //       import("./../menus/menus.module").then((m) => m.MenusModule),
-    //   },
-    //   {
-    //     path: "users",
-    //     loadChildren: () =>
-    //       import("./../users/users.module").then((m) => m.UsersModule),
-    //   }
-    // ],
   },
   // {
   //   path: "",
