@@ -1,6 +1,7 @@
 package com.imunizacija.ImunizacijaApp.service;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
+import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 
-import static com.imunizacija.ImunizacijaApp.repository.Constants.COLLECTION_PATH_INTERESOVANJE;
-import static com.imunizacija.ImunizacijaApp.repository.Constants.PACKAGE_PATH_INTERESOVANJE;
+import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
 @Service
 public class InteresovanjeServiceImpl implements InteresovanjeService {
@@ -19,11 +19,15 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     private GenericXMLRepository<Interesovanje> repository;
 
     @Autowired
+    private GenericXMLReaderWriter<Interesovanje> repositoryReaderWriter;
+
+    @Autowired
     private MailService mailService;
 
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt());
+        this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, XML_SCHEMA_PATH_INTERESOVANJE);
     }
 
     @Override
@@ -32,10 +36,11 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     }
 
     @Override
-    public void createNewInterest(Interesovanje interesovanje) throws MessagingException {
-        this.mailService.sendMail("Novo interesovanje", this.generateTextFromInterest(interesovanje),
-                interesovanje.getKontakt().getEmailAdresa());
-        this.repository.storeXML(interesovanje, true);
+    public void createNewInterest(String interesovanje) throws MessagingException {
+        Interesovanje i = repositoryReaderWriter.checkSchema(interesovanje);
+        this.mailService.sendMail("Novo interesovanje", this.generateTextFromInterest(i),
+                i.getKontakt().getEmailAdresa());
+        this.repository.storeXML(i, true);
     }
 
     private String generateTextFromInterest(Interesovanje interesovanje) {

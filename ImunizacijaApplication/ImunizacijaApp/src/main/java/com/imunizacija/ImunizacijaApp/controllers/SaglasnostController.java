@@ -19,7 +19,7 @@ public class SaglasnostController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/kreirajNovuSaglasnost", consumes = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<String> createNewConsent(@RequestBody Saglasnost saglasnost) {
+    public ResponseEntity<String> createNewConsent(@RequestBody String saglasnost) {
         saglasnostService.createNewConsent(saglasnost);
         return new ResponseEntity<>("Saglasnost uspesno podneta!", HttpStatus.CREATED);
     }

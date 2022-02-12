@@ -7,12 +7,14 @@ import { SharedModule } from '../shared/shared.module';
 
 import { ConsentPageComponent } from './pages/consent-page/consent-page.component';
 import { ConsentRoutes } from './consent.routes';
+import { TestPageComponent } from './pages/test-page/test-page.component';
 
 
 
 @NgModule({
   declarations: [
-    ConsentPageComponent
+    ConsentPageComponent,
+    TestPageComponent
   ],
   imports: [
     CommonModule,

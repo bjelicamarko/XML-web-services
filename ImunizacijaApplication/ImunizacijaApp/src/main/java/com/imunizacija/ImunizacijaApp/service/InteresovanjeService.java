@@ -7,5 +7,5 @@ import javax.mail.MessagingException;
 public interface InteresovanjeService {
     Interesovanje findOneById(String id);
 
-    void createNewInterest(Interesovanje interesovanje) throws MessagingException;
+    void createNewInterest(String interesovanje) throws MessagingException;
 }

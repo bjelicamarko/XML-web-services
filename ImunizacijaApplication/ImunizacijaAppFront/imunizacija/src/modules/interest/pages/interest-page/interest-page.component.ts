@@ -136,7 +136,7 @@ export class InterestPageComponent {
           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
           "xmlns:util": "http://www.vakc-sistem.rs/util",
           "xsi:schemaLocation": "http://www.vakc-sistem.rs/interesovanje interesovanje.xsd",
-          Id: "-1"
+          Id: "1"
         },
         Drzavljanstvo: this.Drzavljanstvo, 
         Ime: this.registrationFormGroup.get('firstName')?.value, 
@@ -190,6 +190,7 @@ export class InterestPageComponent {
   }
 
   resetCheckedValues() {
+    this.checkedValues = [];
     this.checks.forEach((value) => {
       this.checkedValues.push(value);
     });
