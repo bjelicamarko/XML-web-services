@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping("api/interesovanje")
 public class InteresovanjeController {
@@ -21,6 +23,13 @@ public class InteresovanjeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(interesovanje, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping(value = "/kreirajNovoInteresovanje", consumes = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> createNewInterest(@RequestBody Interesovanje interesovanje) throws MessagingException {
+        interesovanjeService.createNewInterest(interesovanje);
+        return new ResponseEntity<>("Interesovanje uspesno podneto!", HttpStatus.CREATED);
     }
 }
 

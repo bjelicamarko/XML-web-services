@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.COLLECTION_PATH_INTERESOVANJE;
 import static com.imunizacija.ImunizacijaApp.repository.Constants.PACKAGE_PATH_INTERESOVANJE;
@@ -17,6 +18,9 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     @Autowired
     private GenericXMLRepository<Interesovanje> repository;
 
+    @Autowired
+    private MailService mailService;
+
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt());
@@ -25,5 +29,39 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     @Override
     public Interesovanje findOneById(String id) {
         return repository.retrieveXML(id);
+    }
+
+    @Override
+    public void createNewInterest(Interesovanje interesovanje) throws MessagingException {
+        this.mailService.sendMail("Novo interesovanje", this.generateTextFromInterest(interesovanje),
+                interesovanje.getKontakt().getEmailAdresa());
+        this.repository.storeXML(interesovanje, true);
+    }
+
+    private String generateTextFromInterest(Interesovanje interesovanje) {
+        StringBuilder sb = new StringBuilder();
+        if (interesovanje.getDrzavljanstvo().getTip().equals("DOMACE")) {
+            sb.append(String.format("JMBG: %s\n", interesovanje.getDrzavljanstvo().getJMBG()));
+        } else if (interesovanje.getDrzavljanstvo().getTip().equals("STRANO_SA_BORAVKOM")) {
+            sb.append(String.format("Evidencioni broj stranca: %s\n", interesovanje.getDrzavljanstvo().getEvidencioniBrojStranca()));
+        } else {  // STRANO_BEZ_BORAVKA
+            sb.append(String.format("Broj pasosa: %s\n", interesovanje.getDrzavljanstvo().getBrPasosa()));
+        }
+
+        StringBuilder sb2 = new StringBuilder();
+        for (Interesovanje.Vakcina v : interesovanje.getVakcine())
+            sb2.append(String.format("Vakcina: %s\n", v.getTip()));
+
+        return String.format("Drzavljanstvo: %s\n" + "Ime: %s\n" +
+                "Prezime: %s\n" +
+                "Email: %s\n" +
+                "Broj telefona: %s\n" +
+                "Broj fiksnog telefona: %s\n" +
+                "Opstina vakcinisanja: %s\n" +
+                "Datum predaje interesovanja: %s\n" +
+                "Izabrane zelene vakcine: \n %s", sb.toString(), interesovanje.getIme(), interesovanje.getPrezime(),
+                interesovanje.getKontakt().getEmailAdresa(), interesovanje.getKontakt().getBrojTelefona(),
+                interesovanje.getKontakt().getBrojFiksnosgTelefona(),
+                interesovanje.getOpstinaVakcinisanja(), interesovanje.getDatum().toString(), sb2.toString());
     }
 }
