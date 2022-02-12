@@ -21,6 +21,6 @@ public class SaglasnostController {
     @PostMapping(value = "/kreirajNovuSaglasnost", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> createNewConsent(@RequestBody Saglasnost saglasnost) {
         saglasnostService.createNewConsent(saglasnost);
-        return new ResponseEntity<>("Interesovanje uspesno podneta!", HttpStatus.CREATED);
+        return new ResponseEntity<>("Saglasnost uspesno podneta!", HttpStatus.CREATED);
     }
 }

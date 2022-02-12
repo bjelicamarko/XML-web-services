@@ -1,8 +1,6 @@
-import { ThisReceiver } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { timingSafeEqual } from 'crypto';
 import * as moment from 'moment';
 import { ConformationDialogComponent } from 'src/modules/shared/components/conformation-dialog/conformation-dialog.component';
 import { emailValidator } from 'src/modules/shared/directives/custom-validators/email-validator';
@@ -115,7 +113,7 @@ export class ConsentPageComponent {
         workStatus: ['', Validators.required],
         interest: ['Drugo', Validators.required],
         agreed: ['Ne', Validators.required],        
-        immunologicalDrug: ['', Validators.required]
+        immunologicalDrug: ['test', Validators.required]  // NA OVO SE VRATITI KO POPUNJAVA
       });
     }
 
@@ -163,6 +161,11 @@ export class ConsentPageComponent {
       this.LicniPodaci.Adresa.Opstina = this.registrationFormGroup.get('city')?.value;
       this.LicniPodaci.Adresa.Grad = this.registrationFormGroup.get('city')?.value;
 
+      this.consentService.createConsent(this.getNewConsent())
+          .subscribe(response => {
+            this.snackBarService.openSnackBar(response.body as string);
+            this.resetStateOfForm();
+          })
     }
 
     getNewConsent(): Saglasnost {
