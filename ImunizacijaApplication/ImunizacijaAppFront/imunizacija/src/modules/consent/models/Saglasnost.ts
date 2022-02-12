@@ -8,8 +8,8 @@ export interface Saglasnost {
         Drzavljanstvo: Drzavljanstvo,
         Licni_podaci: LicniPodaci,
         Kontakt: Kontakt,
-        Zaposlenje: { Radni_status: '', Zanimanje: '' },
-        Izjava: { Saglasan: '', Imunoloski_lek: '' },
+        Zaposlenje: { Radni_status: string, Zanimanje: string },
+        Izjava: { Saglasan: string, Imunoloski_lek: string },
         Datum: string
     }
 }

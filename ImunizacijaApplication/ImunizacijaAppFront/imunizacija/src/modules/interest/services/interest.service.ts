@@ -21,6 +21,7 @@ export class InterestService {
       observe: "response",
       responseType: "text"
     };
-    return this.http.post<HttpResponse<string>>("indirekcija/api/interesovanje/kreirajNovoInteresovanje", o2x(interesovanje), queryParams);
+    return this.http.post<HttpResponse<string>>("indirekcija/api/interesovanje/kreirajNovoInteresovanje", 
+    o2x(interesovanje), queryParams);
   }
 }
