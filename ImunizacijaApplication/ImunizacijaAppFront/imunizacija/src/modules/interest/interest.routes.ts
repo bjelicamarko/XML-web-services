@@ -4,7 +4,7 @@ import { InterestPageComponent } from "./pages/interest-page/interest-page.compo
 
 export const InterestRoutes: Routes = [
     {
-        path: "new-interest",
+        path: "novo-interesovanje",
         pathMatch: 'prefix',
         component: InterestPageComponent,
     }

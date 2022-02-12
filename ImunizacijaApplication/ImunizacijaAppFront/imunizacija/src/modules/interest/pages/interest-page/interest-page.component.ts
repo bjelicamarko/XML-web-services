@@ -87,7 +87,7 @@ export class InterestPageComponent {
       data: 
       { 
         naslov: "Podnosenje interesovanja",
-        message: "Jeste sigurni da zelite da podnesete novi zahtev za vakcinisanje."
+        poruka: "Jeste sigurni da zelite da podnesete novi zahtev za vakcinisanje."
       },
     }).afterClosed().subscribe(result => {
       if (result) {

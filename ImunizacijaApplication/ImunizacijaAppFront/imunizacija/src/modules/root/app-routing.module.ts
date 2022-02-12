@@ -14,10 +14,15 @@ const routes: Routes = [
         component: RegistrationPageComponent,
       },
       {
-        path: "interest",
+        path: "interesovanje",
         loadChildren: () => 
           import("./../interest/interest.module").then((m) => m.InterestModule),
       },
+      {
+        path: "saglasnost",
+        loadChildren: () => 
+          import("./../consent/consent.module").then((m) => m.ConsentModule),
+      }
     ]
   },
   // {
