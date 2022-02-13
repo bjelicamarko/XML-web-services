@@ -1,13 +1,23 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
 import com.sluzbenik.SluzbenikApp.dto.GradVakcinaKolicinaDTO;
+import com.sluzbenik.SluzbenikApp.dto.VakcinaDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.termini.SistemskiMagacin;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import org.exist.xmldb.EXistResource;
 import org.springframework.stereotype.Component;
-import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XPathQueryService;
 import org.xmldb.api.modules.XUpdateQueryService;
 
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.template.XUpdateTemplate.UPDATE_SISTEMSKI_MAGACIN;
@@ -23,8 +33,7 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
     }
 
     public void updateVaccine(GradVakcinaKolicinaDTO gradVakcinaKolicinaDTO) {
-        ///Vakcina[@Naziv_proizvodjaca=\"%s\"]"
-        String contextXPath = String.format("//Grad[@Ime='%s']/Vakcine/Vakcina[@Naziv_proizvodjaca='%s']",
+        String contextXPath = String.format("//Grad[@Ime='%s']/Vakcina[@Naziv_proizvodjaca='%s']",
                 gradVakcinaKolicinaDTO.getGrad(), gradVakcinaKolicinaDTO.getNazivProizvodjaca());
 
         try {
@@ -42,7 +51,46 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
         } catch (XMLDBException e) {
             e.printStackTrace();
         }
+    }
 
+    public List<VakcinaDTO> getVaccineStatusOfCity(String city) {
+        String xpathExp = String.format("doc(\"%s\")//Grad[@Ime=\"%s\"]/Vakcina",
+                "termini.xml", city);
+        List<VakcinaDTO> vakcine = new ArrayList<>();
 
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            xpathService.setProperty("indent", "yes");
+            xpathService.setNamespace("", TERMIN_NAMESPACE_PATH);
+
+            ResourceSet result = xpathService.query(xpathExp);
+            ResourceIterator i = result.getIterator();
+            Resource res = null;
+
+            JAXBContext context = JAXBContext.newInstance("com.sluzbenik.SluzbenikApp.dto");
+            Unmarshaller u = context.createUnmarshaller();
+            while(i.hasMoreResources()) {
+                try {
+                    res = i.nextResource();
+                    System.out.println(res.getContent());
+                    String str = res.getContent().toString();
+                    VakcinaDTO v = (VakcinaDTO) u.unmarshal(new StreamSource(new StringReader(str)));
+                    System.out.println(v);
+                    vakcine.add(v);
+                } finally {
+                    try {
+                        assert res != null;
+                        ((EXistResource)res).freeResources();
+                    } catch (XMLDBException xe) {
+                        xe.printStackTrace();
+                    }
+                }
+            }
+
+        } catch (XMLDBException | JAXBException e) {
+            e.printStackTrace();
+        }
+        return vakcine;
     }
 }
