@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 // import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
@@ -20,8 +21,8 @@ export class RootLayoutPageComponent {
     const item = localStorage.getItem("user");
 
     if (item) {
-      // const jwt: JwtHelperService = new JwtHelperService();
-      // this.role = jwt.decodeToken(item).role;
+      const jwt: JwtHelperService = new JwtHelperService();
+      this.role = jwt.decodeToken(item).role;
     }
   }
 

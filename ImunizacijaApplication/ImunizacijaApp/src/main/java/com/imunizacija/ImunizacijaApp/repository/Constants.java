@@ -15,6 +15,8 @@ public class Constants {
 
     public static final String COLLECTION_PATH_TERMIN = "db/termini";
     public static final String XML_TERMIN = "termini.xml";
+    public static final String PACKAGE_PATH_KORISNIK = "com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik";
+    public static final String COLLECTION_PATH_KORISNIK = "db/korisnik";
 
     //XML read write
     public static final String XML_SCHEMA_PATH_ZAHTEV = "data/xml_example/zahtev_za_izdavanje_zelenog.xsd";
@@ -35,6 +37,7 @@ public class Constants {
     public static final String INTERESOVANJE_NAMESPACE_PATH = ROOT_PATH + "interesovanje/";
     public static final String SAGLASNOST_NAMESPACE_PATH = ROOT_PATH + "saglasnost-za-imunizaciju/";
     public static final String TERMIN_NAMESPACE_PATH = ROOT_PATH + "termini";
+    public static final String KORISNIK_NAMESPACE_PATH = ROOT_PATH + "korisnik";
 
     public static final String PREDICATE_NAMESPACE = ROOT_PATH + "predicate/";
 

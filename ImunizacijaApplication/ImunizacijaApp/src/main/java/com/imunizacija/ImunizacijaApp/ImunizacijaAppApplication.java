@@ -1,7 +1,9 @@
 package com.imunizacija.ImunizacijaApp;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
+import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.StoreRetrieveXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.springframework.boot.SpringApplication;

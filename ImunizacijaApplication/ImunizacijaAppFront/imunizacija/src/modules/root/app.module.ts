@@ -12,6 +12,9 @@ import { HeaderCommonComponent } from './components/header/header-common/header-
 import { MaterialExampleModule } from 'src/material.module';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
+import { AuthModule } from '../auth/auth.module';
+import { HeaderCitizenComponent } from './components/header/header-citizen/header-citizen.component';
+import { HeaderDoctorComponent } from './components/header/header-doctor/header-doctor.component';
 
 @NgModule({
     declarations: [
@@ -19,14 +22,16 @@ import { RegistrationPageComponent } from './pages/registration-page/registratio
         RootLayoutPageComponent,
         HeaderCommonComponent,
         RegistrationComponent,
-        RegistrationPageComponent
+        RegistrationPageComponent,
+        HeaderCitizenComponent,
+        HeaderDoctorComponent
     ],
     imports: [
         CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        // // AuthModule,
+        AuthModule,
         MaterialExampleModule,
         FormsModule,
         HttpClientModule,
