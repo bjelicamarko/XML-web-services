@@ -22,6 +22,11 @@ const routes: Routes = [
         path: "saglasnost",
         loadChildren: () => 
           import("./../consent/consent.module").then((m) => m.ConsentModule),
+      },
+      {
+        path: "zahtev",
+        loadChildren: () => 
+          import("./../request/request.module").then((m) => m.RequestModule),
       }
     ]
   },

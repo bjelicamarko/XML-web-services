@@ -1,12 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { RequestPageComponent } from './pages/request-page/request-page.component';
+import { SharedModule } from '../shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { RequestRoutes } from './request.routes';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    RequestPageComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule,
+    RouterModule.forChild(RequestRoutes),
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class RequestModule { }

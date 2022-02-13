@@ -8,13 +8,9 @@ export function pasosValidator(): ValidatorFn {
       return null;
     }
 
-    if (/^[A-Z0-9<]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9<]{14}[0-9]{2}$/.test(value)) {
+    if (/[0-9A-Z]{6,12}/.test(value)) {
       return null;
     }
-
-    // if (/^abc/.test(value)) {
-    //   return null;
-    // }
 
     return { pasos: { invalid: true } };
   };
