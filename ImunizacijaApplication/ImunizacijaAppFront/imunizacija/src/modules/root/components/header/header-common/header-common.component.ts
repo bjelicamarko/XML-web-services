@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { AuthService } from 'src/modules/auth/services/auth-service/auth.service';
 
 @Component({
   selector: 'app-header-common',
@@ -7,10 +8,10 @@ import { AfterViewInit, Component } from '@angular/core';
 })
 export class HeaderCommonComponent {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   logout() {
-    alert("Logouting.....")
+    this.authService.logout();
   }
 
   profile() {

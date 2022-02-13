@@ -10,26 +10,31 @@ const routes: Routes = [
     component: RootLayoutPageComponent,
     children: [
       {
+        path: "auth",
+        loadChildren: () =>
+          import("./../auth/auth.module").then((m) => m.AuthModule),
+      },
+      {
         path: "register",
         component: RegistrationPageComponent,
       },
       {
         path: "interesovanje",
-        loadChildren: () => 
+        loadChildren: () =>
           import("./../interest/interest.module").then((m) => m.InterestModule),
       },
       {
         path: "saglasnost",
-        loadChildren: () => 
+        loadChildren: () =>
           import("./../consent/consent.module").then((m) => m.ConsentModule),
       }
     ]
   },
-  // {
-  //   path: "",
-  //   redirectTo: "rest-app/auth/login",
-  //   pathMatch: "full",
-  // },
+  {
+    path: "",
+    redirectTo: "imunizacija-app/auth/login",
+    pathMatch: "full",
+  },
   { path: "**", component: NotFoundPageComponent },
 ];
 
