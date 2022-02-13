@@ -6,6 +6,6 @@ export const InterestRoutes: Routes = [
     {
         path: "new-interest",
         pathMatch: 'prefix',
-        component: InterestPageComponent,
+        component: InterestPageComponent, //todo dodati role guardove svuda
     }
 ]
