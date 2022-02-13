@@ -17,7 +17,7 @@
         <Vakcina Naziv_proizvodjaca="Sputnik V">343</Vakcina>
         <Vakcina Naziv_proizvodjaca="Sinopharm">466</Vakcina>
         <Vakcina Naziv_proizvodjaca="AstraZeneca">111</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Moderna">777</Vakcina>&gt;
+        <Vakcina Naziv_proizvodjaca="Moderna">777</Vakcina>;
     </Grad>
     <Grad Ime="Novi Sad">
         <Ustanova Naziv="Promenada">
