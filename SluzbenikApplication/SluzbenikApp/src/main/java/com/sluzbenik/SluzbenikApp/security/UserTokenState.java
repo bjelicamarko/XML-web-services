@@ -1,4 +1,4 @@
-package com.imunizacija.ImunizacijaApp.model.app_users;
+package com.sluzbenik.SluzbenikApp.security;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
