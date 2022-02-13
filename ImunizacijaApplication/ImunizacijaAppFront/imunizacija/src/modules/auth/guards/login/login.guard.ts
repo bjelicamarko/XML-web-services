@@ -14,7 +14,7 @@ export class LoginGuard implements CanActivate {
       let role = this.utilsService.getLoggedUserRole();
 
       //todo srediti
-      this.router.navigate(["imunizacija-app/interest/new-interest"]);
+      this.router.navigate(["imunizacija-app/interesovanje/novo-interesovanje"]);
       // if (role === "ADMINISTRATOR") {
       //   this.router.navigate(["rest-app/tables/tables-admin"]);
       // }
