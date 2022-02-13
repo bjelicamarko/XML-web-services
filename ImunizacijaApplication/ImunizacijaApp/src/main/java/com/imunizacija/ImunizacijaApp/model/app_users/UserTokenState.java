@@ -1,5 +1,8 @@
 package com.imunizacija.ImunizacijaApp.model.app_users;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "token_state")
 public class UserTokenState {
 	
     private String accessToken;

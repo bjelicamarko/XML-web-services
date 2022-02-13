@@ -8,6 +8,7 @@ import com.imunizacija.ImunizacijaApp.security.auth.JwtAuthenticationRequest;
 import com.imunizacija.ImunizacijaApp.service.KorisnikService;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -76,7 +77,7 @@ public class KorisnikController {
         return "Gucci doctor";
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                                     HttpServletResponse response) throws IOException, MessagingException {
         Authentication authentication = authenticationManager
@@ -88,7 +89,7 @@ public class KorisnikController {
 
         // Kreiraj token za tog korisnika
         Korisnik user = (Korisnik) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getKorisnikID(), user.getTipKorisnika(), user.getKorisnikID());
+        String jwt = tokenUtils.generateToken(user.getKorisnikID(), user.getTipKorisnika(), user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju

@@ -12,6 +12,7 @@ import { HeaderCommonComponent } from './components/header/header-common/header-
 import { MaterialExampleModule } from 'src/material.module';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,7 @@ import { RegistrationPageComponent } from './pages/registration-page/registratio
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        // // AuthModule,
+        AuthModule,
         MaterialExampleModule,
         FormsModule,
         HttpClientModule,

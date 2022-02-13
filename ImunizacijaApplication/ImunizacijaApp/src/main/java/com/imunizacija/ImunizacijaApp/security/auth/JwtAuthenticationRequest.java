@@ -1,5 +1,8 @@
 package com.imunizacija.ImunizacijaApp.security.auth;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "authentication")
 public class JwtAuthenticationRequest {
 	
     private String username;
