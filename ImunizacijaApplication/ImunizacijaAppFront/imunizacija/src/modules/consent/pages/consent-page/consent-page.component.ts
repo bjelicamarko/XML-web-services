@@ -8,7 +8,7 @@ import { jmbgValidator } from 'src/modules/shared/directives/custom-validators/j
 import { pasosValidator } from 'src/modules/shared/directives/custom-validators/pasos-validator';
 import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
 import { Kontakt } from 'src/modules/shared/models/Kontakt';
-import { LicniPodaci } from 'src/modules/shared/models/LicniPodaci';
+import { LicniPodaciDetaljnije } from 'src/modules/shared/models/LicniPodaci';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { Saglasnost } from '../../models/Saglasnost';
 import { ConsentService } from '../../services/consent.service';
@@ -28,7 +28,7 @@ export class ConsentPageComponent {
   selectedValue: string = 'Drzavljanin Republike Srbije';
   userIdType: string = 'DOMACE';
 
-  LicniPodaci: LicniPodaci = {
+  LicniPodaci: LicniPodaciDetaljnije = {
     Ime: {
       "@": { xmlns:"http://www.vakc-sistem.rs/util" },
       "#": ''
