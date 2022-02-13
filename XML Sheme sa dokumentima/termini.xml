@@ -1,21 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Gradovi xmlns="http://www.vakc-sistem.rs/termini"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.vakc-sistem.rs/termini termini.xsd">
+<Gradovi xmlns="http://www.vakc-sistem.rs/termini" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.vakc-sistem.rs/termini termini.xsd">
     <Grad Ime="Becej">
-        <Ustanova Naziv="Glavna Bolnica Beceja">
-            <Termin Datum="2022-02-13 10:00">3</Termin>
-        </Ustanova>     
-        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
+        <Ustanova naziv="Glavna Bolnica Beceja">
+            <Termin datum="2022-02-13 10:00">3</Termin>
+        </Ustanova>
+        <Vakcina Naziv_proizvodjaca="Pfizer">40</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik V">100</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">50</Vakcina>
+        <Vakcina Naziv_proizvodjaca="AstraZeneca">40</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Moderna">23</Vakcina>
     </Grad>
     <Grad Ime="Subotica">
         <Ustanova Naziv="Glavna Bolnica Subotica">
             <Termin Datum="2022-02-13 11:00">4</Termin>
         </Ustanova> 
-        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Pfizer">13</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik V">343</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">466</Vakcina>
+        <Vakcina Naziv_proizvodjaca="AstraZeneca">111</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Moderna">777</Vakcina>&gt;
     </Grad>
     <Grad Ime="Novi Sad">
         <Ustanova Naziv="Promenada">
@@ -24,7 +26,11 @@
         <Ustanova Naziv="Spens">
             <Termin Datum="2022-02-13 17:00">6</Termin>
         </Ustanova>
-        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Pfizer">366</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik V">120</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">646</Vakcina>
+        <Vakcina Naziv_proizvodjaca="AstraZeneca">500</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Moderna">66</Vakcina>
     </Grad>
     <Grad Ime="Beograd">
         <Ustanova Naziv="Zemun">
@@ -36,16 +42,20 @@
         <Ustanova Naziv="Glavna Bolnica Beograd">
             <Termin Datum="2022-02-13 13:00">6</Termin>
         </Ustanova>
-        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Pfizer">466</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik V">130</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">646</Vakcina>
+        <Vakcina Naziv_proizvodjaca="AstraZeneca">120</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Moderna">663</Vakcina>
     </Grad>
     <Grad Ime="Nis">
         <Ustanova Naziv="Glavna Bolnica Nisa">
             <Termin Datum="2022-02-13 12:00">2</Termin>
         </Ustanova>
-        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
-        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Pfizer">64</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik V">180</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">190</Vakcina>
+        <Vakcina Naziv_proizvodjaca="AstraZeneca">20</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Moderna">646</Vakcina>
     </Grad>
 </Gradovi>
