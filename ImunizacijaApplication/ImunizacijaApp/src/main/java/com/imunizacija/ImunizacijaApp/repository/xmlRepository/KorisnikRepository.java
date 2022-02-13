@@ -33,7 +33,7 @@ public class KorisnikRepository extends GenericXMLRepository<Korisnik>{
 
         xpathService.setNamespace("", KORISNIK_NAMESPACE_PATH);
 
-        String xpathExp = "declare variable $data as document-node()+ := collection(\"/db/korisnik\");\n" +
+        String xpathExp = "declare variable $data as document-node()* := collection(\"/db/korisnik\");\n" +
                 "\n" +
                 "let $count_id := count($data//KorisnikID[.='" + appUser.getKorisnikID() + "'])\n" +
                 "let $count_email := count($data//Email[.='" + appUser.getEmail() + "'])\n" +
