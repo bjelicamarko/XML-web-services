@@ -1,7 +1,7 @@
 import { Routes } from "@angular/router";
+import { RoleGuard } from "../auth/guards/role/role.guard";
 
 import { ConsentPageComponent } from "./pages/consent-page/consent-page.component";
-import { TestPageComponent } from "./pages/test-page/test-page.component";
 
 export const ConsentRoutes: Routes = [
     {
@@ -9,9 +9,4 @@ export const ConsentRoutes: Routes = [
         pathMatch: 'prefix',
         component: ConsentPageComponent,
     },
-    {
-        path: "test",
-        pathMatch: 'prefix',
-        component: TestPageComponent,
-    }
 ]
