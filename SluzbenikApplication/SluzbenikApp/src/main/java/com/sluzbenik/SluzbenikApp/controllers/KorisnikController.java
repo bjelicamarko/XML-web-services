@@ -1,11 +1,11 @@
-package com.imunizacija.ImunizacijaApp.controllers;
+package com.sluzbenik.SluzbenikApp.controllers;
 
-import com.imunizacija.ImunizacijaApp.security.UserTokenState;
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
-import com.imunizacija.ImunizacijaApp.security.TokenUtils;
-import com.imunizacija.ImunizacijaApp.security.auth.JwtAuthenticationRequest;
-import com.imunizacija.ImunizacijaApp.service.KorisnikService;
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.korisnik.Korisnik;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.KorisnikRepository;
+import com.sluzbenik.SluzbenikApp.security.TokenUtils;
+import com.sluzbenik.SluzbenikApp.security.UserTokenState;
+import com.sluzbenik.SluzbenikApp.security.auth.JwtAuthenticationRequest;
+import com.sluzbenik.SluzbenikApp.service.KorisnikService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,36 +42,20 @@ public class KorisnikController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PostMapping("/test-create-citizen")
-    public String createUserCitizenTest(){
-        //endpoint za kreiranje basic gradjanina
+    @PostMapping("/test-create-sluzbenik")
+    public String createUserSluzbenik(){
+        //endpoint za kreiranje basic sluzbenika
         Korisnik korisnik = new Korisnik();
-		korisnik.setKorisnikID("12345");
-		korisnik.setIme("Djura");
-		korisnik.setPrezime("Peric");
-		korisnik.setTipKorisnika("CITIZEN");
-		korisnik.setEmail("djura123@gmail.com");
-		korisnik.setLozinka(passwordEncoder.encode("djura123"));
-
-		korisnikRepository.insertUser(korisnik);
-
-		return "Gucci citizen";
-    }
-
-    @PostMapping("/test-create-doctor")
-    public String createUserDoctorTest(){
-        //endpoint za kreiranje basic doktora
-        Korisnik korisnik = new Korisnik();
-        korisnik.setKorisnikID("123456");
+        korisnik.setKorisnikID("12345");
         korisnik.setIme("Djura");
         korisnik.setPrezime("Peric");
-        korisnik.setTipKorisnika("DOCTOR");
-        korisnik.setEmail("djura1234@gmail.com");
+        korisnik.setTipKorisnika("MEDICAL_OFFICIAL");
+        korisnik.setEmail("djura123@gmail.com");
         korisnik.setLozinka(passwordEncoder.encode("djura123"));
 
         korisnikRepository.insertUser(korisnik);
 
-        return "Gucci doctor";
+        return "Gucci citizen";
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
