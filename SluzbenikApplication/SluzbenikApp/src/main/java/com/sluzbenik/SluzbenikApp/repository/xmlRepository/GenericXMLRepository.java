@@ -2,6 +2,9 @@ package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorInterface;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -13,15 +16,21 @@ import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
+@Component
+@Scope("prototype") // kreira novu instancu na svaki @Autowired
 public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRetrieveXMLRepository {
 
-    private final String packagePath;
-    private final String collectionPath;
+    protected String packagePath;
+    protected String collectionPath;
+    protected IdGeneratorPosInt idGenerator;
 
-    public GenericXMLRepository (String packagePath, String collectionPath, IdGeneratorInterface idGeneratorInterface){
-        super(idGeneratorInterface);
-        this.packagePath = packagePath;
+    public GenericXMLRepository (){
+    }
+
+    public void setRepositoryParams(String packagePath, String collectionPath, IdGeneratorPosInt idGenerator) {
+        this.idGenerator = idGenerator;
         this.collectionPath = collectionPath;
+        this.packagePath = packagePath;
     }
 
     public void storeXML(T entity, boolean generateId){

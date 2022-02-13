@@ -20,12 +20,6 @@ public abstract class StoreRetrieveXMLRepository {
 
 	protected static ConnectionPropertiesExist connectionProp;
 
-	protected IdGeneratorInterface idGenerator;
-
-	public StoreRetrieveXMLRepository(IdGeneratorInterface idGenerator) {
-		this.idGenerator = idGenerator;
-	}
-
 	public static void registerDatabase(){
 		try {
 			// load properties
@@ -46,33 +40,6 @@ public abstract class StoreRetrieveXMLRepository {
 			e.printStackTrace();
 		}
 	}
-
-//	protected void storeXML(String collectionId, String documentId, OutputStream document) {
-//
-//		// a collection of Resources stored within an XML database
-//        Collection col = null;
-//        XMLResource res = null;
-//
-//        try {
-//
-//        	System.out.println("[INFO] Retrieving the collection: " + collectionId);
-//            col = getOrCreateCollection(collectionId);
-//
-//            System.out.println("[INFO] Inserting the document: " + documentId);
-//            res = (XMLResource) col.createResource(documentId, XMLResource.RESOURCE_TYPE);
-//
-//            res.setContent(document);
-//            System.out.println("[INFO] Storing the document: " + res.getId());
-//
-//            col.storeResource(res);
-//            System.out.println("[INFO] Done.");
-//
-//        } catch (XMLDBException e) {
-//			e.printStackTrace();
-//		} finally {
-//			closeResources(col, res);
-//		}
-//	}
 
 	protected Node retrieveXML(String collectionId, String documentId) {
 		Collection col = null;

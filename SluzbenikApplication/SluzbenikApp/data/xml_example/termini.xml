@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Gradovi xmlns="http://www.vakc-sistem.rs/termini"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.vakc-sistem.rs/termini termini.xsd">
+    <Grad Ime="Becej">
+        <Ustanova Naziv="Glavna Bolnica Beceja">
+            <Termin Datum="2022-02-13 10:00">3</Termin>
+        </Ustanova>     
+        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
+    </Grad>
+    <Grad Ime="Subotica">
+        <Ustanova Naziv="Glavna Bolnica Subotica">
+            <Termin Datum="2022-02-13 11:00">4</Termin>
+        </Ustanova> 
+        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
+    </Grad>
+    <Grad Ime="Novi Sad">
+        <Ustanova Naziv="Promenada">
+            <Termin Datum="2022-02-13 13:00">5</Termin>
+        </Ustanova>
+        <Ustanova Naziv="Spens">
+            <Termin Datum="2022-02-13 17:00">6</Termin>
+        </Ustanova>
+        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+    </Grad>
+    <Grad Ime="Beograd">
+        <Ustanova Naziv="Zemun">
+            <Termin Datum="2022-02-13 20:00">5</Termin>
+        </Ustanova>
+        <Ustanova Naziv="Novi Beograd">
+            <Termin Datum="2022-02-13 21:00">6</Termin>
+        </Ustanova>
+        <Ustanova Naziv="Glavna Bolnica Beograd">
+            <Termin Datum="2022-02-13 13:00">6</Termin>
+        </Ustanova>
+        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
+    </Grad>
+    <Grad Ime="Nis">
+        <Ustanova Naziv="Glavna Bolnica Nisa">
+            <Termin Datum="2022-02-13 12:00">2</Termin>
+        </Ustanova>
+        <Vakcina Naziv_proizvodjaca="Pfizer">200</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sinopharm">100</Vakcina>
+        <Vakcina Naziv_proizvodjaca="Sputnik-V">80</Vakcina>
+    </Grad>
+</Gradovi>

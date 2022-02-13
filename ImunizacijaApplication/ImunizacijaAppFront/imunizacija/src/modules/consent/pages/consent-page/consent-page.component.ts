@@ -113,7 +113,7 @@ export class ConsentPageComponent {
         workStatus: ['', Validators.required],
         interest: ['Drugo', Validators.required],
         agreed: ['Ne', Validators.required],        
-        immunologicalDrug: ['test', Validators.required]  // NA OVO SE VRATITI KO POPUNJAVA
+        immunologicalDrug: ['test', Validators.required]  // TO JE VAKCINA KOJU SISTEM ODREDI DA CE DA PRIMI
       });
     }
 

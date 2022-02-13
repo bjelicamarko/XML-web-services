@@ -18,15 +18,15 @@ import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 public class SluzbenikAppApplication {
 
 	public static void main(String[] args) {
-		GenericXMLReaderWriter<DigitalniZeleniSertifikat> digitalniZeleniSertifikatGenericXMLReaderWriter
-				= new GenericXMLReaderWriter<>(PACKAGE_PATH_DZS, XML_SCHEMA_PATH_DZS);
-		DigitalniZeleniSertifikat digitalni = digitalniZeleniSertifikatGenericXMLReaderWriter.readFromXml("data/xml_example/digitalni_zeleni_sertifikat.xml");
-
-		GenericXMLReaderWriter<Izvestaj> izvestajGenericXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_IZVESTAJ, XML_SCHEMA_PATH_IZVESTAJ);
-		Izvestaj izvestaj = izvestajGenericXMLReaderWriter.readFromXml("data/xml_example/izvestaj.xml");
-
-		digitalniZeleniSertifikatGenericXMLReaderWriter.writeToXml(digitalni, XML_WRITE_BASE_PATH);
-		izvestajGenericXMLReaderWriter.writeToXml(izvestaj, XML_WRITE_BASE_PATH);
+//		GenericXMLReaderWriter<DigitalniZeleniSertifikat> digitalniZeleniSertifikatGenericXMLReaderWriter
+//				= new GenericXMLReaderWriter<>(PACKAGE_PATH_DZS, XML_SCHEMA_PATH_DZS);
+//		DigitalniZeleniSertifikat digitalni = digitalniZeleniSertifikatGenericXMLReaderWriter.readFromXml("data/xml_example/digitalni_zeleni_sertifikat.xml");
+//
+//		GenericXMLReaderWriter<Izvestaj> izvestajGenericXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_IZVESTAJ, XML_SCHEMA_PATH_IZVESTAJ);
+//		Izvestaj izvestaj = izvestajGenericXMLReaderWriter.readFromXml("data/xml_example/izvestaj.xml");
+//
+//		digitalniZeleniSertifikatGenericXMLReaderWriter.writeToXml(digitalni, XML_WRITE_BASE_PATH);
+//		izvestajGenericXMLReaderWriter.writeToXml(izvestaj, XML_WRITE_BASE_PATH);
 //		StoreRetrieveXMLRepository.registerDatabase();
 //		IdGeneratorDZS idGeneratorDZS = new IdGeneratorDZS();
 //
@@ -40,6 +40,7 @@ public class SluzbenikAppApplication {
 //
 //		dzsExtractMetadata.extract(dzs);
 
+		StoreRetrieveXMLRepository.registerDatabase();
 		SpringApplication.run(SluzbenikAppApplication.class, args);
 	}
 }

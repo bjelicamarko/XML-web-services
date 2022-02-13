@@ -1,6 +1,8 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter;
 
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -8,18 +10,46 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.StringReader;
 
+@Component
+@Scope("prototype") // kreira novu instancu na svaki @Autowired
 public class GenericXMLReaderWriter<T extends IdentifiableEntity> {
 
-    private final String classPackage;
-    private final String schemaLocation;
+    private String classPackage;
+    private String schemaLocation;
 
-    public GenericXMLReaderWriter(String classPackage, String schemaLocation){
+    public GenericXMLReaderWriter(){
+    }
+
+    public void setRepositoryParams(String classPackage, String schemaLocation) {
         this.classPackage = classPackage;
         this.schemaLocation = schemaLocation;
+    }
+
+    public T checkSchema(String document) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(classPackage);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(new File(schemaLocation));
+
+            // Podešavanje unmarshaller-a za XML schema validaciju
+            unmarshaller.setSchema(schema);
+            unmarshaller.setEventHandler(new XMLSchemaValidationHandler());
+
+            //noinspection unchecked
+            return (T) unmarshaller.unmarshal
+                    (new StreamSource( new StringReader(document) ));
+        } catch (JAXBException | SAXException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public T readFromXml(String path){
