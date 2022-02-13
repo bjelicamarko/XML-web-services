@@ -1,0 +1,13 @@
+<div class="drink-creation-label">Status vakcina po mestima</div>
+<div class="reactiveForm">
+    <p>Izaberite grad</p>
+    <select [ngModel]="selectedOption" (ngModelChange)="onChange($event)">
+        <option [value]="option" *ngFor="let option of options">{{option}}</option>
+    </select>
+    <li *ngFor="let vakcina of vakcine.Vakcine.Vakcina; index as i; first as isFirst">
+        {{i}}/{{vakcina.$.Naziv_proizvodjaca}}/{{vakcina._}}
+        <input id={{i}} type="number"
+        [ngModel]="vakcina._" />
+        <button (click)='changeQuanity(i, vakcina)'>Izmeni</button>
+    </li>
+</div>

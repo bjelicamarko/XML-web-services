@@ -45,26 +45,10 @@ export class LoginComponent {
         const info = jwt.decodeToken(token);
         const role = info.role;
         //todo srediti - staviti da ide na komponentu redirect
-
-        // todo putanje nakon login-a
-        // if (role === "ADMINISTRATOR") {
-        //   this.router.navigate(["rest-app/tables/tables-admin"]);
-        // }
-        // else if (role === "MANAGER") {
-        //   this.router.navigate(["rest-app/employees/employees-manager"]);
-        // }
-        // else if (role === "COOK") {
-        //   this.router.navigate(["rest-app/orders/orders-page"]);
-        // }
-        // else if (role === "HEAD_COOK") {
-        //   this.router.navigate(["rest-app/orders/orders-page"]);
-        // }
-        // else if (role === "BARMAN") {
-        //   this.router.navigate(["rest-app/orders/orders-page"]);
-        // }
-        // else if (role === "WAITER") {
-        //   this.router.navigate(["rest-app/tables/tables-waiter"]);
-        // }
+        
+        if (role === "MEDICAL_OFFICIAL") {
+          this.router.navigate(["sluzbenik-app/vakcina/status-vakcina"])
+        }
       }
     },
       (err) => {

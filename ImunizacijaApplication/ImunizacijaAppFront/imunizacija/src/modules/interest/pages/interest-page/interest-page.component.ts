@@ -31,10 +31,10 @@ export class InterestPageComponent {
   townOptions: string[] = ['Novi Sad', 'Novi Bečej', 'Beograd', 'Subotica'];
   selectedOptionForVaccine: string = 'all';
 
-  checks: Array<string> = ['Pfizer-BioNTech', 'Sputnik V (Gamaleya истраживачки центар)', 
+  checks: Array<string> = ['Pfizer', 'Sputnik V', 
   'Sinopharm', 'AstraZeneca', 'Moderna'];
   
-  checkedValues: Array<string> = ['Pfizer-BioNTech', 'Sputnik V (Gamaleya истраживачки центар)', 
+  checkedValues: Array<string> = ['Pfizer', 'Sputnik V', 
   'Sinopharm', 'AstraZeneca', 'Moderna'];
 
   Drzavljanstvo: Drzavljanstvo = {

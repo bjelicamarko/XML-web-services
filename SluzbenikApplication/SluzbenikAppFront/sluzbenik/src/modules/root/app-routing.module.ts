@@ -12,6 +12,11 @@ const routes: Routes = [
         path: "auth",
         loadChildren: () =>
           import("./../auth/auth.module").then((m) => m.AuthModule),
+      },
+      {
+        path: "vakcina",
+        loadChildren: () => 
+          import("./../vaccine/vaccine.module").then((m) => m.VaccineModule),
       }
     ]
   },

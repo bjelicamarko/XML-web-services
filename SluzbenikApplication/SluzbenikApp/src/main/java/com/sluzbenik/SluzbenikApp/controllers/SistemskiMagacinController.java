@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,16 +20,17 @@ public class SistemskiMagacinController {
     @Autowired
     private SistemskiMagacinService sistemskiMagacinService;
 
-    @CrossOrigin(origins = "*")
     @PutMapping(value = "/azurirajVakcinu", consumes = MediaType.APPLICATION_XML_VALUE)
+    @PreAuthorize("hasRole('MEDICAL_OFFICIAL')")
     public ResponseEntity<String> updateVaccine(@RequestBody GradVakcinaKolicinaDTO gradVakcinaKolicinaDTO) {
         sistemskiMagacinService.updateVaccine(gradVakcinaKolicinaDTO);
         return new ResponseEntity<>("Vakcina uspesno azurirana!", HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "*")
+
     @GetMapping(value = "/dobaviStanjeVakcinaGrada/{grad}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<VakcineDTO> updateVaccine(@PathVariable String grad) {
+    @PreAuthorize("hasRole('MEDICAL_OFFICIAL')")
+    public ResponseEntity<VakcineDTO> getVaccineStatusOfCity(@PathVariable String grad) {
         List<VakcinaDTO> vakcine = sistemskiMagacinService.getVaccineStatusOfCity(grad);
         VakcineDTO v = new VakcineDTO();
         v.setVakcina(vakcine);
