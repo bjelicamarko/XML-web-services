@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
@@ -118,5 +119,27 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateTermin(OdgovorTerminDTO odgovor) {
+        String contextXPath = String.format("//Grad[@Ime='%s']/Ustanova[@naziv='%s']",
+                odgovor.getGrad(), odgovor.getUstanova());
+
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            String patch = String.format("<Termin datum=\"%s\">%s</Termin>", odgovor.getTermin(),
+                    odgovor.getVrednost());
+
+            System.out.println("[INFO] Updating " + contextXPath + " node.");
+            long mods = xupdateService.updateResource(XML_TERMIN,
+                    String.format(UPDATE_SISTEMSKI_MAGACIN, contextXPath, patch));
+            System.out.println("[INFO] " + mods + " modifications processed.");
+
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.GradVakcineDTO;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.service.InteresovanjeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class InteresovanjeController {
     //server.port = 9001
 
     @GetMapping(value = "/dobaviTermin")
-    public ResponseEntity<String> getTermin() {
+    public ResponseEntity<OdgovorTerminDTO> getTermin() {
         GradVakcineDTO vakcineDTO = new GradVakcineDTO();
         vakcineDTO.setGrad("Becej");
         vakcineDTO.getVakcine().add("Pfizer");
@@ -51,8 +52,8 @@ public class InteresovanjeController {
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
         HttpEntity<GradVakcineDTO> requestUpdate = new HttpEntity<>(vakcineDTO, headers);
 
-        ResponseEntity<String> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
-                HttpMethod.POST, requestUpdate, String.class);
+        ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
+                HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
 
         return new ResponseEntity<>(entity.getBody(), HttpStatus.OK);
     }
