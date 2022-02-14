@@ -24,20 +24,12 @@ import net.sf.saxon.TransformerFactoryImpl;
 
 import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
 
-/**
- *
- * Primer demonstrira koriscenje Apache FOP programskog API-a za
- * renderovanje PDF-a primenom XSL-FO transformacije na XML dokumentu.
- *
- */
 @Component
 public class XSLFOTransformer {
 
     private final FopFactory fopFactory;
 
     private final TransformerFactory transformerFactory;
-
-    public static final String OUTPUT_FILE = "src/main/java/com/imunizacija/ImunizacijaApp/transformers/xsl-fo/interesovanje.pdf";
 
     public XSLFOTransformer() throws SAXException, IOException {
 
@@ -48,9 +40,7 @@ public class XSLFOTransformer {
         transformerFactory = new TransformerFactoryImpl();
     }
 
-    public void generatePDF(Node xmlAsDOMNode, String xslFilePath) throws Exception {
-
-        System.out.println("[INFO] " + XSLFOTransformer.class.getSimpleName());
+    public byte[] generatePDF(Node xmlAsDOMNode, String xslFilePath) throws Exception {
 
         // Point to the XSL-FO file
         File xslFile = new File(xslFilePath);
@@ -91,22 +81,7 @@ public class XSLFOTransformer {
 
         // Start XSLT transformation and FOP processing
         xslFoTransformer.transform(source, res);
-
-        // Generate PDF file
-        File pdfFile = new File(OUTPUT_FILE);
-        if (!pdfFile.getParentFile().exists()) {
-            System.out.println("[INFO] A new directory is created: " + pdfFile.getParentFile().getAbsolutePath() + ".");
-            pdfFile.getParentFile().mkdir();
-        }
-
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(pdfFile));
-        out.write(outStream.toByteArray());
-
-        System.out.println("[INFO] File \"" + pdfFile.getCanonicalPath() + "\" generated successfully.");
-        out.close();
-
-        System.out.println("[INFO] End.");
-
+        return outStream.toByteArray();
     }
 }
 

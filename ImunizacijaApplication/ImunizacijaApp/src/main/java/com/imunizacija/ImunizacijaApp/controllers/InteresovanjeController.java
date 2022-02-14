@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 @RestController
 @RequestMapping("api/interesovanje")
 public class InteresovanjeController {
@@ -26,12 +30,22 @@ public class InteresovanjeController {
         return new ResponseEntity<>(interesovanje, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/generatePDF/{id}", produces = MediaType.TEXT_XML_VALUE)
-    public void generatePDF(@PathVariable String id) {
+    @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> generatePDF(@PathVariable String id) {
         try {
-            interesovanjeService.generateInteresovanjePDF(id);
+            byte[] pdfBytes = interesovanjeService.generateInteresovanjePDF(id);
+            return new ResponseEntity<>(pdfBytes, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/generateHTML/{id}", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<String> generateHTML(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(interesovanjeService.generateInteresovanjeHTML(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
         }
     }
 }
