@@ -73,6 +73,7 @@ public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
         }
         return odgovori;
     }
+
     public void dodajOdgovor(OdgovorTerminDTO odgovor) {
         String contextXPath = "//Odgovori";
         try {

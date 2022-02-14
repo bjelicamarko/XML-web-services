@@ -34,38 +34,39 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
     }
 
     @Override
-    public OdgovorTerminDTO getTermin(OdgovorTerminDTO ogovorTerminDTO) {
+    public OdgovorTerminDTO getTermin(OdgovorTerminDTO odgovorTerminDTO) {
 
-        GradDTO city = this.getSelectedCity(ogovorTerminDTO);
-        ogovorTerminDTO.setGrad(city.getIme()); // postavljen izabran grad
+        GradDTO city = this.getSelectedCity(odgovorTerminDTO);
 
         // izabrana vakcina
-        String chosenVaccine = this.checkVaccineStatus(ogovorTerminDTO.getVakcine(), city.getVakcine());
+        String chosenVaccine = this.checkVaccineStatus(odgovorTerminDTO.getVakcine(), city.getVakcine());
         if (chosenVaccine.equals("Empty")) {
-            ogovorTerminDTO.setRazlog("Nema dovoljno trazene vakcine!");
-            return ogovorTerminDTO;
+            odgovorTerminDTO.setRazlog("Nema dovoljno trazene vakcine!");
+            return odgovorTerminDTO;
         }
 
         String termin = "Empty";
+        System.out.println(city);
+        System.out.println(city.getUstanove());
         for (UstanovaDTO u : city.getUstanove()) {
-            termin = checkDate(u.getTermin(), LocalDateTime.now(), ogovorTerminDTO);
+            termin = checkDate(u.getTermin(), LocalDateTime.now(), odgovorTerminDTO);
             if (!termin.equals("Empty")) {// nasli termin u prvoj ustanovi slobodnoj
-                ogovorTerminDTO.setRazlog("Uspesno pronadjen termin!");
-                ogovorTerminDTO.setTermin(termin); // postavljen termin
-                ogovorTerminDTO.setUstanova(u.getNaziv()); // postavljen razlog i ustanova
+                odgovorTerminDTO.setRazlog("Uspesno pronadjen termin!");
+                odgovorTerminDTO.setTermin(termin); // postavljen termin
+                odgovorTerminDTO.setUstanova(u.getNaziv()); // postavljen razlog i ustanova
                 break;
             }
         }
         if (termin.equals("Empty")) {
-            ogovorTerminDTO.setRazlog("Nema slobodnih termina!");
-            return ogovorTerminDTO;
+            odgovorTerminDTO.setRazlog("Nema slobodnih termina!");
+            return odgovorTerminDTO;
         }
 
-        ogovorTerminDTO.setVakcinaDodeljena(chosenVaccine); // postavljena izabrana vakcina
+        odgovorTerminDTO.setVakcinaDodeljena(chosenVaccine); // postavljena izabrana vakcina
 
         // ovdje da ide azuriranje baze
-        this.sistemskiMagacinRepository.updateTermin(ogovorTerminDTO);
-        return ogovorTerminDTO;
+        this.sistemskiMagacinRepository.updateTermin(odgovorTerminDTO);
+        return odgovorTerminDTO;
     }
 
     private String checkVaccineStatus(List<String> desiredVaccines, List<VakcinaDTO> vakcine) {
@@ -83,6 +84,7 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
         LocalDate granica = ldt.plusWeeks(8).toLocalDate(); // u nedelji dana od sledec dana pa 7 dana
 
         String datum;
+        System.out.println(terminDTO);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateOfTermin = LocalDateTime.parse(terminDTO.getDatum(), formatter);
 

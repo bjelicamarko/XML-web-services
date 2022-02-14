@@ -24,7 +24,7 @@ public class OdgovoriController {
     public ResponseEntity<OdgovorTerminDTO> getTermin() {
         OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
         odgovorTerminDTO.setIndikator("Ne");
-        odgovorTerminDTO.setGrad("Becej");
+        odgovorTerminDTO.setGrad("Beograd");
         odgovorTerminDTO.getVakcine().add("Pfizer");
         odgovorTerminDTO.getVakcine().add("Sputnik V");
         odgovorTerminDTO.setEmail("manager2@maildrop.cc");
