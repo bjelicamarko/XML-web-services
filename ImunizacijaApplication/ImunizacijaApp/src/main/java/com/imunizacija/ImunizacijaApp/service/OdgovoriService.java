@@ -5,4 +5,8 @@ import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDT
 public interface OdgovoriService {
 
    void dodajOdgovor(OdgovorTerminDTO odgovor);
+
+   void posaljiOdgovore();
+
+   void azurirajOdgovor(OdgovorTerminDTO odgovor);
 }

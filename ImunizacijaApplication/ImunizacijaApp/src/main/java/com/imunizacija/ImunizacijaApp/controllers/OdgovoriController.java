@@ -27,7 +27,7 @@ public class OdgovoriController {
         odgovorTerminDTO.setGrad("Becej");
         odgovorTerminDTO.getVakcine().add("Pfizer");
         odgovorTerminDTO.getVakcine().add("Sputnik V");
-        odgovorTerminDTO.setEmail("marko@markovic.gmail");
+        odgovorTerminDTO.setEmail("manager2@maildrop.cc");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/xml");
@@ -37,7 +37,7 @@ public class OdgovoriController {
         ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
                 HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
 
-        odgovoriService.dodajOdgovor(entity.getBody());
+        odgovoriService.azurirajOdgovor(entity.getBody());
         return new ResponseEntity<>(entity.getBody(), HttpStatus.OK);
     }
 }

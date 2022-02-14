@@ -235,6 +235,7 @@ public class Odgovori implements IdentifiableEntity {
         "razlog",
         "email"
     })
+    @XmlRootElement(name = "Odgovor")
     public static class Odgovor {
 
         @XmlElement(name = "Vakcina", required = true)
