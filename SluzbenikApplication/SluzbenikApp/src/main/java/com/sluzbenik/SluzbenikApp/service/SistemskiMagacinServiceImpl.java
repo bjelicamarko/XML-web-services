@@ -45,7 +45,6 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
             ogovorTerminDTO.setRazlog("Nema dovoljno trazene vakcine!");
             return ogovorTerminDTO;
         }
-        ogovorTerminDTO.setVakcinaDodeljena(chosenVaccine); // postavljena izabrana vakcina
 
         String termin = "Empty";
         for (UstanovaDTO u : city.getUstanove()) {
@@ -61,6 +60,8 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
             ogovorTerminDTO.setRazlog("Nema slobodnih termina!");
             return ogovorTerminDTO;
         }
+
+        ogovorTerminDTO.setVakcinaDodeljena(chosenVaccine); // postavljena izabrana vakcina
 
         // ovdje da ide azuriranje baze
         this.sistemskiMagacinRepository.updateTermin(ogovorTerminDTO);

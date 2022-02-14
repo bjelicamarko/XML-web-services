@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.service;
 
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
@@ -24,6 +25,9 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private OdgovoriService odgovoriService;
+
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt());
@@ -41,6 +45,13 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
         this.mailService.sendMail("Novo interesovanje", this.generateTextFromInterest(i),
                 i.getKontakt().getEmailAdresa());
         this.repository.storeXML(i, true);
+
+        OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
+        odgovorTerminDTO.setEmail(i.getKontakt().getEmailAdresa());
+        odgovorTerminDTO.setGrad(i.getOpstinaVakcinisanja());
+        for (Interesovanje.Vakcina v : i.getVakcine())
+            odgovorTerminDTO.getVakcine().add(v.getTip());
+        this.odgovoriService.dodajOdgovor(odgovorTerminDTO);
     }
 
     private String generateTextFromInterest(Interesovanje interesovanje) {

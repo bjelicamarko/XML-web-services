@@ -11,8 +11,13 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     @Autowired
     private OdgovoriRepository odgovoriRepository;
 
+    @Autowired
+    private MailService mailService;
+
     @Override
     public void dodajOdgovor(OdgovorTerminDTO odgovor) {
         this.odgovoriRepository.dodajOdgovor(odgovor);
     }
+
+
 }

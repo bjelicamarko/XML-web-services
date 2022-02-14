@@ -47,6 +47,8 @@ public class OdgovorTerminDTO {
 
     public OdgovorTerminDTO() {
         this.vakcine = new ArrayList<>();
+        this.indikator = "Ne";
+        this.termin = "Empty";
     }
 
     @Override
