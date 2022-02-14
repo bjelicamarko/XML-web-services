@@ -25,5 +25,14 @@ public class InteresovanjeController {
         }
         return new ResponseEntity<>(interesovanje, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/generatePDF/{id}", produces = MediaType.TEXT_XML_VALUE)
+    public void generatePDF(@PathVariable String id) {
+        try {
+            interesovanjeService.generateInteresovanjePDF(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
