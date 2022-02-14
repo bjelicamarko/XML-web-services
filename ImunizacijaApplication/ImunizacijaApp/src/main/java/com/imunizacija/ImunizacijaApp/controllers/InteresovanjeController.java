@@ -2,6 +2,7 @@ package com.imunizacija.ImunizacijaApp.controllers;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.service.InteresovanjeService;
+import com.imunizacija.ImunizacijaApp.service.OdgovoriService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,9 @@ public class InteresovanjeController {
 
     @Autowired
     private InteresovanjeService interesovanjeService;
+
+    @Autowired
+    private OdgovoriService odgovoriService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -56,6 +60,8 @@ public class InteresovanjeController {
         ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
                 HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
 
+
+        odgovoriService.dodajOdgovor(entity.getBody());
         return new ResponseEntity<>(entity.getBody(), HttpStatus.OK);
     }
 }
