@@ -1,6 +1,4 @@
-package com.sluzbenik.SluzbenikApp.dto;
-
-import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
+package com.sluzbenik.SluzbenikApp.model.dto.termini_dto;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
@@ -22,6 +20,8 @@ public class ObjectFactory {
     public VakcinaDTO createVakcinaDTO() {
         return new VakcinaDTO();
     }
+
+    public GradDTO createGradDTO() { return new GradDTO(); }
 
 
 }

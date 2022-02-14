@@ -1,4 +1,4 @@
-package com.sluzbenik.SluzbenikApp.dto;
+package com.sluzbenik.SluzbenikApp.model.dto.termini_dto;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public class VakcineDTO {
 
     @XmlElement(name = "Vakcina")
-    List<VakcinaDTO> vakcine;
+    private List<VakcinaDTO> vakcine;
 
     public VakcineDTO() {}
 

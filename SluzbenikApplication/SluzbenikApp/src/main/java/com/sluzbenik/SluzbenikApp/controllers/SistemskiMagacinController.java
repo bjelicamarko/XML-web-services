@@ -1,8 +1,9 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
-import com.sluzbenik.SluzbenikApp.dto.GradVakcinaKolicinaDTO;
-import com.sluzbenik.SluzbenikApp.dto.VakcinaDTO;
-import com.sluzbenik.SluzbenikApp.dto.VakcineDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcineDTO;
 import com.sluzbenik.SluzbenikApp.service.SistemskiMagacinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,9 @@ public class SistemskiMagacinController {
     }
 
     //server.port = 9000
-    @GetMapping(value = "/dobaviTermin")
-    public ResponseEntity<String> getTermin() {
-        return new ResponseEntity<>("Novi termin", HttpStatus.OK);
+    @PostMapping(value = "/dobaviTermin", consumes = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> getTermin(@RequestBody GradVakcineDTO gradVakcineDTO) {
+        sistemskiMagacinService.getTermin(gradVakcineDTO);
+        return new ResponseEntity<>(gradVakcineDTO.getGrad(), HttpStatus.OK);
     }
 }

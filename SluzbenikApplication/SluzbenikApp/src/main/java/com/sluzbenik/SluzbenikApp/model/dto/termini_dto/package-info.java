@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://www.vakc-sistem.rs/termini", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package com.sluzbenik.SluzbenikApp.dto;
+package com.sluzbenik.SluzbenikApp.model.dto.termini_dto;

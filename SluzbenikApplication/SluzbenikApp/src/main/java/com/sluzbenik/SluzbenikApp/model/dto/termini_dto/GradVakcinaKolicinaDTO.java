@@ -1,4 +1,4 @@
-package com.sluzbenik.SluzbenikApp.dto;
+package com.sluzbenik.SluzbenikApp.model.dto.termini_dto;
 
 import javax.xml.bind.annotation.*;
 

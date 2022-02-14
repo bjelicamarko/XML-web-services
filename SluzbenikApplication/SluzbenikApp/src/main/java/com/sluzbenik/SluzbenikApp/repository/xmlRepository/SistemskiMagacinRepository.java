@@ -1,7 +1,9 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
-import com.sluzbenik.SluzbenikApp.dto.GradVakcinaKolicinaDTO;
-import com.sluzbenik.SluzbenikApp.dto.VakcinaDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.termini.SistemskiMagacin;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.exist.xmldb.EXistResource;
@@ -68,7 +70,7 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
             ResourceIterator i = result.getIterator();
             Resource res = null;
 
-            JAXBContext context = JAXBContext.newInstance("com.sluzbenik.SluzbenikApp.dto");
+            JAXBContext context = JAXBContext.newInstance("com.sluzbenik.SluzbenikApp.model.dto.termini_dto");
             Unmarshaller u = context.createUnmarshaller();
             while(i.hasMoreResources()) {
                 try {
@@ -92,5 +94,29 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
             e.printStackTrace();
         }
         return vakcine;
+    }
+
+    public GradDTO getSelectedCity(GradVakcineDTO gradVakcineDTO) {
+        String xpathExp = String.format("doc(\"%s\")//Grad[@Ime=\"%s\"]",
+                "termini.xml", gradVakcineDTO.getGrad());
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            xpathService.setProperty("indent", "yes");
+            xpathService.setNamespace("", TERMIN_NAMESPACE_PATH);
+
+            ResourceSet result = xpathService.query(xpathExp);
+            ResourceIterator i = result.getIterator();
+            Resource res = i.nextResource();
+
+            JAXBContext context = JAXBContext.newInstance("com.sluzbenik.SluzbenikApp.model.dto.termini_dto");
+            Unmarshaller u = context.createUnmarshaller();
+            System.out.println(res.getContent());
+            return (GradDTO) u.unmarshal(new StreamSource(new StringReader(res.getContent().toString())));
+
+        } catch (XMLDBException | JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
