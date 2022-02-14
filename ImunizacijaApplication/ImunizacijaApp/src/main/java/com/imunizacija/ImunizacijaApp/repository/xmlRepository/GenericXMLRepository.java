@@ -4,6 +4,7 @@ import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Node;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -12,8 +13,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.COLLECTION_PATH_INTERESOVANJE;
 import static com.imunizacija.ImunizacijaApp.repository.Constants.PACKAGE_PATH_INTERESOVANJE;
@@ -81,5 +87,9 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
             e.printStackTrace();
         }
         return entity;
+    }
+
+    public Node retrieveXMLAsDOMNode(String documentId){
+        return super.retrieveXML(collectionPath, documentId);
     }
 }

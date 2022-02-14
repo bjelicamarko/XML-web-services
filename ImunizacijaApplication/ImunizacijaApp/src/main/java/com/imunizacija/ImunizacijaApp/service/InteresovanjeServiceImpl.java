@@ -4,13 +4,17 @@ import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesova
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
+import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
+import java.io.StringWriter;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
+import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
 
 @Service
 public class InteresovanjeServiceImpl implements InteresovanjeService {
@@ -23,6 +27,12 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private XSLFOTransformer transformerXML2PDF;
+
+    @Autowired
+    private XML2HTMLTransformer transformerXML2HTML;
 
     @PostConstruct // after init
     private void postConstruct(){
@@ -68,5 +78,16 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
                 interesovanje.getKontakt().getEmailAdresa(), interesovanje.getKontakt().getBrojTelefona(),
                 interesovanje.getKontakt().getBrojFiksnosgTelefona(),
                 interesovanje.getOpstinaVakcinisanja(), interesovanje.getDatum().toString(), sb2.toString());
+    }
+    
+    @Override
+    public byte[] generateInteresovanjePDF(String id) throws Exception {
+        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_FO_PATH);
+    }
+
+    @Override
+    public String generateInteresovanjeHTML(String id) throws Exception {
+        StringWriter htmlStringWriter = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH);
+        return htmlStringWriter.toString();
     }
 }
