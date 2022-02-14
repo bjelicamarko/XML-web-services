@@ -1,6 +1,5 @@
 package com.sluzbenik.SluzbenikApp.service;
 
-import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.*;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.SistemskiMagacinRepository;
@@ -30,43 +29,42 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
     }
 
     @Override
-    public GradDTO getSelectedCity(GradVakcineDTO gradVakcineDTO) {
-        return this.sistemskiMagacinRepository.getSelectedCity(gradVakcineDTO);
+    public GradDTO getSelectedCity(OdgovorTerminDTO ogovorTerminDTO) {
+        return this.sistemskiMagacinRepository.getSelectedCity(ogovorTerminDTO);
     }
 
     @Override
-    public OdgovorTerminDTO getTermin(GradVakcineDTO gradVakcineDTO) {
-        OdgovorTerminDTO odgovor = new OdgovorTerminDTO();
+    public OdgovorTerminDTO getTermin(OdgovorTerminDTO ogovorTerminDTO) {
 
-        GradDTO city = this.getSelectedCity(gradVakcineDTO);
-        odgovor.setGrad(city.getIme()); // postavljen izabran grad
+        GradDTO city = this.getSelectedCity(ogovorTerminDTO);
+        ogovorTerminDTO.setGrad(city.getIme()); // postavljen izabran grad
 
         // izabrana vakcina
-        String chosenVaccine = this.checkVaccineStatus(gradVakcineDTO.getVakcine(), city.getVakcine());
+        String chosenVaccine = this.checkVaccineStatus(ogovorTerminDTO.getVakcine(), city.getVakcine());
         if (chosenVaccine.equals("Empty")) {
-            odgovor.setRazlog("Nema dovoljno trazene vakcine!");
-            return odgovor;
+            ogovorTerminDTO.setRazlog("Nema dovoljno trazene vakcine!");
+            return ogovorTerminDTO;
         }
-        odgovor.setVakcina(chosenVaccine); // postavljena izabrana vakcina
+        ogovorTerminDTO.setVakcinaDodeljena(chosenVaccine); // postavljena izabrana vakcina
 
         String termin = "Empty";
         for (UstanovaDTO u : city.getUstanove()) {
-            termin = checkDate(u.getTermin(), LocalDateTime.now(), odgovor);
+            termin = checkDate(u.getTermin(), LocalDateTime.now(), ogovorTerminDTO);
             if (!termin.equals("Empty")) {// nasli termin u prvoj ustanovi slobodnoj
-                odgovor.setRazlog("Uspesno pronadjen termin!");
-                odgovor.setTermin(termin); // postavljen termin
-                odgovor.setUstanova(u.getNaziv()); // postavljen razlog i ustanova
+                ogovorTerminDTO.setRazlog("Uspesno pronadjen termin!");
+                ogovorTerminDTO.setTermin(termin); // postavljen termin
+                ogovorTerminDTO.setUstanova(u.getNaziv()); // postavljen razlog i ustanova
                 break;
             }
         }
         if (termin.equals("Empty")) {
-            odgovor.setRazlog("Nema slobodnih termina!");
-            return odgovor;
+            ogovorTerminDTO.setRazlog("Nema slobodnih termina!");
+            return ogovorTerminDTO;
         }
 
         // ovdje da ide azuriranje baze
-        this.sistemskiMagacinRepository.updateTermin(odgovor);
-        return odgovor;
+        this.sistemskiMagacinRepository.updateTermin(ogovorTerminDTO);
+        return ogovorTerminDTO;
     }
 
     private String checkVaccineStatus(List<String> desiredVaccines, List<VakcinaDTO> vakcine) {

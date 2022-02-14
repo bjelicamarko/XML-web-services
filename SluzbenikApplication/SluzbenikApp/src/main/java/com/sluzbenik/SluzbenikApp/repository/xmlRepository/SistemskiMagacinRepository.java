@@ -1,6 +1,5 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
-import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
@@ -97,9 +96,9 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
         return vakcine;
     }
 
-    public GradDTO getSelectedCity(GradVakcineDTO gradVakcineDTO) {
+    public GradDTO getSelectedCity(OdgovorTerminDTO odgovorTerminDTO) {
         String xpathExp = String.format("doc(\"%s\")//Grad[@Ime=\"%s\"]",
-                "termini.xml", gradVakcineDTO.getGrad());
+                "termini.xml", odgovorTerminDTO.getGrad());
         try {
             Collection col = getOrCreateCollection(this.collectionPath);
             XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");

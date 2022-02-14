@@ -1,6 +1,5 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
-import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
@@ -42,7 +41,7 @@ public class SistemskiMagacinController {
     //server.port = 9000
     @PostMapping(value = "/dobaviTermin", consumes = MediaType.APPLICATION_XML_VALUE,
             produces = MediaType.APPLICATION_XML_VALUE )
-    public ResponseEntity<OdgovorTerminDTO> getTermin(@RequestBody GradVakcineDTO gradVakcineDTO) {
-        return new ResponseEntity<>(sistemskiMagacinService.getTermin(gradVakcineDTO), HttpStatus.OK);
+    public ResponseEntity<OdgovorTerminDTO> getTermin(@RequestBody OdgovorTerminDTO odgovorTerminDTO) {
+        return new ResponseEntity<>(sistemskiMagacinService.getTermin(odgovorTerminDTO), HttpStatus.OK);
     }
 }

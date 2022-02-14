@@ -1,5 +1,4 @@
 package com.imunizacija.ImunizacijaApp.controllers;
-import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.GradVakcineDTO;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.service.InteresovanjeService;
@@ -42,15 +41,17 @@ public class InteresovanjeController {
 
     @GetMapping(value = "/dobaviTermin")
     public ResponseEntity<OdgovorTerminDTO> getTermin() {
-        GradVakcineDTO vakcineDTO = new GradVakcineDTO();
-        vakcineDTO.setGrad("Becej");
-        vakcineDTO.getVakcine().add("Pfizer");
-        vakcineDTO.getVakcine().add("Sputnik V");
+        OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
+        odgovorTerminDTO.setIndikator("Ne");
+        odgovorTerminDTO.setGrad("Becej");
+        odgovorTerminDTO.getVakcine().add("Pfizer");
+        odgovorTerminDTO.getVakcine().add("Sputnik V");
+        odgovorTerminDTO.setEmail("marko@markovic.gmail");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/xml");
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
-        HttpEntity<GradVakcineDTO> requestUpdate = new HttpEntity<>(vakcineDTO, headers);
+        HttpEntity<OdgovorTerminDTO> requestUpdate = new HttpEntity<>(odgovorTerminDTO, headers);
 
         ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
                 HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);

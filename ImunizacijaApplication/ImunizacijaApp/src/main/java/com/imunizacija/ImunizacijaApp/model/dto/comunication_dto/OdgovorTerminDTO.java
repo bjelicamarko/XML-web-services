@@ -1,18 +1,28 @@
 package com.imunizacija.ImunizacijaApp.model.dto.comunication_dto;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+        "vakcine",
         "grad",
         "termin",
         "vrednost",
         "ustanova",
-        "vakcina",
+        "vakcinaDodeljena",
         "razlog",
+        "email"
 })
 @XmlRootElement(name = "Odgovor")
 public class OdgovorTerminDTO {
+
+    @XmlAttribute(name = "indikator", required = true) // Da ili Ne
+    private String indikator;
+
+    @XmlElement(name = "vakcina", required = true)
+    private List<String> vakcine;
 
     @XmlElement(name = "grad")
     private String grad;
@@ -26,24 +36,48 @@ public class OdgovorTerminDTO {
     @XmlElement(name = "ustanova")
     private String ustanova;
 
-    @XmlElement(name = "vakcina")
-    private String vakcina;
+    @XmlElement(name = "dodeljena-vakcina")
+    private String vakcinaDodeljena;
 
     @XmlElement(name = "razlog")
     private String razlog;
 
-    public OdgovorTerminDTO() {}
+    @XmlElement(name = "email")
+    private String email;
+
+    public OdgovorTerminDTO() {
+        this.vakcine = new ArrayList<>();
+    }
 
     @Override
     public String toString() {
         return "OdgovorTerminDTO{" +
-                "grad='" + grad + '\'' +
+                "indikator='" + indikator + '\'' +
+                ", vakcine=" + vakcine +
+                ", grad='" + grad + '\'' +
                 ", termin='" + termin + '\'' +
                 ", vrednost=" + vrednost +
                 ", ustanova='" + ustanova + '\'' +
-                ", vakcina='" + vakcina + '\'' +
+                ", vakcinaDodeljena='" + vakcinaDodeljena + '\'' +
                 ", razlog='" + razlog + '\'' +
+                ", email='" + email + '\'' +
                 '}';
+    }
+
+    public String getIndikator() {
+        return indikator;
+    }
+
+    public void setIndikator(String indikator) {
+        this.indikator = indikator;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getGrad() {
@@ -78,12 +112,20 @@ public class OdgovorTerminDTO {
         this.ustanova = ustanova;
     }
 
-    public String getVakcina() {
-        return vakcina;
+    public List<String> getVakcine() {
+        return vakcine;
     }
 
-    public void setVakcina(String vakcina) {
-        this.vakcina = vakcina;
+    public void setVakcine(List<String> vakcine) {
+        this.vakcine = vakcine;
+    }
+
+    public String getVakcinaDodeljena() {
+        return vakcinaDodeljena;
+    }
+
+    public void setVakcinaDodeljena(String vakcinaDodeljena) {
+        this.vakcinaDodeljena = vakcinaDodeljena;
     }
 
     public String getRazlog() {
@@ -93,4 +135,5 @@ public class OdgovorTerminDTO {
     public void setRazlog(String razlog) {
         this.razlog = razlog;
     }
+
 }
