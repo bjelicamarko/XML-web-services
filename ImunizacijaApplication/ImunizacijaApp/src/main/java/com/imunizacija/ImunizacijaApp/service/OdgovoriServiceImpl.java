@@ -12,7 +12,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.MessagingException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OdgovoriServiceImpl implements OdgovoriService{
@@ -38,7 +40,7 @@ public class OdgovoriServiceImpl implements OdgovoriService{
 
     @Override
     @Scheduled(cron = "0 57 21 * * ?", zone = "CET")
-    public void posaljiOdgovore() {
+    public void posaljiOdgovore() throws MessagingException {
         List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/xml");
@@ -56,7 +58,19 @@ public class OdgovoriServiceImpl implements OdgovoriService{
                     HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
 
             this.azurirajOdgovor(entity.getBody());
+
+            this.mailService.sendMail("Termin",
+                    this.generisiTekstOdgovora(Objects.requireNonNull(entity.getBody())),
+                    entity.getBody().getEmail());
         }
+    }
+
+    private String generisiTekstOdgovora(OdgovorTerminDTO odgovorTerminDTO) {
+        return String.format("Dodeljen termin: %s\n" +
+                "Ustanova: %s\n" +
+                "Vakcina dodeljena: %s\n" +
+                "Redni broj u terminu: %s\n", odgovorTerminDTO.getTermin(),
+                odgovorTerminDTO.getUstanova(), odgovorTerminDTO.getVakcinaDodeljena(), odgovorTerminDTO.getVrednost());
     }
 
 }
