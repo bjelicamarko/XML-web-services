@@ -1,18 +1,18 @@
 package com.imunizacija.ImunizacijaApp;
 
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
-import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.StoreRetrieveXMLRepository;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class ImunizacijaAppApplication {
+
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
 
 	public static void main(String[] args) {
 //		GenericXMLReaderWriter<Zahtev> zahtevXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_ZAHTEV_DZS, XML_SCHEMA_PATH_ZAHTEV);

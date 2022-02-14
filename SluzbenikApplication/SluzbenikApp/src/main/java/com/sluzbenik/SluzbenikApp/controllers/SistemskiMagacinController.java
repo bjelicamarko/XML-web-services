@@ -36,4 +36,10 @@ public class SistemskiMagacinController {
         v.setVakcina(vakcine);
         return new ResponseEntity<>(v, HttpStatus.OK);
     }
+
+    //server.port = 9000
+    @GetMapping(value = "/dobaviTermin")
+    public ResponseEntity<String> getTermin() {
+        return new ResponseEntity<>("Novi termin", HttpStatus.OK);
+    }
 }
