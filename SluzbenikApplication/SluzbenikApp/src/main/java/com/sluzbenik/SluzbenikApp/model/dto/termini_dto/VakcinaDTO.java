@@ -16,7 +16,7 @@ public class VakcinaDTO {
 
     @XmlValue
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger value;
+    protected int value;
 
     public VakcinaDTO() {}
 
@@ -28,11 +28,11 @@ public class VakcinaDTO {
         this.nazivProizvodjaca = nazivProizvodjaca;
     }
 
-    public BigInteger getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(BigInteger value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

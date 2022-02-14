@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/registracija").permitAll()
 				.antMatchers("/api/users/test-create-citizen").permitAll() //todo izbrisati
 				.antMatchers("/api/users/test-create-doctor").permitAll() //todo izbrisati
-				.antMatchers("/api/interesovanje/dobaviTermin").permitAll() // ZA komunikaciju beckova
+				.antMatchers("/api/odgovori/dobaviTermin").permitAll() // ZA komunikaciju beckova
 				.anyRequest().authenticated().and()
 				.cors().and()
 				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
