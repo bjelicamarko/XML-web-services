@@ -47,4 +47,10 @@ public class Constants {
     public static final String ZAHTEV_NAMED_GRAPH_URI = "/zahtev/metadata";
     public static final String INTERESOVANJE_NAMED_GRAPH_URI = "/interesovanje/metadata";
     public static final String SAGLASNOST_NAMED_GRAPH_URI="/saglasnost_za_imunizaciju/metadata";
+
+    //predicates
+    public static final String ISSUED_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issued>";
+    public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
+    public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
+    public static final String CREATED_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdBy>";
 }

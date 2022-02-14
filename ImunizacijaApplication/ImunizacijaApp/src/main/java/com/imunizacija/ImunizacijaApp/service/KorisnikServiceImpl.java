@@ -3,7 +3,9 @@ package com.imunizacija.ImunizacijaApp.service;
 import com.imunizacija.ImunizacijaApp.model.app_users.RegistrationDTO;
 import com.imunizacija.ImunizacijaApp.model.app_users.UserException;
 import com.imunizacija.ImunizacijaApp.model.app_users.UserUtils;
+import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
 import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class KorisnikServiceImpl implements KorisnikService{
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    RdfRepository rdfRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,5 +48,10 @@ public class KorisnikServiceImpl implements KorisnikService{
         if (!insert)
             throw new UserException("Greska prilikom unosa u bazu!");
         return korisnik;
+    }
+
+    @Override
+    public DocumentsOfUserDTO getDocumentsOfUser(String userID) {
+        return rdfRepository.getDocumentsOfUser(userID);
     }
 }

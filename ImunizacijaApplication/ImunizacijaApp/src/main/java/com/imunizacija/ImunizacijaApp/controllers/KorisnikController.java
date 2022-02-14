@@ -2,6 +2,8 @@ package com.imunizacija.ImunizacijaApp.controllers;
 
 import com.imunizacija.ImunizacijaApp.model.app_users.RegistrationDTO;
 import com.imunizacija.ImunizacijaApp.model.app_users.UserException;
+import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserDTO;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.security.UserTokenState;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
@@ -19,8 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
@@ -76,6 +78,11 @@ public class KorisnikController {
         korisnikRepository.insertUser(korisnik);
 
         return "Gucci doctor";
+    }
+    
+    @GetMapping(value = "/dokumentacija/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<DocumentsOfUserDTO> getDocumentationForUserByOfficial(@PathVariable String id){
+        return new ResponseEntity<>(korisnikService.getDocumentsOfUser(id), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/registracija", consumes = MediaType.APPLICATION_XML_VALUE)
