@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.repository.xmlRepository;
 
+import com.imunizacija.ImunizacijaApp.model.app_users.UserException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.exist.xmldb.EXistResource;
@@ -71,7 +72,7 @@ public class KorisnikRepository extends GenericXMLRepository<Korisnik>{
         return retValue;
     }
 
-    public boolean insertUser(Korisnik appUser){
+    public boolean insertUser(Korisnik appUser) throws UserException{
         Collection col = null;
         boolean success = false;
         try {
@@ -83,6 +84,7 @@ public class KorisnikRepository extends GenericXMLRepository<Korisnik>{
                 System.out.println("Created user!");
             }else{
                 System.out.println("Couldn't create user, user with that email/id already exists!");
+                throw new UserException("Korisnik sa datim ID-om ili mailom vec postoji!");
             }
         } catch(XMLDBException e) {
             e.printStackTrace();

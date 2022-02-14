@@ -1,5 +1,7 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 
+import com.imunizacija.ImunizacijaApp.model.app_users.RegistrationDTO;
+import com.imunizacija.ImunizacijaApp.model.app_users.UserException;
 import com.imunizacija.ImunizacijaApp.security.UserTokenState;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
@@ -7,6 +9,7 @@ import com.imunizacija.ImunizacijaApp.security.TokenUtils;
 import com.imunizacija.ImunizacijaApp.security.auth.JwtAuthenticationRequest;
 import com.imunizacija.ImunizacijaApp.service.KorisnikService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -43,7 +47,7 @@ public class KorisnikController {
     PasswordEncoder passwordEncoder;
 
     @PostMapping("/test-create-citizen")
-    public String createUserCitizenTest(){
+    public String createUserCitizenTest() throws UserException{
         //endpoint za kreiranje basic gradjanina
         Korisnik korisnik = new Korisnik();
 		korisnik.setKorisnikID("12345");
@@ -59,7 +63,7 @@ public class KorisnikController {
     }
 
     @PostMapping("/test-create-doctor")
-    public String createUserDoctorTest(){
+    public String createUserDoctorTest() throws UserException{
         //endpoint za kreiranje basic doktora
         Korisnik korisnik = new Korisnik();
         korisnik.setKorisnikID("123456");
@@ -72,6 +76,16 @@ public class KorisnikController {
         korisnikRepository.insertUser(korisnik);
 
         return "Gucci doctor";
+    }
+
+    @PostMapping(value = "/registracija", consumes = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> registerUser(@RequestBody RegistrationDTO registrationDTO) {
+        try {
+            Korisnik korisnik = korisnikService.registerUser(registrationDTO);
+        } catch (UserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Uspesno registrovan!", HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)

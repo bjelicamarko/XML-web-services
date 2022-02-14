@@ -15,7 +15,7 @@ const routes: Routes = [
           import("./../auth/auth.module").then((m) => m.AuthModule),
       },
       {
-        path: "register",
+        path: "registracija",
         component: RegistrationPageComponent,
       },
       {
@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: "zahtev",
-        loadChildren: () => 
+        loadChildren: () =>
           import("./../request/request.module").then((m) => m.RequestModule),
       }
     ]

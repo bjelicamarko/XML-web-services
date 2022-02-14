@@ -1,14 +1,14 @@
 <div class="row justify-content-center align-items-center loginForm">
   <form class="col-md-12 box" [formGroup]="form" (ngSubmit)="submit()">
     <fieldset>
-      <p class="login-label">Login</p>
+      <p class="login-label">Prijava</p>
       <div class="form-group row">
         <div id="email-div" class="col-md">
           <input type="text" class="form-control" id="username" name="username" placeholder="User ID"
             formControlName="username" />
           <small id='danger-label-email' class="text-danger danger-label"
             *ngIf="form.controls['username'].touched && form.controls['username'].errors?.['required']">
-            User ID can't be empty!
+            Korisnicki ID ne sme biti prazan!
           </small>
         </div>
       </div>
@@ -21,14 +21,17 @@
           form.controls['password'].touched &&
           form.controls['password'].errors?.['required']
         ">
-            Password can't be empty!
+            Lozinka ne sme biti prazna!
           </small>
         </div>
       </div>
 
       <div class="row">
+        <a class="nav-link active" id="registracijaLink" aria-current="page"
+          href="/imunizacija-app/registracija">Registrujte
+          se</a>
         <button id="login-button" type="submit" class="btn btn-primary" [disabled]="!form.valid">
-          Login
+          Prijava
         </button>
       </div>
     </fieldset>
