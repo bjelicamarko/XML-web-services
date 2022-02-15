@@ -11,4 +11,6 @@ public interface OdgovoriService {
    void posaljiOdgovore() throws MessagingException;
 
    void azurirajOdgovor(OdgovorTerminDTO odgovor);
+
+   void izbrisiOdgovor(OdgovorTerminDTO odgovor);
 }

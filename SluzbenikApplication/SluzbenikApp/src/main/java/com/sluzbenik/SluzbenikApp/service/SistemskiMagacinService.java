@@ -11,6 +11,8 @@ public interface SistemskiMagacinService {
 
     void updateVaccine(GradVakcinaKolicinaDTO gradVakcinaKolicinaDTO);
 
+    void addRemoveVaccine(String grad, String nazivProizvodjaca, int vrijednost);
+
     List<VakcinaDTO> getVaccineStatusOfCity(String city);
 
     GradDTO getSelectedCity(OdgovorTerminDTO odgovorTerminDTO);

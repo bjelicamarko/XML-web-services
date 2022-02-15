@@ -39,6 +39,11 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     }
 
     @Override
+    public void izbrisiOdgovor(OdgovorTerminDTO odgovor) {
+        this.odgovoriRepository.izbrisiOdgovor(odgovor);
+    }
+
+    @Override
     @Scheduled(cron = "0 57 21 * * ?", zone = "CET")
     public void posaljiOdgovore() throws MessagingException {
         List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore();

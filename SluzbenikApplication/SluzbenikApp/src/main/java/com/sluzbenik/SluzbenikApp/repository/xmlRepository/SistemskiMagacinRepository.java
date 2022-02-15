@@ -34,6 +34,27 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
         this.collectionPath = COLLECTION_PATH_TERMINI;
     }
 
+    public void addRemoveVaccine(String grad, String nazivProizvodjaca, int vrijednost) {
+        String contextXPath = String.format("//Grad[@Ime='%s']/Vakcina[@Naziv_proizvodjaca='%s']",
+                grad, nazivProizvodjaca);
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            String patch = String.valueOf(vrijednost);
+
+            System.out.println("[INFO] Updating " + contextXPath + " node.");
+            long mods = xupdateService.updateResource(XML_TERMIN,
+                    String.format(UPDATE_SISTEMSKI_MAGACIN, contextXPath, patch));
+            System.out.println("[INFO] " + mods + " modifications processed.");
+
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void updateVaccine(GradVakcinaKolicinaDTO gradVakcinaKolicinaDTO) {
         String contextXPath = String.format("//Grad[@Ime='%s']/Vakcina[@Naziv_proizvodjaca='%s']",
                 gradVakcinaKolicinaDTO.getGrad(), gradVakcinaKolicinaDTO.getNazivProizvodjaca());

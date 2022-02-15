@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
-import static com.imunizacija.ImunizacijaApp.template.XUpdateTemplate.APPEND;
-import static com.imunizacija.ImunizacijaApp.template.XUpdateTemplate.UPDATE;
+import static com.imunizacija.ImunizacijaApp.template.XUpdateTemplate.*;
 
 @Component
 public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
@@ -138,6 +137,21 @@ public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
                     String.format(UPDATE, contextXPath, xmlFragment));
             System.out.println("[INFO] " + mods + " modifications processed.");
 
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void izbrisiOdgovor(OdgovorTerminDTO odgovor) {
+        String contextXPath = String.format("//Email[contains(text(),'%s')]/..", odgovor.getEmail());
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            System.out.println("[INFO] Removing " + contextXPath + " node.");
+            long mods = xupdateService.updateResource("odgovori.xml", String.format(REMOVE, contextXPath));
+            System.out.println("[INFO] " + mods + " modifications processed.");
         } catch (XMLDBException e) {
             e.printStackTrace();
         }

@@ -24,6 +24,11 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
     }
 
     @Override
+    public void addRemoveVaccine(String grad, String nazivProizvodjaca, int vrijednost) {
+        this.sistemskiMagacinRepository.addRemoveVaccine(grad, nazivProizvodjaca, vrijednost);
+    }
+
+    @Override
     public List<VakcinaDTO> getVaccineStatusOfCity(String city) {
         return this.sistemskiMagacinRepository.getVaccineStatusOfCity(city);
     }
@@ -46,8 +51,6 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
         }
 
         String termin = "Empty";
-        System.out.println(city);
-        System.out.println(city.getUstanove());
         for (UstanovaDTO u : city.getUstanove()) {
             termin = checkDate(u.getTermin(), LocalDateTime.now(), odgovorTerminDTO);
             if (!termin.equals("Empty")) {// nasli termin u prvoj ustanovi slobodnoj
@@ -64,6 +67,11 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
 
         odgovorTerminDTO.setVakcinaDodeljena(chosenVaccine); // postavljena izabrana vakcina
 
+        // azuriranje kolicine u bazi
+        for (VakcinaDTO v : city.getVakcine())
+            if (v.getNazivProizvodjaca().equals(chosenVaccine))
+                this.sistemskiMagacinRepository.addRemoveVaccine(city.getIme(),
+                        chosenVaccine, v.getValue()-1);
         // ovdje da ide azuriranje baze
         this.sistemskiMagacinRepository.updateTermin(odgovorTerminDTO);
         return odgovorTerminDTO;
