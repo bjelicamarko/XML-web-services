@@ -89,7 +89,14 @@
                         <fo:inline font-weight="bold"> Datum rodjenja: </fo:inline> <xsl:value-of select="format-date(//util:Datum_rodjenja, '[D1].[M1].[Y1].')"/>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Pol: </fo:inline> <xsl:value-of select="//util:Pol"/>
+                        <xsl:choose>
+                            <xsl:when test="//util:Pol = 'Musko'">
+                                <fo:inline font-weight="bold"> Pol: </fo:inline> Muški
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <fo:inline font-weight="bold"> Pol: </fo:inline> Ženski
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </fo:block>
                     <fo:table>
                         <fo:table-column column-number="1"  column-width="256pt" />
