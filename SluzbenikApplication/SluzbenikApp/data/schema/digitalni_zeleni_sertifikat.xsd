@@ -9,7 +9,7 @@
     <xs:element name="Digitalni_zeleni_sertifikat">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG"> </xs:element>
+                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG_BrPasosa"> </xs:element>
                 <xs:element name="Podaci_o_sertifikatu">
                     <xs:complexType>
                         <xs:sequence>
@@ -42,6 +42,13 @@
                     </xs:element>
                 </xs:sequence>
             </xs:sequence>
+            <xs:attribute name="Id_sluzbenika" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
 </xs:schema>

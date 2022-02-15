@@ -1,5 +1,6 @@
 package com.sluzbenik.SluzbenikApp.service;
 
+
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;

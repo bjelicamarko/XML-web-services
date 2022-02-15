@@ -95,9 +95,26 @@
                         <xsl:value-of select="$razmak"/>
                         <xsl:value-of select="//util:Prezime"/>
                     </fo:block>
+
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Prezime: </fo:inline> <xsl:value-of select="//util:Prezime"/>
+                        <fo:inline font-weight="bold"> JMBG: </fo:inline>
+                        <xsl:choose>
+                            <xsl:when test="//util:JMBG != '0101901404404'">
+                               <xsl:value-of select="//util:JMBG"/>
+                            </xsl:when>
+                        </xsl:choose>
                     </fo:block>
+
+                    <fo:block font-family="Times" font-size="15px" padding="10px">
+                        <fo:inline font-weight="bold"> Broj pasoša: </fo:inline>
+                        <xsl:choose>
+                            <xsl:when test="//util:Broj_pasosa != 'ZZZZZZ'">
+                                <xsl:value-of select="//util:Broj_pasosa"/>
+                            </xsl:when>
+                        </xsl:choose>
+                    </fo:block>
+
+
                     <fo:block font-family="Times" font-size="15px" padding="10px">
                         <fo:inline font-weight="bold"> Datum rođenja: </fo:inline> <xsl:value-of select="format-date(//util:Datum_rodjenja, '[D1].[M1].[Y1].')"/>
                     </fo:block>
@@ -111,9 +128,6 @@
                                 Ženski
                             </xsl:otherwise>
                         </xsl:choose>
-                    </fo:block>
-                    <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> JMBG: </fo:inline> <xsl:value-of select="//util:JMBG"/>
                     </fo:block>
 
                     <fo:block font-family="Times" font-size="20px" padding="10px">
@@ -131,37 +145,37 @@
                         <fo:table-body>
                             <fo:table-row font-size="12px">
 
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block text-align="left">
                                         <fo:inline font-weight="bold"> Redni broj doze </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
 
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
                                         <fo:inline font-weight="bold"> Datum primanja </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
 
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
                                         <fo:inline font-weight="bold"> Serija </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
 
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
                                         <fo:inline font-weight="bold"> Proizvođač </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
 
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
                                         <fo:inline font-weight="bold"> Tip </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
 
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
                                         <fo:inline font-weight="bold"> Ustanova </fo:inline>
                                     </fo:block>
@@ -171,37 +185,37 @@
                             <xsl:for-each select="//b:Doza">
 
                                 <fo:table-row>
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="@Redni_broj"/>
                                         </fo:block>
                                     </fo:table-cell>
 
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="format-date(//util:Datum, '[D1].[M1].[Y1].')"/>
                                         </fo:block>
                                     </fo:table-cell>
 
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="util:Serija"/>
                                         </fo:block>
                                     </fo:table-cell>
 
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="util:Proizvodjac"/>
                                         </fo:block>
                                     </fo:table-cell>
 
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="util:Tip"/>
                                         </fo:block>
                                     </fo:table-cell>
 
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="util:Ustanova"/>
                                         </fo:block>

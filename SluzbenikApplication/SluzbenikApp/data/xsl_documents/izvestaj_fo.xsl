@@ -92,12 +92,12 @@
                     <fo:table border="solid 0.1mm black">
                         <fo:table-body>
                             <fo:table-row>
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block text-align="left">
                                         <fo:inline font-weight="bold"> Naziv proizvođača </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
-                                <fo:table-cell>
+                                <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
                                         <fo:inline font-weight="bold"> Količina </fo:inline>
                                     </fo:block>
@@ -107,12 +107,12 @@
                             <xsl:for-each select="b:Izvestaj//b:Vakcina">
 
                                 <fo:table-row>
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="@Naziv_proizvodjaca"/>
                                         </fo:block>
                                     </fo:table-cell>
-                                    <fo:table-cell>
+                                    <fo:table-cell border-style="solid" border-width="2pt">
                                         <fo:block font-size="10px">
                                             <xsl:value-of select="text()"/>
                                         </fo:block>

@@ -18,8 +18,29 @@
                 <h4>Podaci o primaocu</h4>
                 <p>Ime i prezime: <xsl:value-of select="//util:Ime"/></p>
                 <p>Datum rođenja: <xsl:value-of select="//util:Datum_rodjenja"/></p>
-                <p>Pol: <xsl:value-of select="//util:Pol"/></p>
-                <p>JMBG: <xsl:value-of select="//util:JMBG"/></p>
+
+                <xsl:choose>
+                    <xsl:when test="//util:Pol = 'Musko'">
+                        <p>Pol: Muški</p>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p>Pol: Ženski</p>
+                    </xsl:otherwise>
+                </xsl:choose>
+
+                <xsl:choose>
+                    <xsl:when test="//util:JMBG != '0101901404404'">
+                        <p>JMBG: <xsl:value-of select="//util:JMBG"/></p>
+                    </xsl:when>
+                    <xsl:otherwise/>
+                </xsl:choose>
+
+                <xsl:choose>
+                    <xsl:when test="//util:Broj_pasosa != 'ZZZZZZ'">
+                        <p>Broj pasoša: <xsl:value-of select="//util:Broj_pasosa"/></p>
+                    </xsl:when>
+                    <xsl:otherwise/>
+                </xsl:choose>
 
                 <h4>Podaci o sertifikatu</h4>
                 <p>Broj sertifikata: <xsl:value-of select="//b:Broj_sertifikata"/></p>
