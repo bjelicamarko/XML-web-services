@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 
+import com.imunizacija.ImunizacijaApp.model.app_users.KorisniciListDTO;
 import com.imunizacija.ImunizacijaApp.model.app_users.RegistrationDTO;
 import com.imunizacija.ImunizacijaApp.model.app_users.UserException;
 import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserDTO;
@@ -79,10 +80,22 @@ public class KorisnikController {
 
         return "Gucci doctor";
     }
+
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<KorisniciListDTO> getAll(){
+        KorisniciListDTO listDTO = new KorisniciListDTO();
+        try {
+            listDTO.setKorisnikBasicInfoDTOListFromKorisnici(korisnikService.getCitizens());
+            return new ResponseEntity<>(listDTO, HttpStatus.OK);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     
     @GetMapping(value = "/dokumentacija/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<DocumentsOfUserDTO> getDocumentationForUserByOfficial(@PathVariable String id){
-        return new ResponseEntity<>(korisnikService.getDocumentsOfUser(id), HttpStatus.CREATED);
+        return new ResponseEntity<>(korisnikService.getDocumentsOfUser(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/registracija", consumes = MediaType.APPLICATION_XML_VALUE)

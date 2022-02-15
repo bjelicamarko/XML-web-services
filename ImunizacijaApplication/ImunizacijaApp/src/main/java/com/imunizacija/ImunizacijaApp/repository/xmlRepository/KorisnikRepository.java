@@ -13,8 +13,13 @@ import org.xmldb.api.modules.XPathQueryService;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
@@ -99,5 +104,58 @@ public class KorisnikRepository extends GenericXMLRepository<Korisnik>{
         }
 
         return success;
+    }
+
+    public List<Korisnik> getCitizens() throws UserException, XMLDBException {
+        Collection col = null;
+        col = getOrCreateCollection(collectionPath);
+
+        XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+        xpathService.setProperty("indent", "yes");
+
+        xpathService.setNamespace("", KORISNIK_NAMESPACE_PATH);
+
+        String xpathExp = "declare variable $data as document-node()* := collection(\"/db/korisnik\");\n" +
+                "\n" +
+                "for $v in $data\n" +
+                "where $v//TipKorisnika[.='CITIZEN']\n" +
+                "return $v\n";
+
+        System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
+        ResourceSet result = xpathService.query(xpathExp);
+
+        ResourceIterator i = result.getIterator();
+        Resource res = null;
+
+        boolean retValue = false;
+
+        List<Korisnik> userList = new ArrayList<>();
+
+        while (i.hasMoreResources()) {
+            try {
+                res = i.nextResource();
+                String response = (String) res.getContent();
+
+                JAXBContext context = JAXBContext.newInstance(PACKAGE_PATH_KORISNIK);
+
+                Unmarshaller unmarshaller = context.createUnmarshaller();
+
+                //noinspection unchecked
+                Korisnik korisnik = (Korisnik) unmarshaller.unmarshal(new StreamSource(new StringReader(response)));
+                userList.add(korisnik);
+            } catch(XMLDBException e){
+                throw new UserException("Error with query for user!");
+            } catch (JAXBException e) {
+                throw new UserException("Can't unmarshall user!");
+            } finally {
+                try {
+                    if (res != null)
+                        ((EXistResource)res).freeResources();
+                } catch (XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+        }
+        return userList;
     }
 }

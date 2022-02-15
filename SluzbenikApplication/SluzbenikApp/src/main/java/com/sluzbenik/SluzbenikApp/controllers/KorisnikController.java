@@ -1,5 +1,7 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
+import com.sluzbenik.SluzbenikApp.model.dto.rdf_dto.DocumentsOfUserDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.user_dto.KorisniciListDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.korisnik.Korisnik;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.KorisnikRepository;
 import com.sluzbenik.SluzbenikApp.security.TokenUtils;
@@ -7,20 +9,23 @@ import com.sluzbenik.SluzbenikApp.security.UserTokenState;
 import com.sluzbenik.SluzbenikApp.security.auth.JwtAuthenticationRequest;
 import com.sluzbenik.SluzbenikApp.service.KorisnikService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/users")
 public class KorisnikController {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private KorisnikService korisnikService;
@@ -56,6 +61,31 @@ public class KorisnikController {
         korisnikRepository.insertUser(korisnik);
 
         return "Gucci citizen";
+    }
+
+    @GetMapping(value = "/dokumentacija/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<DocumentsOfUserDTO> getDocumentationOfUser(@PathVariable String id){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<DocumentsOfUserDTO> entity = restTemplate.getForEntity("http://localhost:9001/api/users/dokumentacija/"+id,
+                DocumentsOfUserDTO.class);
+
+       DocumentsOfUserDTO documentsOfUserDTO = korisnikService.getDocumentsOfUser(id, entity.getBody());
+        return ResponseEntity.ok(documentsOfUserDTO);
+    }
+
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<KorisniciListDTO> getAll(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<KorisniciListDTO> entity = restTemplate.getForEntity("http://localhost:9001/api/users/",
+                KorisniciListDTO.class);
+
+        return ResponseEntity.ok(entity.getBody());
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)

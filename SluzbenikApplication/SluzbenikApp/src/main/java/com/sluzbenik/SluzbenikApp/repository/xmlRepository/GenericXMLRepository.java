@@ -22,12 +22,12 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
 
     protected String packagePath;
     protected String collectionPath;
-    protected IdGeneratorPosInt idGenerator;
+    protected IdGeneratorInterface idGenerator;
 
     public GenericXMLRepository (){
     }
 
-    public void setRepositoryParams(String packagePath, String collectionPath, IdGeneratorPosInt idGenerator) {
+    public void setRepositoryParams(String packagePath, String collectionPath, IdGeneratorInterface idGenerator) {
         this.idGenerator = idGenerator;
         this.collectionPath = collectionPath;
         this.packagePath = packagePath;

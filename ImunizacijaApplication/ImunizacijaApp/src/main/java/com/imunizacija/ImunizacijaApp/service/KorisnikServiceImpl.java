@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.xmldb.api.base.XMLDBException;
+
+import java.util.List;
 
 @Service
 public class KorisnikServiceImpl implements KorisnikService{
@@ -53,5 +56,14 @@ public class KorisnikServiceImpl implements KorisnikService{
     @Override
     public DocumentsOfUserDTO getDocumentsOfUser(String userID) {
         return rdfRepository.getDocumentsOfUser(userID);
+    }
+
+    @Override
+    public List<Korisnik> getCitizens() throws UserException {
+        try {
+            return korisnikRepository.getCitizens();
+        } catch (XMLDBException e) {
+            throw new UserException("Database error!");
+        }
     }
 }
