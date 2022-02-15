@@ -27,6 +27,8 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
 
+    public static final String URL_RESOURCE_ROOT = "potvrda/";
+
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_POTVRDA, COLLECTION_PATH_POTVRDA, new IdGeneratorPosInt());
@@ -39,12 +41,14 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
     @Override
     public byte[] generateInteresovanjePDF(String id) throws Exception {
-        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_FO_PATH);
+        String resourceUrl = URL_ROOT + URL_RESOURCE_ROOT + id;
+        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_FO_PATH, resourceUrl);
     }
 
     @Override
     public String generateInteresovanjeHTML(String id) throws Exception {
-        StringWriter htmlStringWriter = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_PATH);
-        return htmlStringWriter.toString();
+        String resourceUrl = URL_ROOT + URL_RESOURCE_ROOT + id;
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_PATH, resourceUrl);
+        return htmlString;
     }
 }

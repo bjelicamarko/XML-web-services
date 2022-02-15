@@ -25,7 +25,6 @@
                 <p> - Tip: <xsl:value-of select="//b:Doza//util:Tip"/></p>
                 <p> - Ustanova: <xsl:value-of select="//b:Doza//util:Ustanova"/></p>
                 <p>Datum izdavanja potvrde: <xsl:value-of select="//b:Datum_izdavanja"/></p>
-                <p>QR-code: <xsl:value-of select="//b:QRCode"/></p>
             </body>
         </html>
     </xsl:template>

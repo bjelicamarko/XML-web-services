@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.service;
 
+import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.xml.transform.TransformerException;
 
+import java.io.IOException;
 import java.io.StringWriter;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
@@ -49,12 +51,12 @@ public class SaglasnostServiceImpl implements SaglasnostService{
 
     @Override
     public byte[] generateSaglasnostPDF(String id) throws Exception {
-        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_FO_PATH);
+        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_FO_PATH, null);
     }
 
     @Override
-    public String generateSaglasnostHTML(String id) throws TransformerException {
-        StringWriter htmlStringWriter = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_PATH);
-        return htmlStringWriter.toString();
+    public String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException {
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        return htmlString;
     }
 }

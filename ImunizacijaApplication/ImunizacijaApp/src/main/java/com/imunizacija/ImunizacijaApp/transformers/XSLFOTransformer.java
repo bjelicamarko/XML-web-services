@@ -40,7 +40,7 @@ public class XSLFOTransformer {
         transformerFactory = new TransformerFactoryImpl();
     }
 
-    public byte[] generatePDF(Node xmlAsDOMNode, String xslFilePath) throws Exception {
+    public byte[] generatePDF(Node xmlAsDOMNode, String xslFilePath, String resourceUrl) throws Exception {
 
         // Point to the XSL-FO file
         File xslFile = new File(xslFilePath);
@@ -53,6 +53,10 @@ public class XSLFOTransformer {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.transform(new DOMSource(xmlAsDOMNode), new StreamResult(writer));
         String xmlString = writer.toString();
+
+        // Create qr code
+        if(resourceUrl != null)
+            Util.createQrCode(resourceUrl);
 
         // String to byte[] in UTF8
         String text = new String(xmlString.getBytes(), StandardCharsets.UTF_8);
@@ -81,6 +85,11 @@ public class XSLFOTransformer {
 
         // Start XSLT transformation and FOP processing
         xslFoTransformer.transform(source, res);
+
+        // Delete temp qr code
+        if(resourceUrl != null)
+            Util.deleteQrCode();
+
         return outStream.toByteArray();
     }
 }
