@@ -5,6 +5,7 @@ import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGenera
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Node;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
@@ -81,4 +82,9 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         }
         return entity;
     }
+
+    public Node retrieveXMLAsDOMNode(String documentId){
+        return super.retrieveXML(collectionPath, documentId);
+    }
+
 }
