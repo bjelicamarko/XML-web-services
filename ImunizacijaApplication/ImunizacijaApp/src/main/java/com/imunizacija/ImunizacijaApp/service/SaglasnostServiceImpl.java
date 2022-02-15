@@ -1,15 +1,23 @@
 package com.imunizacija.ImunizacijaApp.service;
 
+import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
+import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.transform.TransformerException;
+
+import java.io.IOException;
+import java.io.StringWriter;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
+import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
 
 @Service
 public class SaglasnostServiceImpl implements SaglasnostService{
@@ -20,6 +28,12 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Autowired
     private GenericXMLReaderWriter<Saglasnost> repositoryReaderWriter;
 
+    @Autowired
+    private XSLFOTransformer transformerXML2PDF;
+
+    @Autowired
+    private XML2HTMLTransformer transformerXML2HTML;
+
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt());
@@ -27,8 +41,22 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     }
 
     @Override
+    public Saglasnost findOneById(String id) { return repository.retrieveXML(id); }
+
+    @Override
     public void createNewConsent(String saglasnost) {
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
         this.repository.storeXML(s, true);
+    }
+
+    @Override
+    public byte[] generateSaglasnostPDF(String id) throws Exception {
+        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_FO_PATH, null);
+    }
+
+    @Override
+    public String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException {
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        return htmlString;
     }
 }

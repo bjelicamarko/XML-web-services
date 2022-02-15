@@ -6,6 +6,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 
+import com.google.zxing.WriterException;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 
@@ -18,7 +19,7 @@ public class XML2HTMLTransformer {
         transformerFactory = TransformerFactory.newInstance();
     }
 
-    public StringWriter generateHTML(Node xmlAsDOMNode, String xslPath) throws TransformerException {
+    public String generateHTML(Node xmlAsDOMNode, String xslPath, String resourceUrl) throws TransformerException, IOException, WriterException {
         // Initialize Transformer instance
         StreamSource transformSource = new StreamSource(new File(xslPath));
         Transformer transformer = transformerFactory.newTransformer(transformSource);
@@ -34,7 +35,13 @@ public class XML2HTMLTransformer {
         // Transform DOM to HTML
         DOMSource source = new DOMSource(xmlAsDOMNode);
         StreamResult result = new StreamResult(sw);
+
         transformer.transform(source, result);
-        return sw;
+        String ret = sw.toString();
+
+        if(resourceUrl != null)
+            ret = Util.createAndEmbedQrCodeInHtmlString(sw.toString(), resourceUrl);
+
+        return ret;
     }
 }

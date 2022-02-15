@@ -2,22 +2,19 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs"
-    xmlns:b="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat"
+    xmlns:b="http://www.vakc-sistem.rs/potvrda-o-vakcinaciji"
     xmlns:util="http://www.vakc-sistem.rs/util"
     xmlns:fo="http://www.w3.org/1999/XSL/Format" version="2.0">
-
     <xsl:template match="/">
         <fo:root>
             <fo:layout-master-set>
-                <fo:simple-page-master master-name="dzs-page">
+                <fo:simple-page-master master-name="potvrda-page">
                     <fo:region-body margin="0.75in"/>
                 </fo:simple-page-master>
             </fo:layout-master-set>
 
-            <fo:page-sequence master-reference="dzs-page">
+            <fo:page-sequence master-reference="potvrda-page">
                 <fo:flow flow-name="xsl-region-body">
-                    <xsl:variable name="razmak" select="'&#xA0;'"/>
-
                     <fo:table>
                         <fo:table-body>
                             <fo:table-row>
@@ -80,161 +77,106 @@
                             </fo:table-row>
                         </fo:table-body>
                     </fo:table>
-
                     <fo:block text-align="center" font-family="Times" font-size="24px" font-weight="bold" padding="10px">
-                        Digitalni zeleni sertifikat
+                        Potvrda o vakcinaciji (COVID-19)
                     </fo:block>
                     <fo:block border-top-style="solid" text-align="center" margin-bottom="15pt"/>
-
-                    <fo:block font-family="Times" font-size="20px" padding="10px">
-                        <fo:inline font-weight="bold"> Podaci o primaocu </fo:inline>
+                    <fo:block font-family="Times" font-size="15px" padding="10px">
+                        <fo:inline font-weight="bold">JMBG: </fo:inline> <xsl:value-of select="//util:JMBG"/>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Ime i prezime: </fo:inline>
-                        <xsl:value-of select="//util:Ime"/>
-                        <xsl:value-of select="$razmak"/>
-                        <xsl:value-of select="//util:Prezime"/>
-                    </fo:block>
-
-                    <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> JMBG: </fo:inline>
-                        <xsl:choose>
-                            <xsl:when test="//util:JMBG != '0101901404404'">
-                               <xsl:value-of select="//util:JMBG"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </fo:block>
-
-                    <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Broj pasoša: </fo:inline>
-                        <xsl:choose>
-                            <xsl:when test="//util:Broj_pasosa != 'ZZZZZZ'">
-                                <xsl:value-of select="//util:Broj_pasosa"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </fo:block>
-
-
-                    <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Datum rođenja: </fo:inline> <xsl:value-of select="format-date(//util:Datum_rodjenja, '[D1].[M1].[Y1].')"/>
+                        <fo:inline font-weight="bold"> Ime i prezime: </fo:inline> <xsl:value-of select="//util:Ime"/> <xsl:value-of select="concat(' ', //util:Prezime)"/>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Pol: </fo:inline>
+                        <fo:inline font-weight="bold"> Datum rodjenja: </fo:inline> <xsl:value-of select="format-date(//util:Datum_rodjenja, '[D1].[M1].[Y1].')"/>
+                    </fo:block>
+                    <fo:block font-family="Times" font-size="15px" padding="10px">
                         <xsl:choose>
                             <xsl:when test="//util:Pol = 'Musko'">
-                                Muški
+                                <fo:inline font-weight="bold"> Pol: </fo:inline> Muški
                             </xsl:when>
                             <xsl:otherwise>
-                                Ženski
+                                <fo:inline font-weight="bold"> Pol: </fo:inline> Ženski
                             </xsl:otherwise>
                         </xsl:choose>
                     </fo:block>
+<!--                    O primljenoj dozi -->
 
-                    <fo:block font-family="Times" font-size="20px" padding="10px">
-                        <fo:inline font-weight="bold"> Podaci o sertifikatu </fo:inline>
-                    </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Broj sertifikata: </fo:inline> <xsl:value-of select="//b:Broj_sertifikata"/>
+                        <fo:inline font-weight="bold">Primljene doze: </fo:inline>
                     </fo:block>
-
-                    <fo:block font-family="Times" font-size="20px" padding="10px">
-                        <fo:inline font-weight="bold"> Primljene doze </fo:inline>
-                    </fo:block>
-
-                    <fo:table border="solid 0.1mm black" >
-                        <fo:table-body>
-                            <fo:table-row font-size="12px">
-
-                                <fo:table-cell border-style="solid" border-width="2pt">
-                                    <fo:block text-align="left">
-                                        <fo:inline font-weight="bold"> Redni broj doze </fo:inline>
-                                    </fo:block>
+                    <fo:table>
+                        <fo:table-column column-width="25mm"/>
+                        <fo:table-column column-width="40mm"/>
+                        <fo:table-column column-width="25mm"/>
+                        <fo:table-column column-width="31.5mm"/>
+                        <fo:table-column column-width="25mm"/>
+                        <fo:table-column column-width="25mm"/>
+                        <fo:table-header>
+                            <fo:table-row>
+                                <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="2pt" >
+                                    <fo:block font-weight="bold">Redni broj</fo:block>
                                 </fo:table-cell>
-
-                                <fo:table-cell border-style="solid" border-width="2pt">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold"> Datum primanja </fo:inline>
-                                    </fo:block>
+                                <fo:table-cell text-align="center" border-style="solid" border-width="2pt" >
+                                    <fo:block font-weight="bold">Datum primanja</fo:block>
                                 </fo:table-cell>
-
-                                <fo:table-cell border-style="solid" border-width="2pt">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold"> Serija </fo:inline>
-                                    </fo:block>
+                                <fo:table-cell text-align="center" border-style="solid" border-width="2pt" >
+                                    <fo:block font-weight="bold">Serija</fo:block>
                                 </fo:table-cell>
-
-                                <fo:table-cell border-style="solid" border-width="2pt">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold"> Proizvođač </fo:inline>
-                                    </fo:block>
+                                <fo:table-cell text-align="center" border-style="solid" border-width="2pt" >
+                                    <fo:block font-weight="bold">Proizvodjac</fo:block>
                                 </fo:table-cell>
-
-                                <fo:table-cell border-style="solid" border-width="2pt">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold"> Tip </fo:inline>
-                                    </fo:block>
+                                <fo:table-cell text-align="center" border-style="solid" border-width="2pt" >
+                                    <fo:block font-weight="bold">Tip</fo:block>
                                 </fo:table-cell>
-
-                                <fo:table-cell border-style="solid" border-width="2pt">
-                                    <fo:block>
-                                        <fo:inline font-weight="bold"> Ustanova </fo:inline>
-                                    </fo:block>
+                                <fo:table-cell text-align="center" border-style="solid" border-width="2pt" >
+                                    <fo:block font-weight="bold">Ustanova</fo:block>
                                 </fo:table-cell>
                             </fo:table-row>
+                        </fo:table-header>
 
-                            <xsl:for-each select="//b:Doza">
-
+                        <fo:table-body>
+                            <xsl:for-each select="//b:Podaci_o_vakcini/b:Doza">
                                 <fo:table-row>
-                                    <fo:table-cell border-style="solid" border-width="2pt">
-                                        <fo:block font-size="10px">
-                                            <xsl:value-of select="@Redni_broj"/>
-                                        </fo:block>
+                                    <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="1pt" >
+                                        <fo:block><xsl:value-of select="@Redni_broj"/></fo:block>
                                     </fo:table-cell>
-
-                                    <fo:table-cell border-style="solid" border-width="2pt">
-                                        <fo:block font-size="10px">
-                                            <xsl:value-of select="format-date(//util:Datum, '[D1].[M1].[Y1].')"/>
-                                        </fo:block>
+                                    <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="1pt" >
+                                        <fo:block><xsl:value-of select="util:Datum"/></fo:block>
                                     </fo:table-cell>
-
-                                    <fo:table-cell border-style="solid" border-width="2pt">
-                                        <fo:block font-size="10px">
-                                            <xsl:value-of select="util:Serija"/>
-                                        </fo:block>
+                                    <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="1pt" >
+                                        <fo:block><xsl:value-of select="util:Serija"/></fo:block>
                                     </fo:table-cell>
-
-                                    <fo:table-cell border-style="solid" border-width="2pt">
-                                        <fo:block font-size="10px">
-                                            <xsl:value-of select="util:Proizvodjac"/>
-                                        </fo:block>
+                                    <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="1pt" >
+                                        <fo:block><xsl:value-of select="util:Proizvodjac"/></fo:block>
                                     </fo:table-cell>
-
-                                    <fo:table-cell border-style="solid" border-width="2pt">
-                                        <fo:block font-size="10px">
-                                            <xsl:value-of select="util:Tip"/>
-                                        </fo:block>
+                                    <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="1pt" >
+                                        <fo:block><xsl:value-of select="util:Tip"/></fo:block>
                                     </fo:table-cell>
-
-                                    <fo:table-cell border-style="solid" border-width="2pt">
-                                        <fo:block font-size="10px">
-                                            <xsl:value-of select="util:Ustanova"/>
-                                        </fo:block>
+                                    <fo:table-cell text-align="center" display-align="center" border-style="solid" border-width="1pt" >
+                                        <fo:block><xsl:value-of select="util:Ustanova"/></fo:block>
                                     </fo:table-cell>
-
                                 </fo:table-row>
                             </xsl:for-each>
-
-                        </fo:table-body>
+                            </fo:table-body>
                     </fo:table>
-
-                    <fo:block border-top-style="solid" text-align="center"/>
+                    <xsl:choose>
+                        <xsl:when test="//b:Datum_naredne_doze">
+                            <fo:block font-family="Times" font-size="15px" padding="10px">
+                                <fo:inline font-weight="bold"> Datum naredne vakcinacije: </fo:inline> <xsl:value-of select="format-date(//b:Datum_naredne_doze, '[D1].[M1].[Y1].')"/>
+                            </fo:block>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <fo:block/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <fo:block border-top-style="solid" text-align="center" margin-top="10px"/>
                     <fo:block text-align="right" font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Datum izdavanja: </fo:inline> <xsl:value-of select="format-date(//b:Datum_izdavanja_sertifikata, '[D1].[M1].[Y1].')"/>
+                        <fo:inline font-weight="bold"> Datum: </fo:inline> <xsl:value-of select="format-date(//b:Datum_izdavanja, '[D1].[M1].[Y1].')"/>
                     </fo:block>
 
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>
     </xsl:template>
-
 </xsl:stylesheet>

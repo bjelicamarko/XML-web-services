@@ -5,6 +5,7 @@ import { ConformationDialogComponent } from './components/conformation-dialog/co
 import { ScriptService } from './services/script.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor.interceptor';
+import { DocumentProviderService } from './services/document-provider.service';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { Interceptor } from './interceptors/interceptor.interceptor';
   ],
   providers: [
     ScriptService,
+    DocumentProviderService,
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
   ]
 })

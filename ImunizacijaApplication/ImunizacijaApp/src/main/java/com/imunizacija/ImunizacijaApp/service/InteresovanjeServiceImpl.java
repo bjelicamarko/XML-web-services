@@ -93,12 +93,12 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     
     @Override
     public byte[] generateInteresovanjePDF(String id) throws Exception {
-        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_FO_PATH);
+        return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_FO_PATH, null);
     }
 
     @Override
     public String generateInteresovanjeHTML(String id) throws Exception {
-        StringWriter htmlStringWriter = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH);
-        return htmlStringWriter.toString();
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        return htmlString;
     }
 }

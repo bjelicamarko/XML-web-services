@@ -27,4 +27,26 @@ export class UtilService {
     }
     return "";
   }
+ 
+  public openHtmlDocumentInNewTab(html: string): void {
+    let wnd = window.open("about:blank", "_blank");
+    if(wnd != null)
+      wnd.document.write(html);
+      wnd?.document.close();
+  }
+
+  public downloadPDFDocument(_blob: any, name: string = 'dokument'): void {
+    let blob = new Blob([_blob], { type: 'application/pdf' });
+      let pdfUrl = window.URL.createObjectURL(blob);
+
+      var PDF_link = document.createElement('a');
+      PDF_link.href = pdfUrl;
+
+    //   TO OPEN PDF ON BROWSER IN NEW TAB
+      window.open(pdfUrl, '_blank');
+
+    //   TO DOWNLOAD PDF TO YOUR COMPUTER
+      PDF_link.download = name + ".pdf";
+      PDF_link.click();
+  }
 }
