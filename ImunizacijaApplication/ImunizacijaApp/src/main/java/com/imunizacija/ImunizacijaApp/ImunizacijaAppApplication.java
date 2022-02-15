@@ -1,11 +1,24 @@
 package com.imunizacija.ImunizacijaApp;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.StoreRetrieveXMLRepository;
+import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+
+import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
 @SpringBootApplication
 @EnableScheduling
@@ -14,6 +27,63 @@ public class ImunizacijaAppApplication {
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
+	}
+
+	private static void fillRDFDatabase(){
+		/* PRE POKRETANJA UBACITI
+		 *     978989686.xml U ZAHTEV
+		 *     2312312.xml U INTERESOVANJE
+		 *     7654321.xml U ZAGLASNOST
+		 *     1245125.xml U POTVRDU
+		 *  */
+		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
+
+		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+
+		// EKSTRAKCIJA ZAHTJEV
+		ZahtevExtractMetadata zahtevExtractMetadata = new ZahtevExtractMetadata(conn);
+
+		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
+				new GenericXMLRepository<Zahtev>();
+		zahtevGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS,
+				COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
+
+		zahtevExtractMetadata.extractData(zahtev);
+
+		// EKSTRAKCIJA INTERESOVANJE
+		InteresovanjeExtractMetadata interesovanjeExtractMetadata = new InteresovanjeExtractMetadata(conn);
+
+		GenericXMLRepository<Interesovanje> interesovanjeRepository =
+				new GenericXMLRepository<Interesovanje>();
+		interesovanjeRepository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE,
+				idGeneratorPosInt);
+
+		Interesovanje i = interesovanjeRepository.retrieveXML("2312312.xml");
+		interesovanjeExtractMetadata.extract(i);
+
+		// EKSTRAKCIJA SAGLASNOST
+		SaglasnostExtractMetadata saglasnostExtractMetadata = new SaglasnostExtractMetadata(conn);
+
+		GenericXMLRepository<Saglasnost> saglasnostGenericXMLRepository =
+				new GenericXMLRepository<>();
+		saglasnostGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST,
+				idGeneratorPosInt);
+
+
+		Saglasnost saglasnost = saglasnostGenericXMLRepository.retrieveXML("7654321.xml");
+		saglasnostExtractMetadata.extract(saglasnost);
+
+		// EKSTRAKCIJA POTVRDA
+		PotvrdaExtractMetadata potvrdaExtractMetadata = new PotvrdaExtractMetadata(conn);
+
+		GenericXMLRepository<PotvrdaOVakcinaciji> potvrdaOVakcinacijiGenericXMLRepository =
+				new GenericXMLRepository<>();
+		potvrdaOVakcinacijiGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_POTVRDA, COLLECTION_PATH_POTVRDA,
+				idGeneratorPosInt);
+
+		PotvrdaOVakcinaciji potvrdaOVakcinaciji = potvrdaOVakcinacijiGenericXMLRepository.retrieveXML("1245125.xml");
+		potvrdaExtractMetadata.extract(potvrdaOVakcinaciji);
 	}
 
 	public static void main(String[] args) {
@@ -195,6 +265,7 @@ public class ImunizacijaAppApplication {
 //		Interesovanje i = interesovanjeRepository.retrieveXML("2312312.xml");
 
 		StoreRetrieveXMLRepository.registerDatabase();
+		//fillRDFDatabase();
 		SpringApplication.run(ImunizacijaAppApplication.class, args);
 	}
 

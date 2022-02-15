@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 
+import com.imunizacija.ImunizacijaApp.service.IzvestajiService;
 import com.imunizacija.ImunizacijaApp.service.OdgovoriService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -14,6 +15,9 @@ public class OdgovoriController {
 
     @Autowired
     private OdgovoriService odgovoriService;
+
+    @Autowired
+    private IzvestajiService izvestajiService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -42,6 +46,8 @@ public class OdgovoriController {
 //        OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
 //        odgovorTerminDTO.setEmail("manager@maildrop.cc");
 //        odgovoriService.izbrisiOdgovor(odgovorTerminDTO);
+
+        this.izvestajiService.createReport("2022-02-15", "2022-02-17");
         return new ResponseEntity<>("bravo", HttpStatus.OK);
     }
 }

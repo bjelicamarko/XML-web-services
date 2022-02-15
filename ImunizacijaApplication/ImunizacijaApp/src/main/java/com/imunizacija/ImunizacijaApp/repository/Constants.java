@@ -51,4 +51,11 @@ public class Constants {
     public static final String ZAHTEV_NAMED_GRAPH_URI = "/zahtev/metadata";
     public static final String INTERESOVANJE_NAMED_GRAPH_URI = "/interesovanje/metadata";
     public static final String SAGLASNOST_NAMED_GRAPH_URI="/saglasnost_za_imunizaciju/metadata";
+
+    public static final String PREDICATE_INTERESOVANJE_CREATED = PREDICATE_NAMESPACE + "createdWhen";
+
+    public static final String PREDICATE_DOZA_GIVEN = PREDICATE_NAMESPACE + "givenAt";
+    public static final String PREDICATE_DOZA_TIP = PREDICATE_NAMESPACE + "hasVaccineType";
+
+    public static final String PREDICATE_ZAHTEV_CREATED_AT = PREDICATE_NAMESPACE + "createdWhen";
 }
