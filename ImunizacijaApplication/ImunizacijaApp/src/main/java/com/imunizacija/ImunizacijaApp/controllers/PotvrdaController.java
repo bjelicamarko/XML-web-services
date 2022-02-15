@@ -26,4 +26,23 @@ public class PotvrdaController {
         }
         return new ResponseEntity<>(potvrda, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> generatePDF(@PathVariable String id) {
+        try {
+            byte[] pdfBytes = potvrdaService.generateInteresovanjePDF(id);
+            return new ResponseEntity<>(pdfBytes, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/generateHTML/{id}", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<String> generateHTML(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(potvrdaService.generateInteresovanjeHTML(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+        }
+    }
 }
