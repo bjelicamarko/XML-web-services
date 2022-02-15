@@ -33,4 +33,6 @@ public class Constants {
     public static final String PREDICATE_NAMESPACE = ROOT_PATH + "predicate/";
     public static final String OSOBA_NAMED_GRAPH_URI = "/osoba/metadata";
     public static final String DZS_NAMED_GRAPH_URI = "/dzs/metadata";
+
+    public static final String PREDICATE_DZS_CREATED_AT = PREDICATE_NAMESPACE + "createdAt";
 }

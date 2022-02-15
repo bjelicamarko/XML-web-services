@@ -1,6 +1,7 @@
 package com.imunizacija.ImunizacijaApp.service;
 
 
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.IzvestajDTO;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.BazaRdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeRdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevRdfRepository;
@@ -20,10 +21,12 @@ public class IzvestajiServiceImpl implements IzvestajiService{
     private ZahtevRdfRepository zahtevRdfRepository;
 
     @Override
-    public void createReport(String dateTo, String dateFrom) {
-       System.out.println(interesovanjeRdfRepository.getInteresovanjaBetweenDates(dateTo, dateFrom));
-       System.out.println(bazaRdfRepository.getVaccineReports("2022-01-07", "2022-01-12"));
-       System.out.println(bazaRdfRepository.getNewVaccineReports("2022-01-07", "2022-01-12"));
-       System.out.println(zahtevRdfRepository.getZahteviBetweenDates("2022-01-07", "2022-01-12"));
+    public IzvestajDTO createReport(String dateTo, String dateFrom) {
+       IzvestajDTO izvestajDTO = new IzvestajDTO();
+       izvestajDTO.setBrojInteresovanja(interesovanjeRdfRepository.getInteresovanjaBetweenDates(dateTo, dateFrom));
+       izvestajDTO.setBrojZahteva(zahtevRdfRepository.getZahteviBetweenDates(dateTo, dateFrom));
+       izvestajDTO.setNoveVakcine(bazaRdfRepository.getNewVaccineReports(dateTo, dateFrom));
+       izvestajDTO.setStanje(bazaRdfRepository.getVaccineReports(dateTo, dateFrom));
+       return izvestajDTO;
     }
 }

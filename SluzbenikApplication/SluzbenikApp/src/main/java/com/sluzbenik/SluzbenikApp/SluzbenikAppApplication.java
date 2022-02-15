@@ -1,10 +1,17 @@
 package com.sluzbenik.SluzbenikApp;
 
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.StoreRetrieveXMLRepository;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
+import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 
 @SpringBootApplication
 public class SluzbenikAppApplication {
@@ -30,14 +37,19 @@ public class SluzbenikAppApplication {
 //		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
 //		DzsExtractMetadata dzsExtractMetadata = new DzsExtractMetadata(conn);
 //
+		StoreRetrieveXMLRepository.registerDatabase();
+
+//		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
+//
+//		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
 //		GenericXMLRepository<DigitalniZeleniSertifikat> dzsGenericXMLRepository =
-//				new GenericXMLRepository<>(PACKAGE_PATH_DZS,
-//						COLLECTION_PATH_DZS, idGeneratorDZS);
+//				new GenericXMLRepository<>();
+//		dzsGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, idGeneratorPosInt);
 //		DigitalniZeleniSertifikat dzs = dzsGenericXMLRepository.retrieveXML("1234567.xml");
 //
-//		dzsExtractMetadata.extract(dzs);
+//		DzsExtractMetadata dzsExtractMetadata = new DzsExtractMetadata(conn);
+//		dzsExtractMetadata.extract(dzs, "1234567.xml");
 
-		StoreRetrieveXMLRepository.registerDatabase();
 		SpringApplication.run(SluzbenikAppApplication.class, args);
 	}
 }

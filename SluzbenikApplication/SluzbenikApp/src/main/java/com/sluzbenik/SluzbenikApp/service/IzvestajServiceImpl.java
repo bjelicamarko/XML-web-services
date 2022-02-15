@@ -1,6 +1,8 @@
 package com.sluzbenik.SluzbenikApp.service;
 
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.IzvestajDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.izvestaj.Izvestaj;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsRdfRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -31,6 +33,9 @@ public class IzvestajServiceImpl implements IzvestajService {
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
 
+    @Autowired
+    private DzsRdfRepository dzsRdfRepository;
+
     @PostConstruct
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ, new IdGeneratorPosInt());
@@ -53,4 +58,9 @@ public class IzvestajServiceImpl implements IzvestajService {
         return htmlString;
     }
 
+    @Override
+    public IzvestajDTO createReport(IzvestajDTO izvestajDTO, String dateFrom, String dateTo) {
+        izvestajDTO.setBrojZelenih(this.dzsRdfRepository.getDzsBetweenDates(dateFrom, dateTo));
+        return izvestajDTO; // ovdje praviti izvjestaj jer se ovdje nalaze svi podaci
+    }
 }
