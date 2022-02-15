@@ -15,8 +15,13 @@ const routes: Routes = [
       },
       {
         path: "vakcina",
-        loadChildren: () => 
+        loadChildren: () =>
           import("./../vaccine/vaccine.module").then((m) => m.VaccineModule),
+      },
+      {
+        path: "dzs",
+        loadChildren: () =>
+          import("./../issue-dzs/issue-dzs.module").then((m) => m.IssueDzsModule),
       }
     ]
   },

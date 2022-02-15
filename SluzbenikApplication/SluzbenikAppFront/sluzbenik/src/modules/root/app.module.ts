@@ -31,7 +31,7 @@ import { HeaderMedicalOfficialComponent } from './components/header/header-medic
         HttpClientModule,
         // ToastrModule.forRoot(),
         SharedModule,
-        ReactiveFormsModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
