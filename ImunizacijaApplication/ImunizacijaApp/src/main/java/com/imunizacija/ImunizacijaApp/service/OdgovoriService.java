@@ -14,9 +14,11 @@ public interface OdgovoriService {
 
    void azurirajOdgovor(OdgovorTerminDTO odgovor);
 
-   void izbrisiOdgovor(OdgovorTerminDTO odgovor);
+   void izbrisiOdgovor(String email);
 
    Odgovori.Odgovor vratiOdgovor(String email);
 
    VakcinaKolicinaDTO vratiDozeUMagacin();
+
+   String generisiTekstOdgovora(OdgovorTerminDTO odgovorTerminDTO);
 }

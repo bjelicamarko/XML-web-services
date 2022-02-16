@@ -1,5 +1,7 @@
 package com.imunizacija.ImunizacijaApp.service;
 
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.*;
@@ -15,9 +17,15 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.impl.BagImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -25,10 +33,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
@@ -44,6 +50,15 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
+
+    @Autowired
+    private OdgovoriService odgovoriService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private MailService mailService;
 
     public static final String URL_RESOURCE_ROOT = "potvrda/";
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
@@ -73,12 +88,12 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     }
 
     @Override
-    public void generatePotvrdaOVakcinaciji(Saglasnost s) throws DatatypeConfigurationException {
+    public void generatePotvrdaOVakcinaciji(Saglasnost s) throws DatatypeConfigurationException, MessagingException {
         PotvrdaOVakcinaciji potvrdaOVakcinaciji = new PotvrdaOVakcinaciji();
         // generate PodaciOPrimaocu
         potvrdaOVakcinaciji.setPodaciOPrimaocu(this.generatePodaciOPrimaocu(s.getLicniPodaci(), s.getDrzavljanstvo()));
         // generate PodaciOVakcini
-        potvrdaOVakcinaciji.setPodaciOVakcini(this.generatePodaciOVakcini(s.getOVakcinaciji(), s.getDrzavljanstvo().getJMBG()));
+        potvrdaOVakcinaciji.setPodaciOVakcini(this.generatePodaciOVakcini(s.getOVakcinaciji(), s.getDrzavljanstvo().getJMBG(), s.getKontakt().getEmailAdresa()));
         // generate PodaciOPotvrdi
         PotvrdaOVakcinaciji.PodaciOPotvrdi podaciOPotvrdi = new PotvrdaOVakcinaciji.PodaciOPotvrdi();
         XMLGregorianCalendar today = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString());
@@ -108,7 +123,8 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         return licniPodaci;
     }
 
-    private PotvrdaOVakcinaciji.PodaciOVakcini generatePodaciOVakcini(Saglasnost.OVakcinaciji oVakcinaciji, String korisnikId) throws DatatypeConfigurationException {
+    private PotvrdaOVakcinaciji.PodaciOVakcini generatePodaciOVakcini(Saglasnost.OVakcinaciji oVakcinaciji, String korisnikId, String email)
+            throws DatatypeConfigurationException, MessagingException {
         PotvrdaOVakcinaciji.PodaciOVakcini podaciOVakcini = new PotvrdaOVakcinaciji.PodaciOVakcini();
         List<DozaSaUstanovom> doze = new ArrayList<>();
         String potvrdaIzBazeId = this.getPosljednjaPotvrdaIzBazeId(korisnikId);
@@ -116,12 +132,47 @@ public class PotvrdaServiceImpl implements PotvrdaService {
             PotvrdaOVakcinaciji prethodnaPotvrda = repository.retrieveXML(potvrdaIzBazeId);
             doze.addAll(prethodnaPotvrda.getPodaciOVakcini().getDoze());
         }
-        doze.add(this.generateDozaSaUstanovom(doze.size(), oVakcinaciji));
+        doze.add(this.generateDozaSaUstanovom(doze.size() + 1, oVakcinaciji));
         podaciOVakcini.setDoze(doze);
 
-        // TODO: ovo ne ide ovako, treba da se pozove Bjelicina funkcija za generisanje termina
-        podaciOVakcini.setDatumNaredneDoze(
-                DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().plusDays(7).toString())); // today + 7 days
+        if (doze.size() == 3) { // sklanjamo iz baze
+            this.odgovoriService.izbrisiOdgovor(email);
+        } else {
+            Odgovori.Odgovor o = this.odgovoriService.vratiOdgovor(email);
+
+            OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
+            odgovorTerminDTO.setGrad(o.getGrad());
+            for (String s : o.getVakcine())
+                odgovorTerminDTO.getVakcine().add(s);
+            odgovorTerminDTO.setEmail(o.getEmail());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/xml");
+            HttpEntity<OdgovorTerminDTO> requestUpdate = new HttpEntity<>(odgovorTerminDTO, headers);
+            ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
+                    HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
+
+
+            this.odgovoriService.azurirajOdgovor(entity.getBody());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String date = "01/01/1971";
+            //convert String to LocalDate
+            LocalDate localDate = LocalDate.parse(date, formatter);
+
+            if (Objects.requireNonNull(entity.getBody()).getTermin().equals("Empty")) {
+                podaciOVakcini.setDatumNaredneDoze(
+                        DatatypeFactory.newInstance().newXMLGregorianCalendar(localDate.toString())); // today + 7 days
+            } else {   // ima dodjeljen termin
+                podaciOVakcini.setDatumNaredneDoze( // YYYY-MM-DD
+                        DatatypeFactory.newInstance().newXMLGregorianCalendar(entity.getBody().getTermin().split(" ")[0]));
+            }
+
+            this.mailService.sendMail("Termin",
+                    this.odgovoriService.generisiTekstOdgovora(Objects.requireNonNull(entity.getBody())),
+                    entity.getBody().getEmail());
+        }
+
         return podaciOVakcini;
     }
 
@@ -164,5 +215,27 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         List<String> sortedAffirmation = new ArrayList<>();
         affirmationList.forEach(affirmation -> sortedAffirmation.add(affirmation[0]));
         return sortedAffirmation.get(sortedAffirmation.size() - 1);
+    }
+
+    public static final String HAS_EMAIL_PREDICATE_DB = "http://www.vakc-sistem.rs/predicate/hasEmail";
+    private String getKorisnikEmailById(String korisnikId) {
+        AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+        String sparqlCondition = String.format("?osoba " + "<" + HAS_EMAIL_PREDICATE_DB + "> ?email . \n" +
+                "FILTER (contains(str(?osoba), '%s') )", korisnikId);
+        // ?osoba http://www.vakc-sistem.rs/predicate/hasEmail ?email .
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + OSOBA_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+        String email = "";
+        while(results.hasNext()) {
+            QuerySolution res = results.nextSolution();
+            email = res.get("email").toString();
+        }
+        query.close();
+        return email;
     }
 }

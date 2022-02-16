@@ -48,6 +48,7 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
         String chosenVaccine = this.checkVaccineStatus(odgovorTerminDTO.getVakcine(), city.getVakcine());
         if (chosenVaccine.equals("Empty")) {
             odgovorTerminDTO.setRazlog("Nema dovoljno trazene vakcine!");
+            odgovorTerminDTO.setTermin("Empty");
             return odgovorTerminDTO;
         }
 

@@ -176,7 +176,7 @@ export class ConsentPageComponent {
           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
           "xmlns:util": "http://www.vakc-sistem.rs/util",
           "xsi:schemaLocation": "http://www.vakc-sistem.rs/saglasnost-za-imunizaciju saglasnost_za_imunizaciju.xsd",
-          Id: "-1"
+          Id: "1"
         },
         Drzavljanstvo: this.Drzavljanstvo,
         Licni_podaci: this.LicniPodaci,
@@ -190,7 +190,6 @@ export class ConsentPageComponent {
           Imunoloski_lek: this.registrationFormGroup.get('immunologicalDrug')?.value
         },
         Datum: moment(Date.now()).format('YYYY-MM-DD'),
-        O_vakcinaciji: null
       }
     }
     return saglasnost;

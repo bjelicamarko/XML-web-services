@@ -1,6 +1,7 @@
 package com.imunizacija.ImunizacijaApp.service;
 
 import com.google.zxing.WriterException;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
@@ -36,6 +38,9 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Autowired
     private PotvrdaService potvrdaService;
 
+    @Autowired
+    private OdgovoriService odgovoriService;
+
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt());
@@ -48,6 +53,8 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Override
     public void createNewConsent(String saglasnost) {
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
+        Odgovori.Odgovor o = this.odgovoriService.vratiOdgovor(s.getKontakt().getEmailAdresa());
+        s.getIzjava().setImunoloskiLek(o.getDodeljenaVakcina());
         this.repository.storeXML(s, true);
     }
 
@@ -63,10 +70,10 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     }
     
     @Override
-    public void updateConsent(String saglasnost) {
+    public void updateConsent(String saglasnost) { // primio vakcinu
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
         this.repository.storeXML(s, false);
         try { this.potvrdaService.generatePotvrdaOVakcinaciji(s); }
-        catch (DatatypeConfigurationException e) { System.err.println("Generisanje potvrde nije uspjelo."); }
+        catch (DatatypeConfigurationException | MessagingException e) { System.err.println("Generisanje potvrde nije uspjelo."); }
     }
 }
