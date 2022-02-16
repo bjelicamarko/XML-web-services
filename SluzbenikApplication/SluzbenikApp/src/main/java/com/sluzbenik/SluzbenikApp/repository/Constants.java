@@ -36,4 +36,5 @@ public class Constants {
 
     //predicates
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
+    public static final String REF_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/refBy>";
 }

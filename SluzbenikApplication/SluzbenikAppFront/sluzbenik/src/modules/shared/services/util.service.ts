@@ -27,4 +27,9 @@ export class UtilService {
     }
     return "";
   }
+
+  public getNoPages(totalItems: number, pageSize: number): number {
+    return Math.ceil(totalItems / pageSize);
+  }
+
 }

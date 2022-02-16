@@ -1,0 +1,50 @@
+<div class="row p-4 align-items-center justify-content-center">
+    <h1 class="p-4" style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Dokumenti za korisnicki ID:
+        {{userID}}
+    </h1>
+</div>
+<div *ngIf="userDocsDTO">
+    <div class="row p-2 align-items-center justify-content-center"
+        *ngIf="userDocsDTO.documentsOfUser.interesovanjeID.length > 0">
+        <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Interesovanje</h2>
+        <h3 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
+            http://localhost:9001/{{userDocsDTO.documentsOfUser.interesovanjeID[0]}}</h3>
+    </div>
+    <div class="row p-2 align-items-center justify-content-center"
+        *ngIf="userDocsDTO.documentsOfUser.salgasnostList.length > 0">
+        <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Saglasnost</h2>
+        <h3 *ngFor="let sagl of userDocsDTO.documentsOfUser.salgasnostList; let i = index"
+            style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
+            {{i+1}}. doza: http://localhost:9001/{{sagl}}</h3>
+    </div>
+    <div class="row p-2 align-items-center justify-content-center"
+        *ngIf="userDocsDTO.documentsOfUser.potvrdaOVakcList.length > 0">
+        <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Potvrda o vakcinaciji</h2>
+        <h3 *ngFor="let potvrda of userDocsDTO.documentsOfUser.potvrdaOVakcList; let i = index"
+            style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
+            {{i+1}}. doza: http://localhost:9001/{{potvrda}}</h3>
+    </div>
+    <div class="row p-2 align-items-center justify-content-center" *ngIf="userDocsDTO.documentsOfUser.zahtevDZSList.length > 0 || 
+        userDocsDTO.documentsOfUser.prihvaceniZahtevDZSList.length > 0 ">
+        <div *ngIf="userDocsDTO.documentsOfUser.zahtevDZSList.length > 0">
+            <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Poslati zahtevi za DZS</h2>
+            <h3 *ngFor="let zahtev of userDocsDTO.documentsOfUser.zahtevDZSList; let i = index"
+                style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
+                http://localhost:9001/{{zahtev}}</h3>
+        </div>
+        <div *ngIf="userDocsDTO.documentsOfUser.prihvaceniZahtevDZSList.length > 0">
+            <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Prihvaceni zahtevi za DZS</h2>
+            <h3 *ngFor="let zahtev of userDocsDTO.documentsOfUser.prihvaceniZahtevDZSList; let i = index"
+                style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
+                http://localhost:9001/{{zahtev}}</h3>
+        </div>
+
+    </div>
+    <div class="row p-2 align-items-center justify-content-center"
+        *ngIf="userDocsDTO.documentsOfUser.dzsList.length > 0">
+        <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Izdati DZS</h2>
+        <h3 *ngFor="let dzs of userDocsDTO.documentsOfUser.dzsList; let i = index"
+            style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
+            http://localhost:9001/{{dzs}}</h3>
+    </div>
+</div>

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,8 +32,29 @@ public class KorisnikServiceImpl implements KorisnikService {
 
     @Override
     public DocumentsOfUserDTO getDocumentsOfUser(String userID, DocumentsOfUserDTO existingDoc) {
-        List<String> dzsList = rdfRepository.getDZSFromUser(userID);
-        existingDoc.setDzsList(dzsList);
+        List<String> listOfDzs = new ArrayList<>();
+        List<String> listOfAcceptedRequests = new ArrayList<>();
+        List<String> listOfPendingRequests = new ArrayList<>();
+
+        List<String[]> dzsList = rdfRepository.getDZSFromUser(userID);
+
+        dzsList.forEach(dzs -> {listOfAcceptedRequests.add(dzs[1]); listOfDzs.add(dzs[0]);});
+
+        for (String req : existingDoc.getZahtevDZSList()){
+            boolean isAccepted = false;
+            for (String acceptedReq : listOfAcceptedRequests){
+                if (req.equals(acceptedReq)){
+                    isAccepted = true;
+                    break;
+                }
+            }
+            if (!isAccepted)
+                listOfPendingRequests.add(req);
+        }
+
+        existingDoc.setPrihvaceniZahtevDZSList(listOfAcceptedRequests);
+        existingDoc.setZahtevDZSList(listOfPendingRequests);
+        existingDoc.setDzsList(listOfDzs);
         return existingDoc;
     }
 }

@@ -5,15 +5,20 @@ import { ConformationDialogComponent } from './components/conformation-dialog/co
 import { ScriptService } from './services/script.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor.interceptor';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 
 @NgModule({
   declarations: [
     DateFormatPipe,
-    ConformationDialogComponent
+    ConformationDialogComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    PaginationComponent
   ],
   providers: [
     ScriptService,
