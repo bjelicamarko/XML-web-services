@@ -57,7 +57,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 
     @Override
     public String generateInteresovanjeHTML(String id) throws TransformerException, IOException, WriterException {
-        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), ZAHTEV_XSL_PATH, null);
         return htmlString;
     }
 }

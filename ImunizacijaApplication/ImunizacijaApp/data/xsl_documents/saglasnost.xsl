@@ -54,7 +54,7 @@
                         <p>Gore navedeni <xsl:value-of select="//util:Ime"/><xsl:value-of select="concat(' ', //util:Prezime)"/> nije saglasan da se vakcinise <xsl:value-of select="//b:Imunoloski_lek"/> vakcinom.</p>
                     </xsl:otherwise>
                 </xsl:choose>
-                <p>Datum podnosenja saglasnosti: <xsl:value-of select="//b:Datum"/></p>
+                <p>Datum podnosenja saglasnosti: <xsl:value-of select="//b:Saglasnost/b:Datum"/></p>
                 <!-- Treba dodati dio o vakcinaciji -->
             </body>
         </html>

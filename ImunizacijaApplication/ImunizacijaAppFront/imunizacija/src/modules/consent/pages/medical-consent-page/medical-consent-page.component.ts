@@ -1,16 +1,10 @@
-import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { stringify } from 'querystring';
-import { ConnectableObservable } from 'rxjs';
 import { ConformationDialogComponent } from 'src/modules/shared/components/conformation-dialog/conformation-dialog.component';
-import { emailValidator } from 'src/modules/shared/directives/custom-validators/email-validator';
-import { jmbgValidator } from 'src/modules/shared/directives/custom-validators/jmbg-validator';
-import { Doza, Doza_detaljnije } from 'src/modules/shared/models/Doza';
+import { Doza_detaljnije } from 'src/modules/shared/models/Doza';
 import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
 import { Kontraindikacija, Kontraindikacije } from 'src/modules/shared/models/Kontraindikacije';
 import { Korisnik } from 'src/modules/shared/models/Korisnik';
@@ -108,7 +102,6 @@ export class MedicalConsentPageComponent {
       telefon: ['', Validators.required],
       nezeljenaReakcija: [''],
       dijagnoza: ['', Validators.required],
-      // datumKontraindikacije: ['', Validators.required]
     });
   }
 

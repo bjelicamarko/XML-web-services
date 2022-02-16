@@ -192,7 +192,7 @@
                     </fo:block>
                     <fo:block border-top-style="solid" text-align="center" margin-top="5px"/>
                     <fo:block text-align="right" font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Datum: </fo:inline> <xsl:value-of select="format-date(//b:Datum, '[D1].[M1].[Y1].')"/>
+                        <fo:inline font-weight="bold"> Datum: </fo:inline> <xsl:value-of select="format-date(//b:Saglasnost/b:Datum, '[D1].[M1].[Y1].')"/>
                     </fo:block>
                 </fo:flow>
             </fo:page-sequence>

@@ -16,6 +16,9 @@ import { DocumentProviderService } from './services/document-provider.service';
   imports: [
     CommonModule
   ],
+  exports: [
+    ConformationDialogComponent
+  ],
   providers: [
     ScriptService,
     DocumentProviderService,
