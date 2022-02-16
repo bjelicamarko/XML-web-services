@@ -1,2 +1,131 @@
 <div class="drink-creation-label">Saglasnost - drugi deo (O vakcinaciji)</div>
-<p>medical-consent-page works!</p>
+<form class="reactiveForm" [formGroup]="consentFormGroup" (ngSubmit)="updateConsentWithConformation()">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div class="form-group row my_margin">
+                <label for="zdravstvenaUstanova" class="col-3 col-form-label">Zdravstvena ustanova</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="zdravstvenaUstanova"
+                        placeholder="Unesite zdravstvenu ustanovu" formControlName="zdravstvenaUstanova" />
+                    <small class="text-danger"
+                        *ngIf="f['zdravstvenaUstanova'].touched && f['zdravstvenaUstanova'].errors && f['zdravstvenaUstanova'].errors['required']">
+                        Potrebno je da unesete zdravstvenu ustanovu.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="punkt" class="col-3 col-form-label">Punkt</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="punkt" placeholder="Unesite punkt"
+                        formControlName="punkt" />
+                    <small class="text-danger"
+                        *ngIf="f['punkt'].touched && f['punkt'].errors && f['punkt'].errors['punkt']">
+                        Potrebno je da unesete vakcinacijski punkt.</small>
+                </div>
+            </div>
+            <div class="drink-creation-label">O primljenoj dozi</div>
+            <div class="form-group row my_margin">
+                <label for="serija" class="col-3 col-form-label">Serija</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="serija" placeholder="1251241" readonly />
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="proizvodjac" class="col-3 col-form-label">Proizvodjac</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="proizvodjac" placeholder="BionTech" readonly />
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="tip" class="col-3 col-form-label">Tip</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="tip" placeholder="Pfizer" readonly />
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="ekstremitet" class="col-3 col-form-label"
+                    style="padding-top: calc(0.375rem + 10px);">Ekstremitet</label>
+                <div class="col-6">
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Odaberite ekstremitet</mat-label>
+                        <mat-select [(value)]="ekstremitet">
+                            <mat-option *ngFor="let ekstremitet of ekstremiteti" [value]="ekstremitet">
+                                {{ekstremitet === 'LR'? 'LR - LEVA RUKA' : 'DR - DESNA RUKA'}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="nezeljenaReakcija" class="col-3 col-form-label"
+                    matTooltip='"Nema nezeljenih reakcija" je podrazumevana vrednost.'>Nezeljena reakcija*</label>
+                <div class="col-6">
+                    <textarea rows="2" class="form-control" type="text" id="nezeljenaReakcija"
+                        placeholder="Unesite nezeljenu reakciju" formControlName="nezeljenaReakcija"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <!-- Podaci o ljekaru -->
+            <div class="drink-creation-label" style="cursor: pointer;"
+                matTooltip="Ukoliko zelite da promenite licne podatke, obratite se administratoru.">O lekaru</div>
+            <div class="form-group row my_margin">
+                <label for="imeLekara" class="col-3 col-form-label">Ime</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="imeLekara" placeholder="Djura" readonly />
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="prezimeLekara" class="col-3 col-form-label">Prezime</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="prezimeLekara" placeholder="Peric" readonly />
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="jmbg" class="col-3 col-form-label">JMBG</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="jmbg" placeholder="12345" readonly />
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="faksimil" class="col-3 col-form-label">Faksimil</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="faksimil" placeholder="Unesite faksimil"
+                        formControlName="faksimil" />
+                    <small class="text-danger"
+                        *ngIf="f['faksimil'].touched && f['faksimil'].errors && f['faksimil'].errors['required']">
+                        Potrebno je da unesete faksimil radi potvrde.</small>
+                </div>
+            </div>
+            <div class="form-group row my_margin">
+                <label for="telefon" class="col-3 col-form-label">Telefon</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="telefon" placeholder="Unesite telefon"
+                        formControlName="telefon" />
+                    <small class="text-danger"
+                        *ngIf="f['telefon'].touched && f['telefon'].errors && f['telefon'].errors['required']">
+                        Potrebno je da unesete telefon.</small>
+                </div>
+            </div>
+            <div class="drink-creation-label">Kontraindikacije</div>
+            <div class="form-group row my_margin">
+                <label for="dijagnoza" class="col-3 col-form-label">Dijagnoza</label>
+                <div class="col-6">
+                    <textarea rows="2" class="form-control" type="text" id="dijagnoza" placeholder="Unesite dijagnoza"
+                        formControlName="dijagnoza"></textarea>
+                </div>
+            </div>
+            <!-- <div class="form-group row my_margin">
+                <label for="datumKontraindikacije" class="col-3 col-form-label">Datum</label>
+                <div class="col-6">
+                    <input class="form-control" type="date" id="datumKontraindikacije"
+                        formControlName="datumKontraindikacije" />
+                    <small class="text-danger"
+                        *ngIf="f['datumKontraindikacije'].touched && f['datumKontraindikacije'].errors && f['datumKontraindikacije'].errors['required']">
+                        Potrebno je da unesete datum rodjenja.</small>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <button id="submit" class="btn" type="submit" [disabled]='checkSubmit()'>Podnesi saglasnost</button>
+</form>

@@ -3,9 +3,9 @@ import { Kontraindikacije } from "src/modules/shared/models/Kontraindikacije";
 import { PodaciOLekaru } from "src/modules/shared/models/PodaciOLekaru";
 
 export interface OVakcinaciji {
-    ZdravstvenaUstanova: string,
+    Zdravstvena_ustanova: string,
     Punkt: string,
-    PodaciOLekaru: PodaciOLekaru,
+    Podaci_o_lekaru: PodaciOLekaru,
     Doza: Doza_detaljnije,
     Kontraindikacije: Kontraindikacije
 }

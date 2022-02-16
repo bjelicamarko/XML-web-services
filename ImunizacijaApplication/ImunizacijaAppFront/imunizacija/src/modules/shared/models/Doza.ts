@@ -1,34 +1,27 @@
 export interface Doza {
-    Redni_broj: {
-        "@": {},
-        "#": number
+    "@": {
+        Redni_broj: number
     }
-    Datum: {
-        "@": {},
+    'util:Datum': {
         "#": string
     }
-    Serija: {
-        "@": {},
+    'util:Serija': {
         "#": string
     }
-    Proizvodjac: {
-        "@": {},
+    'util:Proizvodjac': {
         "#": string
     }
-    Tip: {
-        "@": {},
+    'util:Tip': {
         "#": string
     }
 }
 
 export interface Doza_detaljnije extends Doza {
 
-    Ekstremitet: {
-        "@": {},
+    'util:Ekstremitet': {
         "#": string
     }
-    Nezeljena_reakcija: {
-        "@": {},
+    'util:Nezeljena_rekacija': {
         "#": string
     }
 }

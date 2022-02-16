@@ -1,7 +1,7 @@
 export interface PodaciOLekaru {
     Ime: string
     Prezime: string
+    Faksimil: string
     Broj_telefona: string
-    Faksimil: string,
-    JMBG: string,
+    JMBG: string
 }

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class BaseService {
 
-  private headers = new HttpHeaders({ "Content-Type": "application/json" });
+  private headers = new HttpHeaders({ "Content-Type": "application/xml" });
 
   constructor() { }
 

@@ -8,6 +8,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ConsentPageComponent } from './pages/consent-page/consent-page.component';
 import { ConsentRoutes } from './consent.routes';
 import { MedicalConsentPageComponent } from './pages/medical-consent-page/medical-consent-page.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -21,7 +23,9 @@ import { MedicalConsentPageComponent } from './pages/medical-consent-page/medica
     SharedModule,
     RouterModule.forChild(ConsentRoutes),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatTooltipModule
   ]
 })
 export class ConsentModule { }

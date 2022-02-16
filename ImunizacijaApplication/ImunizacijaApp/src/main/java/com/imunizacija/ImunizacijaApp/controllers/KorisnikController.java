@@ -1,12 +1,14 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 
 import com.imunizacija.ImunizacijaApp.model.app_users.UserTokenState;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.KorisnikRepository;
 import com.imunizacija.ImunizacijaApp.security.TokenUtils;
 import com.imunizacija.ImunizacijaApp.security.auth.JwtAuthenticationRequest;
 import com.imunizacija.ImunizacijaApp.service.KorisnikService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +34,6 @@ public class KorisnikController {
     private AuthenticationManager authenticationManager;
 
 
-
     //todo izbrisati ova dva dole kasnije
     //sluze samo kao endpoint za dodavanje nekih basic korisnika, jos nisam napravio registraciju
 
@@ -41,6 +42,15 @@ public class KorisnikController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Korisnik> findOne(@PathVariable String id) {
+        Korisnik korisnik = korisnikService.findOneById(id);
+        if(korisnik == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(korisnik, HttpStatus.OK);
+    }
 
     @PostMapping("/test-create-citizen")
     public String createUserCitizenTest(){

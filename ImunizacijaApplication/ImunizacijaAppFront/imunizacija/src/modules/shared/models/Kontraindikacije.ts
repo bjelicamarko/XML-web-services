@@ -1,5 +1,5 @@
 export interface Kontraindikacije {
-    Privremene_kontraindikacije: Kontraindikacija[]
+    Privremena_kontraindikacija: Kontraindikacija[]
     Odluka_komisije_o_trajnim: string
 }
 
