@@ -1,5 +1,7 @@
 package com.imunizacija.ImunizacijaApp.service;
 
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.MapaDTO;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.VakcinaKolicinaDTO;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.OdgovoriRepository;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,13 +44,41 @@ public class OdgovoriServiceImpl implements OdgovoriService{
 
     @Override
     public void izbrisiOdgovor(OdgovorTerminDTO odgovor) {
-        this.odgovoriRepository.izbrisiOdgovor(odgovor);
+        this.odgovoriRepository.izbrisiOdgovor(odgovor.getEmail());
     }
 
     @Override
-    @Scheduled(cron = "0 57 21 * * ?", zone = "CET")
+    public Odgovori.Odgovor vratiOdgovor(String email) {
+        return this.odgovoriRepository.vratiOdgovor(email);
+    }
+
+    @Override
+    @Scheduled(cron = "0 10 22 * * ?", zone = "CET")
+    public VakcinaKolicinaDTO vratiDozeUMagacin() {
+        VakcinaKolicinaDTO vakcinaKolicinaDTO = new VakcinaKolicinaDTO();
+        List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore(LocalDate.now().toString());
+        for (Odgovori.Odgovor o : odgovori) {
+            if (!vakcinaKolicinaDTO.getMapa().containsKey(o.getGrad())) {
+                vakcinaKolicinaDTO.getMapa().put(o.getGrad(), new MapaDTO());
+                vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().put(o.getGrad(), 1);
+            } else {
+                int value = vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().get(o.getDodeljenaVakcina());
+                vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().put(o.getDodeljenaVakcina(), value+1);
+            }
+            OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
+            odgovorTerminDTO.setGrad(o.getGrad());
+            for (String s : o.getVakcine())
+                odgovorTerminDTO.getVakcine().add(s);
+            odgovorTerminDTO.setEmail(o.getEmail());
+            this.azurirajOdgovor(odgovorTerminDTO);
+        }
+        return vakcinaKolicinaDTO;
+    }
+
+    @Override
+    @Scheduled(cron = "0 15 22 * * ?", zone = "CET")
     public void posaljiOdgovore() throws MessagingException {
-        List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore();
+        List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore("Empty");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/xml");
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);

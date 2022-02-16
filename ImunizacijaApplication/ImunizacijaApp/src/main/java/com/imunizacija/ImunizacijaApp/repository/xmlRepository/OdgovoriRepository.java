@@ -29,8 +29,8 @@ public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
         this.collectionPath = COLLECTION_PATH_ODGOVORI;
     }
 
-    public List<Odgovori.Odgovor> vratiOdgovore() {
-        String  xpathExp = "doc(\"odgovori.xml\")//Termin[contains(text(),'Empty')]/..";
+    public List<Odgovori.Odgovor> vratiOdgovore(String parametar) {
+        String  xpathExp = String.format("doc(\"odgovori.xml\")//Termin[contains(text(),'%s')]/..", parametar);
 
         List<Odgovori.Odgovor> odgovori = new ArrayList<>();
         try {
@@ -142,8 +142,8 @@ public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
         }
     }
 
-    public void izbrisiOdgovor(OdgovorTerminDTO odgovor) {
-        String contextXPath = String.format("//Email[contains(text(),'%s')]/..", odgovor.getEmail());
+    public void izbrisiOdgovor(String email) {
+        String contextXPath = String.format("//Email[contains(text(),'%s')]/..", email);
         try {
             Collection col = getOrCreateCollection(this.collectionPath);
             XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
@@ -155,5 +155,35 @@ public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
         } catch (XMLDBException e) {
             e.printStackTrace();
         }
+    }
+
+    public Odgovori.Odgovor vratiOdgovor(String email) {
+        String  xpathExp = String.format("doc(\"odgovori.xml\")//Email[contains(text(),'%s')]/..", email);
+
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            xpathService.setProperty("indent", "yes");
+
+            xpathService.setNamespace("", ODGOVORI_NAMESPACE_PATH);
+            System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
+            ResourceSet result = xpathService.query(xpathExp);
+
+            ResourceIterator i = result.getIterator();
+            Resource res = null;
+            JAXBContext context = JAXBContext.newInstance(PACKAGE_PATH_ODGOVORI);
+            Unmarshaller u = context.createUnmarshaller();
+            res = i.nextResource();
+            System.out.println(res.getContent());
+            String str = res.getContent().toString();
+            Odgovori.Odgovor odgovor = (Odgovori.Odgovor) u.unmarshal(new StreamSource(new StringReader(str)));
+            System.out.println(odgovor);
+            return odgovor;
+
+        } catch (XMLDBException | JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
