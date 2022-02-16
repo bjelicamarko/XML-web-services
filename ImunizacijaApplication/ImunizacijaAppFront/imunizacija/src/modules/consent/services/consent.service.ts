@@ -47,4 +47,14 @@ export class ConsentService {
     return this.http.put<HttpResponse<string>>("indirekcija/api/saglasnost",
       o2x(saglasnost), queryParams);
   }
+
+  isConsentExist(consentId: string) {
+    let queryParams = {};
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text"
+    };
+    return this.http.get<HttpResponse<string>>("indirekcija/api/saglasnost/isConsentExist/" + consentId, queryParams);
+  }
 }

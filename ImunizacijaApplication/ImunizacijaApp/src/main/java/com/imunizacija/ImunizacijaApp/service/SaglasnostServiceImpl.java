@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
@@ -31,6 +32,9 @@ public class SaglasnostServiceImpl implements SaglasnostService{
 
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
+
+    @Autowired
+    private PotvrdaService potvrdaService;
 
     @PostConstruct // after init
     private void postConstruct(){
@@ -62,5 +66,7 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     public void updateConsent(String saglasnost) {
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
         this.repository.storeXML(s, false);
+        try { this.potvrdaService.generatePotvrdaOVakcinaciji(s); }
+        catch (DatatypeConfigurationException e) { System.err.println("Generisanje potvrde nije uspjelo."); }
     }
 }

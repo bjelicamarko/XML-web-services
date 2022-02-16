@@ -31,6 +31,19 @@ public class SaglasnostController {
         return new ResponseEntity<>(saglasnost, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/isConsentExist/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> isConsentExist(@PathVariable String id) {
+        try {
+            Saglasnost saglasnost = saglasnostService.findOneById(String.format("%s.xml", id));
+            if(saglasnost.getOVakcinaciji() != null){
+                return new ResponseEntity<>(String.format("Saglasnost (ID: %s) je popunjena.", id), HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(String.format("Saglasnost (ID: %s) je spremna za azuriranje.", id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(String.format("Saglasnost (ID: %s) ne postoji.", id), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/kreirajNovuSaglasnost", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> createNewConsent(@RequestBody String saglasnost) {

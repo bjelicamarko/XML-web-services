@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ConformationDialogComponent } from 'src/modules/shared/components/conformation-dialog/conformation-dialog.component';
+import { Vakcine } from 'src/modules/shared/enums/Vakcine';
 import { Doza_detaljnije } from 'src/modules/shared/models/Doza';
 import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
 import { Kontraindikacija, Kontraindikacije } from 'src/modules/shared/models/Kontraindikacije';
@@ -24,8 +25,25 @@ export class MedicalConsentPageComponent {
   consentFormGroup: FormGroup;
   ekstremiteti: string[] = ["LR", "DR"]
   ekstremitet: string;
+  consentId: string = '';
+  consentExist: boolean = false;
   consentToUpdate: Saglasnost | undefined;
-  korisnik: Korisnik | undefined;
+  korisnik: Korisnik = {
+    Korisnik: {
+      '@': '',
+      'KorisnikID': '',
+      'Ime': '',
+      'Prezime': '',
+      'Email': '',
+      'Lozinka': '',
+      'TipKorisnika': ''
+    }
+  };
+  vaccineInfo: any = {
+    Serija: '',
+    Proizvodjac: '',
+    Tip: ''
+  };
 
   Podaci_o_lekaru: PodaciOLekaru = {
     Ime: '',
@@ -83,17 +101,6 @@ export class MedicalConsentPageComponent {
     private snackBarService: SnackBarService,
     private utilService: UtilService
   ) {
-    this.consentService.getConsentById("7654321.xml")
-      .subscribe(response => {
-        if (response.body)
-          this.consentToUpdate = this.utilService.parseXml(response.body);
-      })
-    let userId = this.utilService.getLoggedUserID();
-    this.utilService.getUser(userId + ".xml")
-      .subscribe(response => {
-        if (response.body)
-          this.korisnik = this.utilService.parseXml(response.body);
-      })
     this.ekstremitet = this.ekstremiteti[0];
     this.consentFormGroup = this.fb.group({
       zdravstvenaUstanova: ['', [Validators.required]],
@@ -101,7 +108,8 @@ export class MedicalConsentPageComponent {
       faksimil: ['', Validators.required],
       telefon: ['', Validators.required],
       nezeljenaReakcija: [''],
-      dijagnoza: ['', Validators.required],
+      dijagnoza: [''],
+      odlukaKomisije: ['Ne']
     });
   }
 
@@ -126,24 +134,31 @@ export class MedicalConsentPageComponent {
   updateConsent() {
     if (this.korisnik) {
       this.Podaci_o_lekaru.Ime = this.korisnik.Korisnik.Ime;
-      this.Podaci_o_lekaru.Prezime = this.korisnik.Korisnik.Ime;
+      this.Podaci_o_lekaru.Prezime = this.korisnik.Korisnik.Prezime;
       this.Podaci_o_lekaru.JMBG = this.korisnik.Korisnik.KorisnikID;
       this.Podaci_o_lekaru.Faksimil = this.consentFormGroup.get('faksimil')?.value;
       this.Podaci_o_lekaru.Broj_telefona = this.consentFormGroup.get('telefon')?.value;
     }
 
-    this.Doza['@']['Redni_broj'] = this.getDozaRedniBroj();
+    this.Doza['@']['Redni_broj'] = 1; // this.getDozaRedniBroj()
     this.Doza['util:Datum']['#'] = moment(moment.now()).format('YYYY-MM-DD');
-    this.Doza['util:Serija']['#'] = '12312421';
-    this.Doza['util:Proizvodjac']['#'] = 'BionTech';
-    this.Doza['util:Tip']['#'] = this.getDozaTip(JSON.stringify(this.consentToUpdate!.Saglasnost.Izjava));
+    this.Doza['util:Serija']['#'] = this.vaccineInfo.Serija;
+    this.Doza['util:Proizvodjac']['#'] = this.vaccineInfo.Proizvodjac;
+    this.Doza['util:Tip']['#'] = this.vaccineInfo.Tip;
     this.Doza['util:Ekstremitet']['#'] = this.ekstremitet;
-    this.Doza['util:Nezeljena_rekacija']['#'] = this.consentFormGroup.get('nezeljenaReakcija')?.value;
+    if (this.consentFormGroup.get('nezeljenaReakcija')?.value === '')
+      this.Doza['util:Nezeljena_rekacija']['#'] = "Nema nezeljene reakcije.";
+    else
+      this.Doza['util:Nezeljena_rekacija']['#'] = this.consentFormGroup.get('nezeljenaReakcija')?.value;
 
     this.Kontraindikacija.Datum = moment(moment.now()).format('YYYY-MM-DD');
-    this.Kontraindikacija.Dijagnoza = this.consentFormGroup.get('dijagnoza')?.value;
+    if (this.consentFormGroup.get('dijagnoza')?.value === '')
+      this.Kontraindikacija.Dijagnoza = "Nema kontraindikacije.";
+    else
+      this.Kontraindikacija.Dijagnoza = this.consentFormGroup.get('dijagnoza')?.value;
+
     this.Kontraindikacije.Privremena_kontraindikacija.push(this.Kontraindikacija);
-    this.Kontraindikacije.Odluka_komisije_o_trajnim = 'Ne';
+    this.Kontraindikacije.Odluka_komisije_o_trajnim = this.consentFormGroup.get('odlukaKomisije')?.value;
 
     this.consentService.updateConsent(this.getUpdatedConsent())
       .subscribe(response => {
@@ -152,13 +167,56 @@ export class MedicalConsentPageComponent {
           this.router.navigate(["imunizacija-app/saglasnost/drugi-deo-saglasnosti"]);
       })
   }
-
-  getDozaRedniBroj(): number {
-    if (this.consentToUpdate?.Saglasnost.O_vakcinaciji == null) {
-      return 1;
+  getVaccineInfo(vaccineType: string): any {
+    if (Vakcine.PFIZER.split("|")[0] === vaccineType) {
+      let vaccineInfoSplitted = Vakcine.PFIZER.split("|");
+      return {
+        Tip: vaccineInfoSplitted[0],
+        Proizvodjac: vaccineInfoSplitted[1],
+        Serija: vaccineInfoSplitted[2]
+      }
     }
-    return this.consentToUpdate?.Saglasnost.O_vakcinaciji.Doza['@']['Redni_broj'] + 1;
+    else if (Vakcine.SPUTNIKV.split("|")[0] === vaccineType) {
+      let vaccineInfoSplitted = Vakcine.SPUTNIKV.split("|");
+      return {
+        Tip: vaccineInfoSplitted[0],
+        Proizvodjac: vaccineInfoSplitted[1],
+        Serija: vaccineInfoSplitted[2]
+      }
+    }
+    else if (Vakcine.SINOPHARM.split("|")[0] === vaccineType) {
+      let vaccineInfoSplitted = Vakcine.SINOPHARM.split("|");
+      return {
+        Tip: vaccineInfoSplitted[0],
+        Proizvodjac: vaccineInfoSplitted[1],
+        Serija: vaccineInfoSplitted[2]
+      }
+    }
+    else if (Vakcine.ASTRAZENECA.split("|")[0] === vaccineType) {
+      let vaccineInfoSplitted = Vakcine.ASTRAZENECA.split("|");
+      return {
+        Tip: vaccineInfoSplitted[0],
+        Proizvodjac: vaccineInfoSplitted[1],
+        Serija: vaccineInfoSplitted[2]
+      }
+    }
+    else {
+      let vaccineInfoSplitted = Vakcine.MODERNA.split("|");
+      return {
+        Tip: vaccineInfoSplitted[0],
+        Proizvodjac: vaccineInfoSplitted[1],
+        Serija: vaccineInfoSplitted[2]
+      }
+    }
   }
+
+
+  // getDozaRedniBroj(): number {
+  //   if (this.consentToUpdate?.Saglasnost.O_vakcinaciji == null) {
+  //     return 1;
+  //   }
+  //   return this.consentToUpdate?.Saglasnost.O_vakcinaciji.Doza['@']['Redni_broj'] + 1;
+  // }
 
   getDozaTip(izjava: string): string {
     return izjava.split('\"').slice(-2, -1)[0];
@@ -173,7 +231,7 @@ export class MedicalConsentPageComponent {
           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
           "xmlns:util": "http://www.vakc-sistem.rs/util",
           "xsi:schemaLocation": "http://www.vakc-sistem.rs/saglasnost-za-imunizaciju saglasnost_za_imunizaciju.xsd",
-          Id: "7654321"
+          Id: this.consentId
         },
         Drzavljanstvo: this.Drzavljanstvo,
         Licni_podaci: this.consentToUpdate!.Saglasnost.Licni_podaci,
@@ -220,5 +278,28 @@ export class MedicalConsentPageComponent {
     return !this.consentFormGroup.valid;
   }
 
+  isConsentExist() {
+    this.consentService.isConsentExist(this.consentId)
+      .subscribe(response => {
+        this.snackBarService.openSnackBar(response.body as string);
+        this.consentExist = true;
+        this.consentService.getConsentById(this.consentId + ".xml")
+          .subscribe(response => {
+            if (response.body)
+              this.consentToUpdate = this.utilService.parseXml(response.body);
+            this.vaccineInfo = this.getVaccineInfo(this.getDozaTip(JSON.stringify(this.consentToUpdate!.Saglasnost.Izjava)));
+          })
+        let userId = this.utilService.getLoggedUserID();
+        this.utilService.getUser(userId + ".xml")
+          .subscribe(response => {
+            if (response.body)
+              this.korisnik = this.utilService.parseXml(response.body);
+          })
+      },
+        error => {
+          this.snackBarService.openSnackBar(error.error as string);
+          this.consentExist = false;
+        })
+  }
 
 }
