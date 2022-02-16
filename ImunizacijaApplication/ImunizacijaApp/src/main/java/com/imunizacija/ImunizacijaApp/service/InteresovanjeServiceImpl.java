@@ -35,6 +35,7 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
 
+    @Autowired
     private OdgovoriService odgovoriService;
 
 
@@ -85,7 +86,7 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
                 "Broj fiksnog telefona: %s\n" +
                 "Opstina vakcinisanja: %s\n" +
                 "Datum predaje interesovanja: %s\n" +
-                "Izabrane zelene vakcine: \n %s", sb.toString(), interesovanje.getIme(), interesovanje.getPrezime(),
+                "Izabrane zeljene vakcine: \n %s", sb.toString(), interesovanje.getIme(), interesovanje.getPrezime(),
                 interesovanje.getKontakt().getEmailAdresa(), interesovanje.getKontakt().getBrojTelefona(),
                 interesovanje.getKontakt().getBrojFiksnosgTelefona(),
                 interesovanje.getOpstinaVakcinisanja(), interesovanje.getDatum().toString(), sb2.toString());

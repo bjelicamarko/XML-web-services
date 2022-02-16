@@ -368,6 +368,18 @@ public class PotvrdaOVakcinaciji implements IdentifiableEntity {
         }
 
         /**
+         * Sets the value of the datumNaredneDoze property.
+         *
+         * @param doze
+         *     allowed object is
+         *     {@link List<DozaSaUstanovom> }
+         *
+         */
+        public void setDoze(List<DozaSaUstanovom> doze) {
+            this.doze = doze;
+        }
+
+        /**
          * Gets the value of the datumNaredneDoze property.
          * 
          * @return

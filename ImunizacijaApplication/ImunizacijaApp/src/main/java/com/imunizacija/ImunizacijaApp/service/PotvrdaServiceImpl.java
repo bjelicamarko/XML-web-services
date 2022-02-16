@@ -1,16 +1,34 @@
 package com.imunizacija.ImunizacijaApp.service;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.*;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
+import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
+import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.impl.BagImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import java.io.StringWriter;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
@@ -28,6 +46,8 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     private XML2HTMLTransformer transformerXML2HTML;
 
     public static final String URL_RESOURCE_ROOT = "potvrda/";
+    public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
+    public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
 
     @PostConstruct // after init
     private void postConstruct(){
@@ -40,15 +60,109 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     }
 
     @Override
-    public byte[] generateInteresovanjePDF(String id) throws Exception {
+    public byte[] generatePotvrdaPDF(String id) throws Exception {
         String resourceUrl = URL_ROOT + URL_RESOURCE_ROOT + id;
         return transformerXML2PDF.generatePDF(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_FO_PATH, resourceUrl);
     }
 
     @Override
-    public String generateInteresovanjeHTML(String id) throws Exception {
+    public String generatePotvrdaHTML(String id) throws Exception {
         String resourceUrl = URL_ROOT + URL_RESOURCE_ROOT + id;
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_PATH, resourceUrl);
         return htmlString;
+    }
+
+    @Override
+    public void generatePotvrdaOVakcinaciji(Saglasnost s) throws DatatypeConfigurationException {
+        PotvrdaOVakcinaciji potvrdaOVakcinaciji = new PotvrdaOVakcinaciji();
+        // generate PodaciOPrimaocu
+        potvrdaOVakcinaciji.setPodaciOPrimaocu(this.generatePodaciOPrimaocu(s.getLicniPodaci(), s.getDrzavljanstvo()));
+        // generate PodaciOVakcini
+        potvrdaOVakcinaciji.setPodaciOVakcini(this.generatePodaciOVakcini(s.getOVakcinaciji(), s.getDrzavljanstvo().getJMBG()));
+        // generate PodaciOPotvrdi
+        PotvrdaOVakcinaciji.PodaciOPotvrdi podaciOPotvrdi = new PotvrdaOVakcinaciji.PodaciOPotvrdi();
+        XMLGregorianCalendar today = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString());
+        podaciOPotvrdi.setDatumIzdavanja(today);
+        podaciOPotvrdi.setQRCode("QrCode");
+        potvrdaOVakcinaciji.setPodaciOPotvrdi(podaciOPotvrdi);
+
+        // save new PotvrdaOVakcinaciji
+        String newPotvrdaId = this.repository.storeXML(potvrdaOVakcinaciji, true);
+
+        // setting QRCode
+        podaciOPotvrdi.setQRCode(String.format(URL_RESOURCE_ROOT + "%s", newPotvrdaId));
+        potvrdaOVakcinaciji.setPodaciOPotvrdi(podaciOPotvrdi);
+        this.repository.storeXML(potvrdaOVakcinaciji, false);
+    }
+
+    private LicniPodaciJMBG generatePodaciOPrimaocu(LicniPodaciDetaljnije saglasnostLicniPodaci, Drzavljanstvo drzavljanstvo) {
+        LicniPodaciJMBG licniPodaci = new LicniPodaciJMBG();
+        licniPodaci.setIme(saglasnostLicniPodaci.getIme());
+        licniPodaci.setPrezime(saglasnostLicniPodaci.getPrezime());
+        licniPodaci.setDatumRodjenja(saglasnostLicniPodaci.getDatumRodjenja());
+        licniPodaci.setPol(saglasnostLicniPodaci.getPol());
+        if(drzavljanstvo.getTip().equals("DOMACE"))
+            licniPodaci.setJMBG(drzavljanstvo.getJMBG());
+        else
+            licniPodaci.setJMBG("0101901404404");
+        return licniPodaci;
+    }
+
+    private PotvrdaOVakcinaciji.PodaciOVakcini generatePodaciOVakcini(Saglasnost.OVakcinaciji oVakcinaciji, String korisnikId) throws DatatypeConfigurationException {
+        PotvrdaOVakcinaciji.PodaciOVakcini podaciOVakcini = new PotvrdaOVakcinaciji.PodaciOVakcini();
+        List<DozaSaUstanovom> doze = new ArrayList<>();
+        String potvrdaIzBazeId = this.getPosljednjaPotvrdaIzBazeId(korisnikId);
+        if(!potvrdaIzBazeId.equals("-1")){
+            PotvrdaOVakcinaciji prethodnaPotvrda = repository.retrieveXML(potvrdaIzBazeId);
+            doze.addAll(prethodnaPotvrda.getPodaciOVakcini().getDoze());
+        }
+        doze.add(this.generateDozaSaUstanovom(doze.size(), oVakcinaciji));
+        podaciOVakcini.setDoze(doze);
+
+        // TODO: ovo ne ide ovako, treba da se pozove Bjelicina funkcija za generisanje termina
+        podaciOVakcini.setDatumNaredneDoze(
+                DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().plusDays(7).toString())); // today + 7 days
+        return podaciOVakcini;
+    }
+
+    private DozaSaUstanovom generateDozaSaUstanovom(int num, Saglasnost.OVakcinaciji oVakcinaciji) {
+        DozaDetaljnije dozaDetaljnije = oVakcinaciji.getDoze().get(0);
+        DozaSaUstanovom dozaSaUstanovom = new DozaSaUstanovom();
+        dozaSaUstanovom.setRedniBroj(new BigInteger(String.valueOf(num)));
+        dozaSaUstanovom.setDatum(dozaDetaljnije.getDatum());
+        dozaSaUstanovom.setSerija(dozaDetaljnije.getSerija());
+        dozaSaUstanovom.setProizvodjac(dozaDetaljnije.getProizvodjac());
+        dozaSaUstanovom.setTip(dozaDetaljnije.getTip());
+        dozaSaUstanovom.setUstanova(oVakcinaciji.getZdravstvenaUstanova());
+        return dozaSaUstanovom;
+    }
+
+    // TODO: ovo prebaciti u RdfRepository
+    private String getPosljednjaPotvrdaIzBazeId(String korisnikId) {
+        AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+        String sparqlCondition = "?potvrda " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + korisnikId + "> ."
+                + "?potvrda " + CREATED_AT_PREDICATE_DB + " ?datum";
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + POTVRDA_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+        List<String[]> affirmationList = new ArrayList<>();
+        while(results.hasNext()) {
+            QuerySolution res = results.nextSolution();
+            String affirmation = res.get("potvrda").toString();
+            String date = res.get("datum").toString();
+            affirmationList.add(new String[]{affirmation.substring(POTVRDA_NAMESPACE_PATH.length()), date}); //uzimamo samo id
+        }
+        query.close();
+        if(affirmationList.isEmpty())
+            return "-1"; // ako nema onda -1
+        affirmationList.sort(Comparator.comparing(o -> LocalDate.parse(o[1])));
+
+        List<String> sortedAffirmation = new ArrayList<>();
+        affirmationList.forEach(affirmation -> sortedAffirmation.add(affirmation[0]));
+        return sortedAffirmation.get(sortedAffirmation.size() - 1);
     }
 }

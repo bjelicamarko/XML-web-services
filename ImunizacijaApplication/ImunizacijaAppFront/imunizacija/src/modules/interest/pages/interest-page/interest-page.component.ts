@@ -22,20 +22,20 @@ export class InterestPageComponent {
 
   registrationFormGroup: FormGroup;
 
-  options: string[] = ['Drzavljanin Republike Srbije', 
-        'Strani drzavljanin sa boravkom u RS', 
-        'Strani drzavljanin bez boravka u RS'];
+  options: string[] = ['Drzavljanin Republike Srbije',
+    'Strani drzavljanin sa boravkom u RS',
+    'Strani drzavljanin bez boravka u RS'];
   selectedValue: string = 'Drzavljanin Republike Srbije';
   userIdType: string = 'DOMACE';
 
   townOptions: string[] = ['Novi Sad', 'Novi Bečej', 'Beograd', 'Subotica'];
   selectedOptionForVaccine: string = 'all';
 
-  checks: Array<string> = ['Pfizer', 'Sputnik V', 
-  'Sinopharm', 'AstraZeneca', 'Moderna'];
-  
-  checkedValues: Array<string> = ['Pfizer', 'Sputnik V', 
-  'Sinopharm', 'AstraZeneca', 'Moderna'];
+  checks: Array<string> = ['Pfizer', 'Sputnik V',
+    'Sinopharm', 'AstraZeneca', 'Moderna'];
+
+  checkedValues: Array<string> = ['Pfizer', 'Sputnik V',
+    'Sinopharm', 'AstraZeneca', 'Moderna'];
 
   Drzavljanstvo: Drzavljanstvo = {
     "@": {
@@ -43,7 +43,7 @@ export class InterestPageComponent {
     }
   };
 
-  Kontakt : Kontakt = {
+  Kontakt: Kontakt = {
     Broj_telefona: {
       "@": {
         xmlns: 'http://www.vakc-sistem.rs/util'
@@ -64,8 +64,8 @@ export class InterestPageComponent {
     }
   }
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder,  private snackBarService: SnackBarService, 
-    private interestService: InterestService) { 
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private snackBarService: SnackBarService,
+    private interestService: InterestService) {
     this.registrationFormGroup = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -84,8 +84,8 @@ export class InterestPageComponent {
 
   createInterestWithConformation() {
     this.dialog.open(ConformationDialogComponent, {
-      data: 
-      { 
+      data:
+      {
         naslov: "Podnosenje interesovanja",
         poruka: "Jeste sigurni da zelite da podnesete novi zahtev za vakcinisanje."
       },
@@ -102,7 +102,7 @@ export class InterestPageComponent {
       return;
     }
 
-    if (this.selectedValue === 'Drzavljanin Republike Srbije') {  
+    if (this.selectedValue === 'Drzavljanin Republike Srbije') {
       this.Drzavljanstvo['util:JMBG'] = this.registrationFormGroup.get('userId')?.value;
     } else if (this.selectedValue === 'Strani drzavljanin sa boravkom u RS') {
       this.Drzavljanstvo['util:Evidencioni_broj_stranca'] = this.registrationFormGroup.get('userId')?.value;
@@ -110,41 +110,44 @@ export class InterestPageComponent {
       this.Drzavljanstvo['util:Br_pasosa'] = this.registrationFormGroup.get('userId')?.value;
     }
 
-    this.Kontakt.Broj_fiksnosg_telefona['#'] = this.registrationFormGroup.get('homeNumber')?.value;
+    if (this.registrationFormGroup.get('homeNumber')?.value === '')
+      this.Kontakt.Broj_fiksnosg_telefona['#'] = '08005775';
+    else
+      this.Kontakt.Broj_fiksnosg_telefona['#'] = this.registrationFormGroup.get('homeNumber')?.value;
     this.Kontakt.Broj_telefona['#'] = this.registrationFormGroup.get('phoneNumber')?.value;
     this.Kontakt.Email_adresa['#'] = this.registrationFormGroup.get('email')?.value;
 
     let arrayOfVaccine: Vakcina[] = [];
     this.checkedValues.forEach((value) => {
-      arrayOfVaccine.push({"@": {Tip: value}})
+      arrayOfVaccine.push({ "@": { Tip: value } })
     })
 
     this.interestService.createInterest(this.getNewInterest(arrayOfVaccine))
-        .subscribe(response => {
-          this.snackBarService.openSnackBar(response.body as string);
-          this.resetStateOfForm();
-        });
+      .subscribe(response => {
+        this.snackBarService.openSnackBar(response.body as string);
+        this.resetStateOfForm();
+      });
 
   }
 
   getNewInterest(arrayOfVaccine: Vakcina[]): Interesovanje {
-    let interesovanje : Interesovanje = { 
-      Interesovanje: 
+    let interesovanje: Interesovanje = {
+      Interesovanje:
       {
         "@": {
-          "xmlns" : "http://www.vakc-sistem.rs/interesovanje",
+          "xmlns": "http://www.vakc-sistem.rs/interesovanje",
           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
           "xmlns:util": "http://www.vakc-sistem.rs/util",
           "xsi:schemaLocation": "http://www.vakc-sistem.rs/interesovanje interesovanje.xsd",
           Id: "1"
         },
-        Drzavljanstvo: this.Drzavljanstvo, 
-        Ime: this.registrationFormGroup.get('firstName')?.value, 
-        Prezime: this.registrationFormGroup.get('lastName')?.value, 
+        Drzavljanstvo: this.Drzavljanstvo,
+        Ime: this.registrationFormGroup.get('firstName')?.value,
+        Prezime: this.registrationFormGroup.get('lastName')?.value,
         Kontakt: this.Kontakt,
-        Opstina_vakcinisanja: this.registrationFormGroup.get('town')?.value, 
-        Vakcina: arrayOfVaccine, 
-        Dobrovoljni_davalac: this.registrationFormGroup.get('donator')?.value, 
+        Opstina_vakcinisanja: this.registrationFormGroup.get('town')?.value,
+        Vakcina: arrayOfVaccine,
+        Dobrovoljni_davalac: this.registrationFormGroup.get('donator')?.value,
         Datum: moment(Date.now()).format('YYYY-MM-DD')
       }
     };
@@ -157,7 +160,7 @@ export class InterestPageComponent {
 
   onChange(_any: any) {
     this.selectedValue = _any;
-    if (this.selectedValue === 'Drzavljanin Republike Srbije') {  
+    if (this.selectedValue === 'Drzavljanin Republike Srbije') {
       this.registrationFormGroup.get('userId')?.setValidators(Validators.compose([Validators.required, jmbgValidator()]));
       this.userIdType = 'DOMACE';
     } else if (this.selectedValue === 'Strani drzavljanin sa boravkom u RS') {
@@ -171,8 +174,8 @@ export class InterestPageComponent {
     this.checkSubmit();
 
   }
-  
-  handleChange(_any: any){
+
+  handleChange(_any: any) {
     this.selectedOptionForVaccine = _any.target.value;
     if (this.selectedOptionForVaccine === 'all') {
       this.resetCheckedValues();
@@ -182,7 +185,7 @@ export class InterestPageComponent {
   }
 
   onCheckChange(_any: any) {
-    if(_any.target.checked){
+    if (_any.target.checked) {
       this.checkedValues.push(_any.target.value);
     } else {
       this.removeCheckedValue(_any.target.value);
@@ -199,7 +202,7 @@ export class InterestPageComponent {
   removeCheckedValue(value: string) {
     const index: number = this.checkedValues.indexOf(value);
     if (index !== -1) {
-        this.checkedValues.splice(index, 1);
+      this.checkedValues.splice(index, 1);
     }
   }
 

@@ -1,7 +1,10 @@
 <h3 md-dialog-title>{{naslovPoruka.naslov}}</h3>
 <div md-dialog-content>{{naslovPoruka.poruka}}</div>
-<div md-dialog-actions style="margin-top: 20px;">
-  <button id='confirm-button' mat-flat-button color="primary" (click)="dialogRef.close(true)"
-    style="margin-right: 10px;">Potvrdi</button>
-  <button mat-flat-button color="warn" (click)="dialogRef.close(false)">Odustani</button>
+<div class="row" style="margin-top: 20px;">
+  <div class="col-6">
+    <button class="btn" id='confirm-button' (click)="dialogRef.close(true)" style="margin-right: 10px;">Potvrdi</button>
+  </div>
+  <div class="col-6">
+    <button class="btn" (click)="dialogRef.close(false)">Odustani</button>
+  </div>
 </div>
