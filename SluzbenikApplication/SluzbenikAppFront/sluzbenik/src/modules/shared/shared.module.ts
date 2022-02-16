@@ -6,6 +6,7 @@ import { ScriptService } from './services/script.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Interceptor } from './interceptors/interceptor.interceptor';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { DocumentProviderService } from './services/document-provider.service';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
   ],
   providers: [
     ScriptService,
+    DocumentProviderService,
     { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
   ]
 })

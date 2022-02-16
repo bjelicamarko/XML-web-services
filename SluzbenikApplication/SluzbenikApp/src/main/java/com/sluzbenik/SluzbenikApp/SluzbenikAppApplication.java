@@ -7,6 +7,10 @@ import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReade
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.StoreRetrieveXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.StoreRetrieveXMLRepository;
+import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,6 +47,11 @@ public class SluzbenikAppApplication {
 //		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
 //		DzsExtractMetadata dzsExtractMetadata = new DzsExtractMetadata(conn);
 //
+		StoreRetrieveXMLRepository.registerDatabase();
+
+//		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
+//
+//		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
 //		GenericXMLRepository<DigitalniZeleniSertifikat> dzsGenericXMLRepository =
 //				new GenericXMLRepository<>();
 //		dzsGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, idGeneratorDZS);
@@ -50,7 +59,6 @@ public class SluzbenikAppApplication {
 //
 //		dzsExtractMetadata.extract(dzs, "978989686");
 
-		StoreRetrieveXMLRepository.registerDatabase();
 		SpringApplication.run(SluzbenikAppApplication.class, args);
 	}
 }

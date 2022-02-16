@@ -15,39 +15,27 @@ import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
 @SpringBootApplication
+@EnableScheduling
 public class ImunizacijaAppApplication {
 
-	private void writeReadFromFileExample(){
-//		GenericXMLReaderWriter<Zahtev> zahtevXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_ZAHTEV_DZS, XML_SCHEMA_PATH_ZAHTEV);
-//		Zahtev zahtevFromXml = zahtevXMLReaderWriter.readFromXml("data/xml_example/zahtev_za_izdavanje_zelenog.xml");
-//
-//		GenericXMLReaderWriter<Interesovanje> interesovanjeXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_INTERESOVANJE, XML_SCHEMA_PATH_INTERESOVANJE);
-//		Interesovanje interesovanjeFromXml = interesovanjeXMLReaderWriter.readFromXml("data/xml_example/interesovanje.xml");
-//
-//		GenericXMLReaderWriter<Saglasnost> saglasnostXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_SAGLASNOST, XML_SCHEMA_PATH_SAGLASNOST);
-//		Saglasnost saglasnostFromXml = saglasnostXMLReaderWriter.readFromXml("data/xml_example/saglasnost_za_imunizaciju.xml");
-//
-//		GenericXMLReaderWriter<PotvrdaOVakcinaciji> potvrdaXMLReaderWriter = new GenericXMLReaderWriter<>(PACKAGE_PATH_POTVRDA, XML_SCHEMA_PATH_POTVRDA);
-//		PotvrdaOVakcinaciji potvrdaOVakcinacijiFromXml = potvrdaXMLReaderWriter.readFromXml("data/xml_example/potvrda_o_vakcinaciji.xml");
-//
-//		zahtevXMLReaderWriter.writeToXml(zahtevFromXml, XML_WRITE_BASE_PATH);
-//		interesovanjeXMLReaderWriter.writeToXml(interesovanjeFromXml, XML_WRITE_BASE_PATH);
-//		saglasnostXMLReaderWriter.writeToXml(saglasnostFromXml, XML_WRITE_BASE_PATH);
-//		potvrdaXMLReaderWriter.writeToXml(potvrdaOVakcinacijiFromXml, XML_WRITE_BASE_PATH);
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 
 	private static void fillRDFDatabase(){
 		/* PRE POKRETANJA UBACITI
-		* 	978989686.xml U ZAHTEV
-		* 	2312312.xml U INTERESOVANJE
-		* 	7654321.xml U ZAGLASNOST
-		* 	1245125.xml U POTVRDU
-		*  */
+		 *     978989686.xml U ZAHTEV
+		 *     2312312.xml U INTERESOVANJE
+		 *     7654321.xml U ZAGLASNOST
+		 *     1245125.xml U POTVRDU
+		 *  */
 		IdGeneratorPosInt idGeneratorPosInt = new IdGeneratorPosInt();
 
 		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
@@ -151,11 +139,6 @@ public class ImunizacijaAppApplication {
 //						new IdGeneratorPosInt());
 //		// CITANJE
 //		Interesovanje i = interesovanjeRepository.retrieveXML("2312312.xml");
-	}
-
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
 	}
 
 	public static void main(String[] args) {

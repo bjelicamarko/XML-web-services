@@ -15,7 +15,7 @@ public class TerminDTO {
 
     @XmlValue
     @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger value;
+    protected int value;
 
     public TerminDTO() {}
 
@@ -35,11 +35,11 @@ public class TerminDTO {
         this.datum = datum;
     }
 
-    public BigInteger getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(BigInteger value) {
+    public void setValue(int value) {
         this.value = value;
     }
 }

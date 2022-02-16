@@ -8,6 +8,7 @@
         <Datum_rodjenja xmlns="http://www.vakc-sistem.rs/util">1999-01-01</Datum_rodjenja>
         <Pol xmlns="http://www.vakc-sistem.rs/util">Musko</Pol>
         <JMBG xmlns="http://www.vakc-sistem.rs/util">0101999103012</JMBG>
+        <Broj_pasosa xmlns="http://www.vakc-sistem.rs/util">5685858787</Broj_pasosa>
     </Podaci_o_primaocu>
     <Podaci_o_sertifikatu>
         <Broj_sertifikata>1234567</Broj_sertifikata>

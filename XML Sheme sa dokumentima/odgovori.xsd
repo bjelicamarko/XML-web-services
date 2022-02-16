@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    vc:minVersion="1.1" targetNamespace="http://www.vakc-sistem.rs/odgovori"
+    xmlns="http://www.vakc-sistem.rs/odgovori">
+
+    <xs:element name="Odgovori">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="Odgovor">
+                    <xs:annotation>
+                            <xs:appinfo>
+                                <jxb:property name="Odgovori"/>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Vakcina" type="xs:string">
+	                                <xs:annotation>
+			                            <xs:appinfo>
+			                                <jxb:property name="Vakcine"/>
+			                            </xs:appinfo>
+			                        </xs:annotation>
+			                    </xs:element>
+                            </xs:sequence>
+                            <xs:element minOccurs="0" name="Grad">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="Termin">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="Vrednost" type="xs:nonNegativeInteger"/>
+                            <xs:element minOccurs="0" name="Ustanova">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="Dodeljena_vakcina">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="Razlog">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="Email">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Indikator" use="required">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="2"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

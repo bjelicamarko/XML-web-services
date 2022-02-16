@@ -6,4 +6,7 @@ public interface PotvrdaService {
     PotvrdaOVakcinaciji findOneById(String id);
 
     PotvrdaOVakcinaciji findLastOneByUser(String userID);
+    byte[] generateInteresovanjePDF(String id) throws Exception;
+
+    String generateInteresovanjeHTML(String id) throws Exception;
 }

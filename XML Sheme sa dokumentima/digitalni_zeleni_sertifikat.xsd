@@ -9,7 +9,7 @@
     <xs:element name="Digitalni_zeleni_sertifikat">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG"> </xs:element>
+                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG_BrPasosa"> </xs:element>
                 <xs:element name="Podaci_o_sertifikatu">
                     <xs:complexType>
                         <xs:sequence>

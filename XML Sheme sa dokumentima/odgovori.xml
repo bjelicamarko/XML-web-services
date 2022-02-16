@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Odgovori xmlns="http://www.vakc-sistem.rs/odgovori"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.vakc-sistem.rs/odgovori odgovori.xsd">
+    <Odgovor Indikator="Da">
+        <Vakcina>Pfizer</Vakcina>
+        <Grad>Becej</Grad>
+        <Termin>2022-02-15 11:00</Termin>        
+        <Vrednost>4</Vrednost>
+        <Ustanova>Glavna Bolnica Beceja</Ustanova>
+        <Dodeljena_vakcina>Pfizer</Dodeljena_vakcina>
+        <Razlog>Uspesno pronadjen Termin!</Razlog>
+        <Email>marko@markovic.gmail</Email>
+    </Odgovor>
+    <Odgovor Indikator="Ne">
+        <Vakcina>Pfizer</Vakcina>
+        <Vakcina>Sputnik V</Vakcina>
+        <Grad>Becej</Grad>
+        <Termin>2022-02-15 11:00</Termin>
+        <Vrednost>4</Vrednost>
+        <Ustanova>Glavna Bolnica Beceja</Ustanova>
+        <Dodeljena_vakcina>Pfizer</Dodeljena_vakcina>
+        <Razlog>Uspesno pronadjen Termin!</Razlog>
+        <Email>marko@markovic.gmail</Email>
+    </Odgovor>
+</Odgovori>

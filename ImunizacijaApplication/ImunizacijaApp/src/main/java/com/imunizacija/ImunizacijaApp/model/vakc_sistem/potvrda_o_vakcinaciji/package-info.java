@@ -5,5 +5,12 @@
 // Generated on: 2022.01.10 at 10:00:51 PM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.vakc-sistem.rs/potvrda-o-vakcinaciji", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(
+        namespace = "http://www.vakc-sistem.rs/potvrda-o-vakcinaciji",
+        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
+        xmlns = {
+            @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.vakc-sistem.rs/potvrda-o-vakcinaciji", prefix = ""),
+            @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.vakc-sistem.rs/util", prefix = "util")
+    }
+)
 package com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji;

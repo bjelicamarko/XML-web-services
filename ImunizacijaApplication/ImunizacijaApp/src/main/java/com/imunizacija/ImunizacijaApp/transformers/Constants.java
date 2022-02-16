@@ -2,6 +2,8 @@ package com.imunizacija.ImunizacijaApp.transformers;
 
 public class Constants {
 
+    public static final String URL_ROOT = "http://localhost:9001/api/";
+
     public static final String FOP_CONFIG = "data/xsl_documents/fop.xconf";
 
     public static final String INTERESOVANJE_XSL_FO_PATH = "data/xsl_documents/interesovanje_fo.xsl";

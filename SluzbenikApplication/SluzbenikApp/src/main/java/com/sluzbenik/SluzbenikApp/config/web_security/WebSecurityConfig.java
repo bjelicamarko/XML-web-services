@@ -61,6 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/login").permitAll()
 				.antMatchers("/api/users/test-create-sluzbenik").permitAll() //todo izbrisati
 				.antMatchers("/api/sistemski-magacin/dobaviTermin").permitAll() // Komunikacija beckova
+				.antMatchers("/api/izvestaji/dobaviIzvestaje/*").permitAll() // Komunikacija beckova
+				.antMatchers("/api/sistemski-magacin/dobaviDozeZaostavljene").permitAll() // Komunikacija beckova
 				.anyRequest().authenticated().and()
 				.cors().and()
 				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),

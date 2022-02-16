@@ -40,4 +40,5 @@ public class Constants {
 
     public static final String XML_SCHEMA_PATH_POTVRDA = "data/xml_example/potvrda_o_vakcinaciji.xsd";
     public static final String PACKAGE_PATH_POTVRDA = "com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji";
+    public static final String PREDICATE_DZS_CREATED_AT = PREDICATE_NAMESPACE + "createdAt";
 }

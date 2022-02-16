@@ -1,6 +1,8 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
-import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.GradVakcineDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.MapaDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.VakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
@@ -20,6 +22,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.template.XUpdateTemplate.UPDATE_SISTEMSKI_MAGACIN;
@@ -32,6 +35,27 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
         this.idGenerator = new IdGeneratorPosInt();
         this.packagePath = PACKAGE_PATH_TERMINI;
         this.collectionPath = COLLECTION_PATH_TERMINI;
+    }
+
+    public void addRemoveVaccine(String grad, String nazivProizvodjaca, int vrijednost) {
+        String contextXPath = String.format("//Grad[@Ime='%s']/Vakcina[@Naziv_proizvodjaca='%s']",
+                grad, nazivProizvodjaca);
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            String patch = String.valueOf(vrijednost);
+
+            System.out.println("[INFO] Updating " + contextXPath + " node.");
+            long mods = xupdateService.updateResource(XML_TERMIN,
+                    String.format(UPDATE_SISTEMSKI_MAGACIN, contextXPath, patch));
+            System.out.println("[INFO] " + mods + " modifications processed.");
+
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void updateVaccine(GradVakcinaKolicinaDTO gradVakcinaKolicinaDTO) {
@@ -96,9 +120,9 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
         return vakcine;
     }
 
-    public GradDTO getSelectedCity(GradVakcineDTO gradVakcineDTO) {
+    public GradDTO getSelectedCity(OdgovorTerminDTO odgovorTerminDTO) {
         String xpathExp = String.format("doc(\"%s\")//Grad[@Ime=\"%s\"]",
-                "termini.xml", gradVakcineDTO.getGrad());
+                "termini.xml", odgovorTerminDTO.getGrad());
         try {
             Collection col = getOrCreateCollection(this.collectionPath);
             XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -118,5 +142,40 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateTermin(OdgovorTerminDTO odgovor) {
+        String contextXPath = String.format("//Grad[@Ime='%s']/Ustanova[@naziv='%s']",
+                odgovor.getGrad(), odgovor.getUstanova());
+
+        try {
+            Collection col = getOrCreateCollection(this.collectionPath);
+            XUpdateQueryService xupdateService = (XUpdateQueryService) col.getService("XUpdateQueryService", "1.0");
+            xupdateService.setProperty("indent", "yes");
+
+            String patch = String.format("<Termin datum=\"%s\">%s</Termin>", odgovor.getTermin(),
+                    odgovor.getVrednost());
+
+            System.out.println("[INFO] Updating " + contextXPath + " node.");
+            long mods = xupdateService.updateResource(XML_TERMIN,
+                    String.format(UPDATE_SISTEMSKI_MAGACIN, contextXPath, patch));
+            System.out.println("[INFO] " + mods + " modifications processed.");
+
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void returnVaccineToStore(VakcinaKolicinaDTO vakcinaKolicinaDTO) {
+        for (Map.Entry<String, MapaDTO> el : vakcinaKolicinaDTO.getMapa().entrySet()) {
+            List<VakcinaDTO> vakcine = this.getVaccineStatusOfCity(el.getKey());
+            for (VakcinaDTO v : vakcine) {
+                if (el.getValue().getMapa().containsKey(v.getNazivProizvodjaca())) {
+                    this.addRemoveVaccine(el.getKey(), v.getNazivProizvodjaca(), v.getValue() +
+                            el.getValue().getMapa().get(v.getNazivProizvodjaca()));
+                }
+
+            }
+        }
     }
 }

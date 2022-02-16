@@ -9,9 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 
 public interface KorisnikService extends UserDetailsService {
+    
     Korisnik registerUser(RegistrationDTO registrationDTO) throws UserException;
 
     DocumentsOfUserDTO getDocumentsOfUser(String userID);
 
     List<Korisnik> getCitizens() throws UserException;
+    Korisnik findOneById(String id);
 }

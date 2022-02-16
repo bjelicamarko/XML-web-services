@@ -10,7 +10,5 @@ import { NaslovPoruka } from '../../models/NaslovPoruka';
 export class ConformationDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<ConformationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public naslovPoruka: NaslovPoruka) {}
-
-
+    @Inject(MAT_DIALOG_DATA) public naslovPoruka: NaslovPoruka) { }
 }
