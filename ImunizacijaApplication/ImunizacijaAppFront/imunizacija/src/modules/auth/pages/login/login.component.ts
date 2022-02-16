@@ -45,10 +45,10 @@ export class LoginComponent {
         const info = jwt.decodeToken(token);
         const role = info.role;
         //todo srediti
-        this.router.navigate(["imunizacija-app/interesovanje/novo-interesovanje"]);
-        // todo putanje nakon login-a
-        // if (role === "ADMINISTRATOR") {
-        //   this.router.navigate(["rest-app/tables/tables-admin"]);
+        if (role === "CITIZEN")
+          this.router.navigate(["imunizacija-app/interesovanje/novo-interesovanje"]);
+        if (role === "DOCTOR")
+          this.router.navigate(["imunizacija-app/saglasnost/drugi-deo-saglasnosti"]);
         // }
         // else if (role === "MANAGER") {
         //   this.router.navigate(["rest-app/employees/employees-manager"]);

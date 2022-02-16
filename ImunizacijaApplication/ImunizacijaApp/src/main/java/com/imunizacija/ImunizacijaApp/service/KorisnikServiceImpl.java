@@ -22,6 +22,9 @@ public class KorisnikServiceImpl implements KorisnikService{
     PasswordEncoder passwordEncoder;
 
     @Override
+    public Korisnik findOneById(String id) { return korisnikRepository.retrieveXML(id); }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Korisnik korisnik = korisnikRepository.retrieveXML(username + ".xml");
         if (korisnik == null)

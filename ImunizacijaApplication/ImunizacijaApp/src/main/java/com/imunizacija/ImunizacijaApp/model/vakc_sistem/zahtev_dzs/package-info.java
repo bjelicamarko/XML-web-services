@@ -5,5 +5,12 @@
 // Generated on: 2022.01.08 at 06:14:28 PM CET 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.vakc-sistem.rs/zahtev-dzs", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(
+        namespace = "http://www.vakc-sistem.rs/zahtev-dzs",
+        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
+        xmlns = {
+                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.vakc-sistem.rs/zahtev-dzs", prefix = ""),
+                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.vakc-sistem.rs/util", prefix = "util")
+        }
+)
 package com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs;

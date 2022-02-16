@@ -19,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -36,7 +35,6 @@ public class KorisnikController {
     private AuthenticationManager authenticationManager;
 
 
-
     //todo izbrisati ova dva dole kasnije
     //sluze samo kao endpoint za dodavanje nekih basic korisnika, jos nisam napravio registraciju
 
@@ -45,6 +43,15 @@ public class KorisnikController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<Korisnik> findOne(@PathVariable String id) {
+        Korisnik korisnik = korisnikService.findOneById(id);
+        if(korisnik == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(korisnik, HttpStatus.OK);
+    }
 
     @PostMapping("/test-create-citizen")
     public String createUserCitizenTest() throws UserException{

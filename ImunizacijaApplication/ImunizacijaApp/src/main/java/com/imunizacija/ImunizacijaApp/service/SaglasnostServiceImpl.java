@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.xml.transform.TransformerException;
-
 import java.io.IOException;
-import java.io.StringWriter;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
@@ -56,7 +54,13 @@ public class SaglasnostServiceImpl implements SaglasnostService{
 
     @Override
     public String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException {
-        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_PATH, null);
         return htmlString;
+    }
+    
+    @Override
+    public void updateConsent(String saglasnost) {
+        Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
+        this.repository.storeXML(s, false);
     }
 }
