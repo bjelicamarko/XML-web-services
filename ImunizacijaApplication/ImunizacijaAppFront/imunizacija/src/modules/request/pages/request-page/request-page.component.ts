@@ -15,6 +15,13 @@ import { RequestService } from '../../services/request.service';
   styleUrls: ['./request-page.component.scss']
 })
 export class RequestPageComponent implements OnInit {
+  
+  public tools: object = {
+    items: ['Undo', 'Redo', '|',
+        'Bold', 'Italic']
+  };
+  public iframe: object = { enable: true };
+  public height: number = 200;
 
   registrationFormGroup: FormGroup;
 

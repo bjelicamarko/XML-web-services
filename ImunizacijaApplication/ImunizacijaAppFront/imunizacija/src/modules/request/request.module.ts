@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { RequestRoutes } from './request.routes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     RouterModule.forChild(RequestRoutes),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RichTextEditorModule,
+    RichTextEditorAllModule
   ]
 })
 export class RequestModule { }

@@ -10,5 +10,6 @@ export const InterestRoutes: Routes = [
         component: InterestPageComponent, //todo dodati role guardove svuda
         canActivate: [RoleGuard],
         data: { expectedRoles: "CITIZEN" },
-    }
+    },
+ 
 ]
