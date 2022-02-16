@@ -101,11 +101,13 @@
             <div class="form-group row my_margin">
                 <label for="reason" class="col-3 col-form-label">Razlog za podnošenje:</label>
                 <div class="col-6">
-                    <textarea class="form-control" rows="6" type="text" id="reason" placeholder="Unesite razlog podnošenja"
-                        formControlName="reason"></textarea>
-                    <small class="text-danger"
-                        *ngIf="f['reason'].touched && f['reason'].errors && f['reason'].errors['required']">
-                        Potrebno je da unesete razlog za podnošenje sertifikata</small>
+                    <div>
+                        <ejs-richtexteditor id='iframeRTE' [toolbarSettings]='tools' [iframeSettings]='iframe' [height]='height'>
+                            <ng-template #valueTemplate>
+                                <p></p>
+                            </ng-template>
+                        </ejs-richtexteditor>
+                    </div>
                 </div>
             </div>
 
