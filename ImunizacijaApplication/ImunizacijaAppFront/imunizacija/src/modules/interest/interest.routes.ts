@@ -2,7 +2,6 @@ import { Routes } from "@angular/router";
 import { RoleGuard } from "../auth/guards/role/role.guard";
 
 import { InterestPageComponent } from "./pages/interest-page/interest-page.component";
-import { TestPageComponent } from "./pages/test-page/test-page.component";
 
 export const InterestRoutes: Routes = [
     {
@@ -12,9 +11,5 @@ export const InterestRoutes: Routes = [
         canActivate: [RoleGuard],
         data: { expectedRoles: "CITIZEN" },
     },
-    {
-        path: "test",
-        pathMatch: 'prefix',
-        component: TestPageComponent
-    }
+ 
 ]

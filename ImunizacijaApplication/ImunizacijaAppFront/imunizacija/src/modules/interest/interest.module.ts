@@ -7,15 +7,10 @@ import { SharedModule } from '../shared/shared.module';
 
 import { InterestPageComponent } from './pages/interest-page/interest-page.component';
 import { InterestRoutes } from './interest.routes';
-import { TestPageComponent } from './pages/test-page/test-page.component';
-
-import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
-import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 @NgModule({
   declarations: [
     InterestPageComponent,
-    TestPageComponent
   ],
   imports: [
     CommonModule,
@@ -23,8 +18,6 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
     RouterModule.forChild(InterestRoutes),
     FormsModule,
     ReactiveFormsModule,
-    RichTextEditorModule,
-    RichTextEditorAllModule,
   ]
 })
 export class InterestModule { }
