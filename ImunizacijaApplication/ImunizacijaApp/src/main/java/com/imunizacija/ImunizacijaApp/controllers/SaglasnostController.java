@@ -2,6 +2,7 @@ package com.imunizacija.ImunizacijaApp.controllers;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.service.SaglasnostService;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.SearchResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,6 +50,25 @@ public class SaglasnostController {
             return new ResponseEntity<>(saglasnostService.generateSaglasnostHTML(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/searchByJMBG", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<SearchResults> searchByJMBG(@RequestParam String jmbg, @RequestParam String searchText) {
+        try {
+            return new ResponseEntity<>(saglasnostService.searchUserDocumentsJmbg(jmbg, searchText), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/searchByPasos", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<SearchResults> searchByPasos(@RequestParam String brojPasosa, @RequestParam String searchText) {
+        try {
+            return new ResponseEntity<>(saglasnostService.searchUserDocumentsPasos(brojPasosa, searchText), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

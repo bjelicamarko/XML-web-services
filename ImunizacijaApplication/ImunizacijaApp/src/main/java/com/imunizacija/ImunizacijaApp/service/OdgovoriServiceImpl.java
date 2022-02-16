@@ -44,7 +44,7 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     }
 
     @Override
-    @Scheduled(cron = "0 57 21 * * ?", zone = "CET")
+//    @Scheduled(cron = "0 57 21 * * ?", zone = "CET")
     public void posaljiOdgovore() throws MessagingException {
         List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore();
         HttpHeaders headers = new HttpHeaders();
