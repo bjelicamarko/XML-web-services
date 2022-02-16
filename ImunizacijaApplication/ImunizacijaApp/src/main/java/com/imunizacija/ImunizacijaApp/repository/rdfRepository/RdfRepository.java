@@ -120,4 +120,32 @@ public class RdfRepository {
         documentsOfUserDTO.setZahtevDZSList(this.getRequestForCertificateFromUser(userID));
         return documentsOfUserDTO;
     }
+
+    public String getPosljednjaPotvrdaIzBazeId(String korisnikId) {
+        AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
+        String sparqlCondition = "?potvrda " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + korisnikId + "> ."
+                + "?potvrda " + CREATED_AT_PREDICATE_DB + " ?datum";
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + POTVRDA_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+        List<String[]> affirmationList = new ArrayList<>();
+        while(results.hasNext()) {
+            QuerySolution res = results.nextSolution();
+            String affirmation = res.get("potvrda").toString();
+            String date = res.get("datum").toString();
+            affirmationList.add(new String[]{affirmation.substring(POTVRDA_NAMESPACE_PATH.length()), date}); //uzimamo samo id
+        }
+        query.close();
+        if(affirmationList.isEmpty())
+            return "-1"; // ako nema onda -1
+        affirmationList.sort(Comparator.comparing(o -> LocalDate.parse(o[1])));
+
+        List<String> sortedAffirmation = new ArrayList<>();
+        affirmationList.forEach(affirmation -> sortedAffirmation.add(affirmation[0]));
+        return sortedAffirmation.get(sortedAffirmation.size() - 1);
+    }
 }

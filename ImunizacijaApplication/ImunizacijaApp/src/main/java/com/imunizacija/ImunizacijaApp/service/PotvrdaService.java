@@ -4,4 +4,6 @@ import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.Po
 
 public interface PotvrdaService {
     PotvrdaOVakcinaciji findOneById(String id);
+
+    PotvrdaOVakcinaciji findLastOneByUser(String userID);
 }

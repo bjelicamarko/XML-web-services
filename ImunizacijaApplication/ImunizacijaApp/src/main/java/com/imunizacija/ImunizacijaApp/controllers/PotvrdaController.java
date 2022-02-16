@@ -26,4 +26,13 @@ public class PotvrdaController {
         }
         return new ResponseEntity<>(potvrda, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/korisnik/{userId}", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<PotvrdaOVakcinaciji> findLastOneFromUser(@PathVariable String userId){
+        PotvrdaOVakcinaciji potvrda = potvrdaService.findLastOneByUser(userId);
+        if(potvrda == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(potvrda, HttpStatus.OK);
+    }
 }

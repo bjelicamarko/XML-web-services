@@ -37,4 +37,7 @@ public class Constants {
     //predicates
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
     public static final String REF_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/refBy>";
+
+    public static final String XML_SCHEMA_PATH_POTVRDA = "data/xml_example/potvrda_o_vakcinaciji.xsd";
+    public static final String PACKAGE_PATH_POTVRDA = "com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji";
 }

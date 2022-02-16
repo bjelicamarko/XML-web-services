@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/login").permitAll()
 				.antMatchers("/api/users/registracija").permitAll()
 				.antMatchers("/api/users/").permitAll() //todo pogledati
+				.antMatchers("/api/potvrda/korisnik/**").permitAll() //todo pogledati
 				.antMatchers("/api/users/dokumentacija/**").permitAll() //todo pogledati da li moze drugacije malko
 				.antMatchers("/api/users/test-create-citizen").permitAll() //todo izbrisati
 				.antMatchers("/api/users/test-create-doctor").permitAll() //todo izbrisati
