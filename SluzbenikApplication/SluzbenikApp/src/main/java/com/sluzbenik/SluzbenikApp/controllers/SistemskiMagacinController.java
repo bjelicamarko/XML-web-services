@@ -40,6 +40,7 @@ public class SistemskiMagacinController {
     }
 
     //server.port = 9000
+    // sistem dodjeljuje termine korisnicima
     @PostMapping(value = "/dobaviTermin", consumes = MediaType.APPLICATION_XML_VALUE,
             produces = MediaType.APPLICATION_XML_VALUE )
     public ResponseEntity<OdgovorTerminDTO> getTermin(@RequestBody OdgovorTerminDTO odgovorTerminDTO) {
@@ -47,10 +48,12 @@ public class SistemskiMagacinController {
     }
 
     //server.port = 9000
+    // sistem vraca doze vakcina u magacin koje nisu iskoriscene
     @PostMapping(value = "/dobaviDozeZaostavljene", consumes = MediaType.APPLICATION_XML_VALUE,
             produces = MediaType.APPLICATION_XML_VALUE )
-    public ResponseEntity<VakcinaKolicinaDTO> dobaviDozeZaostavljene(@RequestBody VakcinaKolicinaDTO vakcinaKolicinaDTO) {
+    public ResponseEntity<String> dobaviDozeZaostavljene(@RequestBody VakcinaKolicinaDTO vakcinaKolicinaDTO) {
         System.out.println(vakcinaKolicinaDTO);
-        return new ResponseEntity<>(vakcinaKolicinaDTO, HttpStatus.OK);
+        this.sistemskiMagacinService.returnVaccineToStore(vakcinaKolicinaDTO);
+        return new ResponseEntity<>(vakcinaKolicinaDTO.toString(), HttpStatus.OK);
     }
 }

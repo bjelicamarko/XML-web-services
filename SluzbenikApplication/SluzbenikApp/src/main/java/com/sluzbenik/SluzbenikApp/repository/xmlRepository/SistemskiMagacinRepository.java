@@ -1,6 +1,8 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.MapaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.VakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
@@ -20,6 +22,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.template.XUpdateTemplate.UPDATE_SISTEMSKI_MAGACIN;
@@ -160,6 +163,19 @@ public class SistemskiMagacinRepository extends GenericXMLRepository<SistemskiMa
 
         } catch (XMLDBException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void returnVaccineToStore(VakcinaKolicinaDTO vakcinaKolicinaDTO) {
+        for (Map.Entry<String, MapaDTO> el : vakcinaKolicinaDTO.getMapa().entrySet()) {
+            List<VakcinaDTO> vakcine = this.getVaccineStatusOfCity(el.getKey());
+            for (VakcinaDTO v : vakcine) {
+                if (el.getValue().getMapa().containsKey(v.getNazivProizvodjaca())) {
+                    this.addRemoveVaccine(el.getKey(), v.getNazivProizvodjaca(), v.getValue() +
+                            el.getValue().getMapa().get(v.getNazivProizvodjaca()));
+                }
+
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.service;
 
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.VakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.*;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.SistemskiMagacinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,11 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
         return odgovorTerminDTO;
     }
 
+    @Override
+    public void returnVaccineToStore(VakcinaKolicinaDTO vakcinaKolicinaDTO) {
+        this.sistemskiMagacinRepository.returnVaccineToStore(vakcinaKolicinaDTO);
+    }
+
     private String checkVaccineStatus(List<String> desiredVaccines, List<VakcinaDTO> vakcine) {
         for (String vaccine: desiredVaccines){
             for (VakcinaDTO v : vakcine) // zeljena je vakcina i ima dovoljna kolicina
@@ -121,4 +127,6 @@ public class SistemskiMagacinServiceImpl implements SistemskiMagacinService {
         datum = dateOfTermin.format(formatter);
         return datum;
     }
+
+
 }

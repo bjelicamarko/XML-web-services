@@ -53,14 +53,14 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     }
 
     @Override
-    @Scheduled(cron = "0 10 22 * * ?", zone = "CET")
+    @Scheduled(cron = "0 25 16 * * ?", zone = "CET")
     public VakcinaKolicinaDTO vratiDozeUMagacin() {
         VakcinaKolicinaDTO vakcinaKolicinaDTO = new VakcinaKolicinaDTO();
         List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore(LocalDate.now().toString());
         for (Odgovori.Odgovor o : odgovori) {
             if (!vakcinaKolicinaDTO.getMapa().containsKey(o.getGrad())) {
                 vakcinaKolicinaDTO.getMapa().put(o.getGrad(), new MapaDTO());
-                vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().put(o.getGrad(), 1);
+                vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().put(o.getDodeljenaVakcina(), 1);
             } else {
                 int value = vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().get(o.getDodeljenaVakcina());
                 vakcinaKolicinaDTO.getMapa().get(o.getGrad()).getMapa().put(o.getDodeljenaVakcina(), value+1);
@@ -72,6 +72,15 @@ public class OdgovoriServiceImpl implements OdgovoriService{
             odgovorTerminDTO.setEmail(o.getEmail());
             this.azurirajOdgovor(odgovorTerminDTO);
         }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<VakcinaKolicinaDTO> requestUpdate = new HttpEntity<>(vakcinaKolicinaDTO, headers);
+        ResponseEntity<String> entity = restTemplate
+                .exchange("http://localhost:9000/api/sistemski-magacin/dobaviDozeZaostavljene",
+               HttpMethod.POST, requestUpdate, String.class);
+
+        System.out.println(entity.getBody());
         return vakcinaKolicinaDTO;
     }
 

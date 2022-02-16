@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.service;
 
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.OdgovorTerminDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.VakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.GradVakcinaKolicinaDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.termini_dto.VakcinaDTO;
@@ -18,4 +19,6 @@ public interface SistemskiMagacinService {
     GradDTO getSelectedCity(OdgovorTerminDTO odgovorTerminDTO);
 
     OdgovorTerminDTO getTermin(OdgovorTerminDTO odgovorTerminDTO);
+
+    void returnVaccineToStore(VakcinaKolicinaDTO vakcinaKolicinaDTO);
 }
