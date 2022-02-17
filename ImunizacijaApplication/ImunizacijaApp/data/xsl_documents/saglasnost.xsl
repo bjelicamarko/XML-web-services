@@ -55,7 +55,25 @@
                     </xsl:otherwise>
                 </xsl:choose>
                 <p>Datum podnosenja saglasnosti: <xsl:value-of select="//b:Saglasnost/b:Datum"/></p>
-                <!-- Treba dodati dio o vakcinaciji -->
+                <p>##########################################################</p>
+                <p>Zdravstvena ustanova: <xsl:value-of select="//b:Zdravstvena_ustanova"/> </p>
+                <p>Punkt: <xsl:value-of select="//b:Punkt"/></p>
+                <p>Podaci o lekaru koji je izvrsio vakcinaciju:</p>
+                <p> - Ime: <xsl:value-of select="//b:Podaci_o_lekaru/b:Ime"/></p>
+                <p> - Prezime: <xsl:value-of select="//b:Podaci_o_lekaru/b:Prezime"/></p>
+                <p> - Faksimil: <xsl:value-of select="//b:Podaci_o_lekaru/b:Faksimil"/></p>
+                <p> - Broj telefona: <xsl:value-of select="//b:Podaci_o_lekaru/b:Broj_telefona"/></p>
+                <p>Doza:</p>
+                <p> - Datum: <xsl:value-of select="//b:Doza/util:Datum"/></p>
+                <p> - Serija: <xsl:value-of select="//util:Serija"/></p>
+                <p> - Proizvodjac: <xsl:value-of select="//util:Proizvodjac"/></p>
+                <p> - Tip: <xsl:value-of select="//util:Tip"/></p>
+                <p> - Ekstremitet: <xsl:value-of select="//util:Ekstremitet"/></p>
+                <p> - Nezeljena rekacija: <xsl:value-of select="//util:Nezeljena_rekacija"/></p>
+                <p>Kontraindikacije:</p>
+                <p> - Dijagnoza: <xsl:value-of select="//b:Privremena_kontraindikacija/b:Dijagnoza"/></p>
+                <p> - Datum: <xsl:value-of select="//b:Privremena_kontraindikacija/b:Datum"/></p>
+                <p> - Odluka komisije o trajnim kontraindikacijama: <xsl:value-of select="//b:Kontraindikacije/b:Odluka_komisije_o_trajnim"/></p>
             </body>
         </html>
     </xsl:template>

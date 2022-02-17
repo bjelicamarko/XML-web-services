@@ -117,9 +117,7 @@
                                         <xs:element name="Faksimil" type="xs:string"/>
                                         <xs:element name="Broj_telefona">
                                             <xs:simpleType>
-                                                <xs:restriction base="xs:string">
-                                                  <xs:pattern value="[0-9]{7,12}"/>
-                                                </xs:restriction>
+                                                <xs:restriction base="xs:string"/>
                                             </xs:simpleType>
                                         </xs:element>
                                         <xs:element name="JMBG">

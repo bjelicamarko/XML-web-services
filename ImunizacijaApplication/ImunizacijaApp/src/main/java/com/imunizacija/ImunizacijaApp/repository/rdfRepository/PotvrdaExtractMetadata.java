@@ -3,6 +3,7 @@ package com.imunizacija.ImunizacijaApp.repository.rdfRepository;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.DozaSaUstanovom;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Drzavljanstvo;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.ConnectionPropertiesFusekiJena;
 import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
 import org.apache.jena.query.QueryExecution;
@@ -11,7 +12,6 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.*;
 import org.springframework.stereotype.Component;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,12 +61,13 @@ public class PotvrdaExtractMetadata extends ExtractMetadata{
         Literal date = model.createLiteral(potvrda.getPodaciOPotvrdi().getDatumIzdavanja().toString());
         model.add(model.createStatement(resource, createdAt, date));
 
+        String personId = getPersonIdentifier(potvrda.getPodaciOPrimaocu().getDrzavljanstvo());
         Property issuedTo = model.createProperty(PREDICATE_NAMESPACE, "issuedTo");
-        Resource person = model.createResource(OSOBA_NAMESPACE_PATH + potvrda.getPodaciOPrimaocu().getJMBG());
+        Resource person = model.createResource(OSOBA_NAMESPACE_PATH + personId);
         model.add(model.createStatement(resource, issuedTo, person));
 
         Property refBy = model.createProperty(PREDICATE_NAMESPACE, "refBy");
-        for (String saglasnostUri: getSaglasnostIds(potvrda.getPodaciOPrimaocu().getJMBG()))
+        for (String saglasnostUri: getSaglasnostIds(personId))
         {
             System.out.println(saglasnostUri);
             Resource saglasnost = model.createResource(saglasnostUri);
@@ -96,5 +97,17 @@ public class PotvrdaExtractMetadata extends ExtractMetadata{
             saglasnostIds.add(results.nextSolution().get("s").toString());
         query.close();
         return saglasnostIds;
+    }
+
+    private String getPersonIdentifier(Drzavljanstvo drzavljanstvo) {
+
+        if(drzavljanstvo.getTip().equals("DOMACE")){
+            return drzavljanstvo.getJMBG();
+        }
+        else if (drzavljanstvo.getTip().equals("STRANO_SA_BORAVKOM")){
+            return drzavljanstvo.getEvidencioniBrojStranca();
+        }
+        else // STRANO_BEZ_BORAVKA
+            return drzavljanstvo.getBrPasosa();
     }
 }

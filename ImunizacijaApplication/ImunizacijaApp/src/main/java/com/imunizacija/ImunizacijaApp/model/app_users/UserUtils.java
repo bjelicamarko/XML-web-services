@@ -31,7 +31,7 @@ public class UserUtils {
 
         String jmbgPattern = "(0[1-9]|[12]\\d|3[01])(0[1-9]|1[0-2])\\d{3}\\d{2}\\d{4}";
 
-        String passportPattern = "^[A-Z0-9&lt;]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9&lt;]{14}[0-9]{2}$";  //pattern za mail
+        String passportPattern = "[0-9A-Z]{6,12}";
 
         if (user.getNationalityType().equalsIgnoreCase("RS") && !Pattern.compile(jmbgPattern).matcher(user.getUserId()).matches()){
             throw new UserException("Nevalidan JMBG!");

@@ -10,7 +10,17 @@
     <xs:element name="Potvrda_o_vakcinaciji">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG"> </xs:element>
+                <xs:element name="Podaci_o_primaocu">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="util:Licni_podaci">
+                                <xs:sequence>
+                                    <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"/>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="Podaci_o_vakcini">
                     <xs:complexType>
                         <xs:sequence>
@@ -43,7 +53,7 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute name="Sifra_potvrde" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="Id" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

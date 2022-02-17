@@ -16,7 +16,7 @@ public interface PotvrdaService {
 
     String generatePotvrdaHTML(String id) throws Exception;
 
-    void generatePotvrdaOVakcinaciji(Saglasnost s) throws DatatypeConfigurationException, MessagingException;
-
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
+    
+    void generatePotvrdaOVakcinaciji(Saglasnost s) throws Exception;
 }
