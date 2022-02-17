@@ -5,8 +5,11 @@ import com.sluzbenik.SluzbenikApp.model.vakc_sistem.izvestaj.Izvestaj;
 import com.sluzbenik.SluzbenikApp.service.IzvestajService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import javax.xml.datatype.DatatypeConfigurationException;
 
 @RestController
 @RequestMapping("api/izvestaji")
@@ -48,11 +51,13 @@ public class IzvestajController {
 
     //server.port = 9000
     @GetMapping(value = "/dobaviIzvestaje/{dateFrom}&{dateTo}", produces = MediaType.APPLICATION_XML_VALUE )
-    public ResponseEntity<IzvestajDTO> dobaviIzvestaje(@PathVariable String dateFrom, @PathVariable String dateTo) {
+    @PreAuthorize("hasRole('MEDICAL_OFFICIAL')")
+    public ResponseEntity<String> dobaviIzvestaje(@PathVariable String dateFrom, @PathVariable String dateTo) throws DatatypeConfigurationException {
         ResponseEntity<IzvestajDTO> entity = restTemplate.getForEntity(
                 String.format("http://localhost:9001/api/izvestaji/dobaviIzvestaje/%s&%s", dateFrom, dateTo),
                 IzvestajDTO.class);
-        System.out.println(this.izvestajService.createReport(entity.getBody(), dateFrom, dateTo));
-        return new ResponseEntity<>(entity.getBody(), HttpStatus.OK);
+        System.out.println(entity.getBody());
+        // u ovom momentu imamo sve podatke za izvjestaj samo treba umjesto string kreirati izvjestaj i poslati
+        return new ResponseEntity<>(this.izvestajService.generateReport(entity.getBody(), dateFrom, dateTo), HttpStatus.OK);
     }
 }

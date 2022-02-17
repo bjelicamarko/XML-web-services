@@ -1,5 +1,7 @@
 package com.sluzbenik.SluzbenikApp.service;
 
+
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
@@ -12,6 +14,7 @@ import com.sluzbenik.SluzbenikApp.transformers.XML2HTMLTransformer;
 import com.sluzbenik.SluzbenikApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.PostConstruct;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -51,9 +54,11 @@ public class DZSServiceImpl implements DZSService {
 
     public static final String URL_RESOURCE_ROOT = "dzs/";
 
+    private static final String ID_PATH = "Broj_sertifikata";
+
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, new IdGeneratorDZS());
+        this.repository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, new IdGeneratorDZS(), DZS_NAMESPACE_PATH2);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_DZS, XML_SCHEMA_PATH_DZS);
         this.potvrdaGenericReaderWriter.setRepositoryParams(PACKAGE_PATH_POTVRDA, XML_SCHEMA_PATH_POTVRDA);
     }
@@ -103,5 +108,12 @@ public class DZSServiceImpl implements DZSService {
             e.printStackTrace();
             System.out.println("Error while sending mail!");
         }
+    }
+
+    @Override
+    public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
+        SearchResults searchResults;
+        searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
+        return searchResults;
     }
 }

@@ -12,8 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 import java.io.StringWriter;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.Map;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.transformers.Constants.*;
@@ -38,7 +43,7 @@ public class IzvestajServiceImpl implements IzvestajService {
 
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ, new IdGeneratorPosInt(), IZVESTAJ_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, XML_SCHEMA_PATH_IZVESTAJ);
     }
 
@@ -63,4 +68,31 @@ public class IzvestajServiceImpl implements IzvestajService {
         izvestajDTO.setBrojZelenih(this.dzsRdfRepository.getDzsBetweenDates(dateFrom, dateTo));
         return izvestajDTO; // ovdje praviti izvjestaj jer se ovdje nalaze svi podaci
     }
+
+    @Override
+    public String generateReport(IzvestajDTO izvjestajDTO, String dateFrom, String dateTo) throws DatatypeConfigurationException {
+        IzvestajDTO izvestajDTO = createReport(izvjestajDTO, dateFrom, dateTo);
+        Izvestaj i = new Izvestaj();
+        i.setBrojDokumenataOInteresovanju(izvestajDTO.getBrojInteresovanja());
+        i.setBrojPristiglihZahtevaZaDZS(izvestajDTO.getBrojZahteva());
+        i.setBrojIzdatihZahtevaZaDZS(izvestajDTO.getBrojZelenih());
+        i.setBrojPrimnljenihNovovakcinisanih(izvestajDTO.getNoveVakcine());
+        i.setBrojPrimljenihVakcina(izvestajDTO.getStanje().get("Ukupno"));
+        i.setProizvodjaci(new Izvestaj.Proizvodjaci());
+        i.getProizvodjaci().getVakcina(); // ovo ako je null kreira novu listu
+        for (Map.Entry<String, Integer> entry: izvestajDTO.getStanje().entrySet()) {
+            if (!entry.getKey().equals("Ukupno")) {
+                Izvestaj.Proizvodjaci.Vakcina v = new Izvestaj.Proizvodjaci.Vakcina();
+                v.setNazivProizvodjaca(entry.getKey());
+                v.setValue(BigInteger.valueOf(entry.getValue()));
+                i.getProizvodjaci().getVakcina().add(v);
+            }
+
+        }
+        i.setDatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString()));
+
+        return this.repository.storeXML(i, true);
+    }
+
+
 }

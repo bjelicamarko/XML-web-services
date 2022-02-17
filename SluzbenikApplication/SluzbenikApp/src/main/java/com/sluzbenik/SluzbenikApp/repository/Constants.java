@@ -26,9 +26,12 @@ public class Constants {
 
     public static final String OSOBA_NAMESPACE_PATH = ROOT_PATH + "osoba/";
     public static final String DZS_NAMESPACE_PATH = ROOT_PATH + "digitalni-zeleni-sertifikat/";
+    public static final String DZS_NAMESPACE_PATH2 = ROOT_PATH + "digitalni-zeleni-sertifikat";
     public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
     public static final String TERMIN_NAMESPACE_PATH = ROOT_PATH + "termini";
     public static final String KORISNIK_NAMESPACE_PATH = ROOT_PATH + "korisnik";
+    public static final String IZVESTAJ_NAMESPACE_PATH = ROOT_PATH + "izvestaj/";
+    public static final String UTIL_NAMESPACE_PATH = ROOT_PATH + "util";
 
     public static final String PREDICATE_NAMESPACE = ROOT_PATH + "predicate/";
     public static final String OSOBA_NAMED_GRAPH_URI = "/osoba/metadata";
@@ -41,4 +44,7 @@ public class Constants {
     public static final String XML_SCHEMA_PATH_POTVRDA = "data/xml_example/potvrda_o_vakcinaciji.xsd";
     public static final String PACKAGE_PATH_POTVRDA = "com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji";
     public static final String PREDICATE_DZS_CREATED_AT = PREDICATE_NAMESPACE + "createdAt";
+
+
+
 }

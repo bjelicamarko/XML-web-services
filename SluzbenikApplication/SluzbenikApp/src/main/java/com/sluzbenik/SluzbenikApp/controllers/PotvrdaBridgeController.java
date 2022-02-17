@@ -10,15 +10,15 @@ import static com.sluzbenik.SluzbenikApp.utils.BridgeControllerUtil.makeUrlGener
 import static com.sluzbenik.SluzbenikApp.utils.BridgeControllerUtil.makeUrlSearch;
 
 @RestController
-@RequestMapping("api/saglasnost")
-public class SaglasnostBridgeController {
+@RequestMapping("api/potvrda")
+public class PotvrdaBridgeController {
 
     @Autowired
     private RestTemplate restTemplate;
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE) //TEXT_XML_VALUE | APPLICATION_XML_VALUE
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<SearchResults> searchByEmail(@RequestParam String userId, @RequestParam String searchText) {
-        String url = makeUrlSearch(userId, searchText, "saglasnost");
+        String url = makeUrlSearch(userId, searchText, "potvrda");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/xml");
@@ -35,7 +35,7 @@ public class SaglasnostBridgeController {
 
     @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generatePDF(@PathVariable String id) {
-        String url = makeUrlGenerateDocument("PDF", id, "saglasnost");
+        String url = makeUrlGenerateDocument("PDF", id, "potvrda");
         System.out.println(url);
 
         HttpHeaders headers = new HttpHeaders();
@@ -53,7 +53,7 @@ public class SaglasnostBridgeController {
 
     @GetMapping(value = "/generateHTML/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> generateHTML(@PathVariable String id) {
-        String url = makeUrlGenerateDocument("HTML", id, "saglasnost");
+        String url = makeUrlGenerateDocument("HTML", id, "potvrda");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/xml");

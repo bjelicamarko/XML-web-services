@@ -2,6 +2,7 @@ package com.sluzbenik.SluzbenikApp.controllers;
 
 import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.CreateDzsDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.RejectRequestDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.service.DZSService;
@@ -15,6 +16,10 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import javax.xml.datatype.DatatypeConfigurationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/dzs")
@@ -105,6 +110,20 @@ public class DZSController {
         }
 
         return new ResponseEntity<>("Zahtev odbijen!", HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<SearchResults> search(@RequestParam String userId, @RequestParam String searchText) {
+        try {
+            SearchResults results = dzsService.searchDocuments(userId, searchText);
+            if(results == null)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            else
+                return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

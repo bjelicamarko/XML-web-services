@@ -1,5 +1,5 @@
 <div class="drink-creation-label">Podnošenje zahteva za izdavanje digiatlnog zelenog sertifikata</div>
-<form class="reactiveForm" [formGroup]="registrationFormGroup" (ngSubmit)="createRequest()">
+<form class="reactiveForm" [formGroup]="registrationFormGroup" (ngSubmit)="createRequestWithCheckValue()">
     <div class="row">
         <div class="col-3"></div>
         
@@ -102,10 +102,8 @@
                 <label for="reason" class="col-3 col-form-label">Razlog za podnošenje:</label>
                 <div class="col-6">
                     <div>
-                        <ejs-richtexteditor id='iframeRTE' [toolbarSettings]='tools' [iframeSettings]='iframe' [height]='height'>
-                            <ng-template #valueTemplate>
-                                <p></p>
-                            </ng-template>
+                        <ejs-richtexteditor [(value)]='value' id='iframeRTE' [toolbarSettings]='tools' [iframeSettings]='iframe' [height]='height' >
+                            
                         </ejs-richtexteditor>
                     </div>
                 </div>
@@ -115,3 +113,4 @@
     </div>
     <button id="submit" class="btn" type="submit" [disabled]='checkSubmit()'>Podnesi zahtev</button>
 </form>
+<button id="submit2" class="btn" (click)='test()'>Test</button>

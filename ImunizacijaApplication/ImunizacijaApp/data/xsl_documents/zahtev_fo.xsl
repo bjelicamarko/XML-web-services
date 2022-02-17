@@ -100,7 +100,30 @@
                         </xsl:choose>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Razlog: </fo:inline> <xsl:value-of select="//b:Razlog"/>
+                        <fo:inline font-weight="bold"> Razlog: </fo:inline>
+                        <xsl:for-each select="tokenize(//b:Razlog, ',')">
+                            <xsl:choose>
+                                <xsl:when test="contains(., '~+')">
+                                    <fo:inline font-weight="bold" font-style="italic">
+                                        <xsl:value-of select="substring(.,3,(string-length(.) - 4))"/>
+                                    </fo:inline>
+                                </xsl:when>
+                                <xsl:when test="contains(., '+')">
+                                    <fo:inline font-weight="bold">
+                                        <xsl:value-of select="substring(.,2,(string-length(.) - 2))"/>
+                                    </fo:inline>
+                                </xsl:when>
+                                <xsl:when test="contains(., '~')">
+                                    <fo:inline font-style="italic">
+                                        <xsl:value-of select="substring(.,2,(string-length(.) - 2))"/>
+                                    </fo:inline>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select='.'/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+
+                        </xsl:for-each>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
                         <fo:inline font-weight="bold"> Mesto: </fo:inline> <xsl:value-of select="//b:Mesto"/>

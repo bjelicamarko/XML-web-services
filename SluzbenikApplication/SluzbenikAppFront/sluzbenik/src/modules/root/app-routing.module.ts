@@ -24,6 +24,11 @@ const routes: Routes = [
           import("./../issue-dzs/issue-dzs.module").then((m) => m.IssueDzsModule),
       },
       {
+        path: "izvestaji",
+        loadChildren: () =>
+          import("./../reports/reports.module").then((m) => m.ReportsModule),
+      },
+      {
         path: "search",
         loadChildren: () =>
           import("./../search/search.module").then((m) => m.SearchModule),

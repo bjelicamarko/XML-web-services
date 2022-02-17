@@ -9,10 +9,13 @@ import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { Zahtev } from '../../models/Zahtev';
 import { RequestService } from '../../services/request.service';
 
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService } from '@syncfusion/ej2-angular-richtexteditor';
+
 @Component({
   selector: 'app-request-page',
   templateUrl: './request-page.component.html',
-  styleUrls: ['./request-page.component.scss']
+  styleUrls: ['./request-page.component.scss'],
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService, TableService]
 })
 export class RequestPageComponent implements OnInit {
   
@@ -22,6 +25,7 @@ export class RequestPageComponent implements OnInit {
   };
   public iframe: object = { enable: true };
   public height: number = 200;
+  public value: string = "<p>sa</p>";
 
   registrationFormGroup: FormGroup;
 
@@ -70,7 +74,7 @@ export class RequestPageComponent implements OnInit {
       birthDate: ['', Validators.required],
       gender: ['Musko', Validators.required],
       userId: ['', [Validators.required, jmbgValidator()]],
-      reason: ['', Validators.required],
+      reason: [''],
       place: ['Novi Sad', Validators.required],
       date: ['Da', Validators.required]
     });
@@ -124,23 +128,34 @@ export class RequestPageComponent implements OnInit {
     });
   }
 
-  createNewRequest() : Zahtev {
-    let zahtev: Zahtev = {
-      Zahtev: {
-        "@": {
-          "xmlns" : "http://www.vakc-sistem.rs/zahtev-dzs",
-          "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-          "xsi:schemaLocation": "http://www.vakc-sistem.rs/zahtev-dzs zahtev_za_izdavanje_zelenog.xsd",
-          Id: "1"
-        },
-        Podnosilac: this.Podnosilac,
-        Razlog: this.registrationFormGroup.get('reason')?.value,
-        Mesto: this.registrationFormGroup.get('place')?.value,
-        Datum: moment(Date.now()).format('YYYY-MM-DD')
-      }
-    };
+  createRequestWithCheckValue() : void {
+    if (this.value) {
+      this.createNewRequest();
+    } else {
+      this.snackBarService.openSnackBar("Popunite razlog.");
+    }
+  }
 
-    return zahtev;
+  createNewRequest() : Zahtev {
+      this.test();  
+      let zahtev: Zahtev = {
+        Zahtev: {
+          "@": {
+            "xmlns" : "http://www.vakc-sistem.rs/zahtev-dzs",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "http://www.vakc-sistem.rs/zahtev-dzs zahtev_za_izdavanje_zelenog.xsd",
+            Id: "1"
+          },
+          Podnosilac: this.Podnosilac,
+          Razlog: this.value,
+          Mesto: this.registrationFormGroup.get('place')?.value,
+          Datum: moment(Date.now()).format('YYYY-MM-DD')
+        }
+      };
+  
+      return zahtev;
+
+    
   }
 
   private resetStateOfForm() {
@@ -150,10 +165,23 @@ export class RequestPageComponent implements OnInit {
       birthDate: ['', Validators.required],
       gender: ['Musko', Validators.required],
       userId: ['', [Validators.required, jmbgValidator()]],
-      reason: ['', Validators.required],
+      reason: [''],
       place: ['Novi Sad', Validators.required],
       date: ['Da', Validators.required]
     });
   }
 
+  test() {
+   ///<*> ?*? <*/> ?*/?
+    console.log(this.value);
+    let r = this.value.replace(/<\/p>/g, '');
+    r = r.replace(/<p>/g, '');
+    r = r.replace(/<\/strong>/g,"+,");
+    r = r.replace(/<strong>/g,",+");
+    r = r.replace(/<\/em>/g,"~,");
+    r = r.replace(/<em>/g,",~");
+    r = r.replace(',,', ',');
+    console.log(r);
+    this.value = r;
+  }
 }
