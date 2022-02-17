@@ -56,9 +56,25 @@ public class Util {
         return sb.toString();
     }
 
-    public static String replaceCharacters(String xml) {
+    public static String replaceCharacters(String html) {
+        int razlogIdx = html.indexOf("Razlog:");
+        int pclosed = html.indexOf("</p>", razlogIdx);
 
-        return null;
+        String toParse = html.substring(razlogIdx, pclosed);
+        toParse = toParse.replace(",", "");
+        toParse = toParse.replace("|+", "</b>");
+        toParse = toParse.replace("+", "<b>");
+        toParse = toParse.replace("|~", "</i>");
+        toParse = toParse.replace("~", "<i>");
+
+        StringBuilder resHtml = new StringBuilder();
+        resHtml.append(html, 0, razlogIdx);
+
+        resHtml.append(toParse);
+        resHtml.append(html.substring(pclosed));
+
+        System.out.println(resHtml);
+        return resHtml.toString();
     }
 
 

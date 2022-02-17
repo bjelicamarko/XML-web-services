@@ -14,11 +14,12 @@ public interface ZahtevService {
 
     Zahtev findOneById(String id);
 
-    byte[] generateInteresovanjePDF(String id) throws Exception;
-
-    String generateInteresovanjeHTML(String id) throws TransformerException, IOException, WriterException;
+    byte[] generateZahtevPDF(String id) throws Exception;
 
     void acceptRequest(String id);
 
     void rejectRequest(String id);
+
+    String generateZahtevHTML(String id) throws TransformerException, IOException, WriterException;
+
 }

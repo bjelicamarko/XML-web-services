@@ -57,17 +57,17 @@ public class ZahtevController {
     @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generatePDF(@PathVariable String id) {
         try {
-            byte[] pdfBytes = zahtevService.generateInteresovanjePDF(id);
+            byte[] pdfBytes = zahtevService.generateZahtevPDF(id);
             return new ResponseEntity<>(pdfBytes, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping(value = "/generateHTML/{id}", produces = MediaType.TEXT_XML_VALUE)
+    @GetMapping(value = "/generateHTML/{id}", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> generateHTML(@PathVariable String id) {
         try {
-            return new ResponseEntity<>(zahtevService.generateInteresovanjeHTML(id), HttpStatus.OK);
+            return new ResponseEntity<>(zahtevService.generateZahtevHTML(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
         }
