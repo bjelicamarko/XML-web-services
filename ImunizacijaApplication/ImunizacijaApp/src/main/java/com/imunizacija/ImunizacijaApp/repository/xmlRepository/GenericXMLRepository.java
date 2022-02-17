@@ -100,7 +100,7 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         return super.retrieveXML(collectionPath, documentId);
     }
 
-    public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
+    public SearchResults searchDocuments(String userId, String searchText, String idPath) throws XMLDBException {
         searchText = searchText.toLowerCase(Locale.ROOT);
         String andor = calcAndor(userId, searchText);
 
@@ -119,7 +119,7 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
                 "let $jmbg := $doc//util:JMBG\n" +
                 "let $br_pasosa := $doc//util:Br_pasosa\n" +
                 "let $br_stranca := $doc//util:Evidencioni_broj_stranca\n" +
-                "let $id := $doc//@Id\n" +
+                "let $id := $doc%s\n" +
                 "let $vals := $doc//text()[contains(lower-case(.),'%s')]\n" +
                 "let $attrs := $doc//*[contains(lower-case(@*),'%s')]/@*\n" +
 
@@ -133,7 +133,7 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
 
                 "for $r in $ret\n" +
                 "return string($r)" +
-                "", collPath, searchText, searchText, andor, userId, userId, userId, userId);
+                "", collPath, idPath, searchText, searchText, andor, userId, userId, userId, userId);
 
         System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
         ResourceSet result = xpathService.query(xpathExp);

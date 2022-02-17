@@ -1,6 +1,7 @@
 package com.imunizacija.ImunizacijaApp.service;
 
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.SearchResults;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -63,6 +65,8 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     public static final String URL_RESOURCE_ROOT = "potvrda/";
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
     public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
+
+    private static final String ID_PATH = "//@Sifra_potvrde";
 
     @PostConstruct // after init
     private void postConstruct(){
@@ -108,6 +112,13 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         podaciOPotvrdi.setQRCode(String.format(URL_RESOURCE_ROOT + "%s", newPotvrdaId));
         potvrdaOVakcinaciji.setPodaciOPotvrdi(podaciOPotvrdi);
         this.repository.storeXML(potvrdaOVakcinaciji, false);
+    }
+
+    @Override
+    public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
+        SearchResults searchResults;
+        searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
+        return searchResults;
     }
 
     private LicniPodaciJMBG generatePodaciOPrimaocu(LicniPodaciDetaljnije saglasnostLicniPodaci, Drzavljanstvo drzavljanstvo) {
