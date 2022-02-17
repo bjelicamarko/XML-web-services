@@ -137,7 +137,7 @@ export class RequestPageComponent implements OnInit {
   }
 
   createNewRequest() : Zahtev {
-   
+      this.test();  
       let zahtev: Zahtev = {
         Zahtev: {
           "@": {
@@ -176,7 +176,7 @@ export class RequestPageComponent implements OnInit {
     console.log(this.value);
     let r = this.value.replace(/<\/p>/g, '');
     r = r.replace(/<p>/g, '');
-    r = r.replace(/</g,"?");
+    r = r.replace(/</g,"+");
     r = r.replace(/>/g,"~");
     console.log(r);
     this.value = r;
