@@ -87,7 +87,7 @@ public class SaglasnostController {
             return new ResponseEntity<>("Postoji termin.", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE) //TEXT_XML_VALUE | APPLICATION_XML_VALUE
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<SearchResults> search(@RequestParam String userId, @RequestParam String searchText) {
         try {
             SearchResults results = saglasnostService.searchDocuments(userId, searchText);

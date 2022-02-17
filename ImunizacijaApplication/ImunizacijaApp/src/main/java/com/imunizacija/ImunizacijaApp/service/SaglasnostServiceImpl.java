@@ -43,6 +43,8 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Autowired
     private OdgovoriService odgovoriService;
 
+    private static final String ID_PATH = "@Id";
+
     @PostConstruct // after init
     private void postConstruct(){
         this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt(), SAGLASNOST_NAMESPACE_PATH);
@@ -82,7 +84,7 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Override
     public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
         SearchResults searchResults;
-        searchResults = repository.searchDocuments(userId, searchText);
+        searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
         return searchResults;
     }
 }

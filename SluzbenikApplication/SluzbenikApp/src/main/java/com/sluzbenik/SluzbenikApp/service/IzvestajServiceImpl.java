@@ -43,7 +43,7 @@ public class IzvestajServiceImpl implements IzvestajService {
 
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, COLLECTION_PATH_IZVESTAJ, new IdGeneratorPosInt(), IZVESTAJ_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_IZVESTAJ, XML_SCHEMA_PATH_IZVESTAJ);
     }
 
