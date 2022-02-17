@@ -17,6 +17,11 @@ const routes: Routes = [
         path: "vakcina",
         loadChildren: () => 
           import("./../vaccine/vaccine.module").then((m) => m.VaccineModule),
+      },
+      {
+        path: "search",
+        loadChildren: () => 
+          import("./../search/search.module").then((m) => m.SearchModule),
       }
     ]
   },

@@ -8,8 +8,10 @@ import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLReposit
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.SearchResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -43,7 +45,7 @@ public class SaglasnostServiceImpl implements SaglasnostService{
 
     @PostConstruct // after init
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt(), SAGLASNOST_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, XML_SCHEMA_PATH_SAGLASNOST);
     }
 
@@ -76,4 +78,12 @@ public class SaglasnostServiceImpl implements SaglasnostService{
         try { this.potvrdaService.generatePotvrdaOVakcinaciji(s); }
         catch (DatatypeConfigurationException | MessagingException e) { System.err.println("Generisanje potvrde nije uspjelo."); }
     }
+
+    @Override
+    public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
+        SearchResults searchResults;
+        searchResults = repository.searchDocuments(userId, searchText);
+        return searchResults;
+    }
 }
+
