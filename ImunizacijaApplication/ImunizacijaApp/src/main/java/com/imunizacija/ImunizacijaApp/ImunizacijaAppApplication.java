@@ -46,7 +46,7 @@ public class ImunizacijaAppApplication {
 		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
 				new GenericXMLRepository<Zahtev>();
 		zahtevGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS,
-				COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt);
+				COLLECTION_PATH_ZAHTEV_DZS, idGeneratorPosInt, ZAHTEV_NAMESPACE_PATH);
 		Zahtev zahtev = zahtevGenericXMLRepository.retrieveXML("978989686.xml");
 
 		zahtevExtractMetadata.extractData(zahtev);
@@ -57,7 +57,7 @@ public class ImunizacijaAppApplication {
 		GenericXMLRepository<Interesovanje> interesovanjeRepository =
 				new GenericXMLRepository<Interesovanje>();
 		interesovanjeRepository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE,
-				idGeneratorPosInt);
+				idGeneratorPosInt, INTERESOVANJE_NAMESPACE_PATH);
 
 		Interesovanje i = interesovanjeRepository.retrieveXML("2312312.xml");
 		interesovanjeExtractMetadata.extract(i);
@@ -68,7 +68,7 @@ public class ImunizacijaAppApplication {
 		GenericXMLRepository<Saglasnost> saglasnostGenericXMLRepository =
 				new GenericXMLRepository<>();
 		saglasnostGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST,
-				idGeneratorPosInt);
+				idGeneratorPosInt, SAGLASNOST_NAMESPACE_PATH);
 
 
 		Saglasnost saglasnost = saglasnostGenericXMLRepository.retrieveXML("7654321.xml");
@@ -80,7 +80,7 @@ public class ImunizacijaAppApplication {
 		GenericXMLRepository<PotvrdaOVakcinaciji> potvrdaOVakcinacijiGenericXMLRepository =
 				new GenericXMLRepository<>();
 		potvrdaOVakcinacijiGenericXMLRepository.setRepositoryParams(PACKAGE_PATH_POTVRDA, COLLECTION_PATH_POTVRDA,
-				idGeneratorPosInt);
+				idGeneratorPosInt, POTVRDA_NAMESPACE_PATH);
 
 		PotvrdaOVakcinaciji potvrdaOVakcinaciji = potvrdaOVakcinacijiGenericXMLRepository.retrieveXML("1245125.xml");
 		potvrdaExtractMetadata.extract(potvrdaOVakcinaciji);

@@ -18,7 +18,7 @@
 }
 
 #submit {
-    width: 15%; 
+    width: 10%; 
     background-color: red;
     color: white;
     margin-bottom: 20px;
@@ -40,4 +40,16 @@
 
 #upload-drink:focus {
     box-shadow: none;
+}
+
+.radio-margin {
+    margin-right: 20px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+a {
+    cursor: pointer;
 }

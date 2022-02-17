@@ -8,8 +8,10 @@ import { jmbgValidator } from 'src/modules/shared/directives/custom-validators/j
 import { pasosValidator } from 'src/modules/shared/directives/custom-validators/pasos-validator';
 import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
 import { Kontakt } from 'src/modules/shared/models/Kontakt';
+import { Korisnik } from 'src/modules/shared/models/Korisnik';
 import { LicniPodaciDetaljnije } from 'src/modules/shared/models/LicniPodaci';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { UtilService } from 'src/modules/shared/services/util.service';
 import { Saglasnost } from '../../models/Saglasnost';
 import { ConsentService } from '../../services/consent.service';
 
@@ -93,8 +95,20 @@ export class ConsentPageComponent {
   jobs: Array<string> = ['Zdravstvena zastita', 'Socijalna zastita',
     'Prosveta', 'MUP', 'Vojska RS', 'Drugo'];
 
+  korisnik: Korisnik = {
+      Korisnik: {
+        '@': '',
+        'KorisnikID': '',
+        'Ime': '',
+        'Prezime': '',
+        'Email': '',
+        'Lozinka': '',
+        'TipKorisnika': ''
+      }
+    };
+    
   constructor(public dialog: MatDialog, private fb: FormBuilder, private snackBarService: SnackBarService,
-    private consentService: ConsentService) {
+    private consentService: ConsentService, private utilService: UtilService) {
     this.registrationFormGroup = this.fb.group({
       userId: ['', [Validators.required, jmbgValidator()]],
       firstName: ['', Validators.required],
@@ -130,7 +144,20 @@ export class ConsentPageComponent {
       },
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.createConsent();
+        let userId = this.utilService.getLoggedUserID();
+        this.utilService.getUser(userId + ".xml")
+          .subscribe(response => {
+            if (response.body)
+              this.korisnik = this.utilService.parseXml(response.body);
+              this.consentService.isTerminForConsentExist(this.korisnik.Korisnik.Email)
+              .subscribe(response => {
+                if (response.body === "Postoji termin.") {
+                  this.createConsent();
+                } else {
+                  this.snackBarService.openSnackBar(response.body as string);
+                }
+              })
+          })
       }
     });
   }
@@ -176,7 +203,7 @@ export class ConsentPageComponent {
           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
           "xmlns:util": "http://www.vakc-sistem.rs/util",
           "xsi:schemaLocation": "http://www.vakc-sistem.rs/saglasnost-za-imunizaciju saglasnost_za_imunizaciju.xsd",
-          Id: "-1"
+          Id: "1"
         },
         Drzavljanstvo: this.Drzavljanstvo,
         Licni_podaci: this.LicniPodaci,
@@ -190,7 +217,6 @@ export class ConsentPageComponent {
           Imunoloski_lek: this.registrationFormGroup.get('immunologicalDrug')?.value
         },
         Datum: moment(Date.now()).format('YYYY-MM-DD'),
-        O_vakcinaciji: null
       }
     }
     return saglasnost;

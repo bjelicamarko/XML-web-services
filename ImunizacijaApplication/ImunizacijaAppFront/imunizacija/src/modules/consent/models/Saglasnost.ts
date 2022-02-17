@@ -12,6 +12,6 @@ export interface Saglasnost {
         Zaposlenje: { Radni_status: string, Zanimanje: string },
         Izjava: { Saglasan: string, Imunoloski_lek: string },
         Datum: string,
-        O_vakcinaciji: OVakcinaciji | null
+        O_vakcinaciji?: OVakcinaciji | null
     }
 }

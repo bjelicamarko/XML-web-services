@@ -1,8 +1,34 @@
 <div class="drink-creation-label">Saglasnost - drugi deo (O vakcinaciji)</div>
-<form class="reactiveForm" [formGroup]="consentFormGroup" (ngSubmit)="updateConsentWithConformation()">
+<div [hidden]="consentExist" style="padding-top: 2%;">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-6">
+            <div class="row my_margin">
+                <label for="consentId" class="col-3 col-form-label">Identifikator saglasnosti</label>
+                <div class="col-6">
+                    <input [(ngModel)]="consentId" class="form-control" type="text" id="consentId"
+                        placeholder="Unesite identifikator" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="text-align: center;">
+        <div class="col-12">
+            <button id="submit" class="btn" [disabled]="consentId === ''" (click)="isConsentExist()">Potvrdi</button>
+        </div>
+    </div>
+</div>
+<form class="reactiveForm" [formGroup]="consentFormGroup" (ngSubmit)="updateConsentWithConformation()"
+    [hidden]="!consentExist">
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
+            <div class="form-group row my_margin">
+                <label for="consentIdLabel" class="col-3 col-form-label">Identifikator saglasnosti</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="consentIdLabel" [placeholder]="consentId" readonly />
+                </div>
+            </div>
             <div class="form-group row my_margin">
                 <label for="zdravstvenaUstanova" class="col-3 col-form-label">Zdravstvena ustanova</label>
                 <div class="col-6">
@@ -28,19 +54,20 @@
             <div class="form-group row my_margin">
                 <label for="serija" class="col-3 col-form-label">Serija</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="serija" placeholder="1251241" readonly />
+                    <input class="form-control" type="text" id="serija" [placeholder]="vaccineInfo.Serija" readonly />
                 </div>
             </div>
             <div class="form-group row my_margin">
                 <label for="proizvodjac" class="col-3 col-form-label">Proizvodjac</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="proizvodjac" placeholder="BionTech" readonly />
+                    <input class="form-control" type="text" id="proizvodjac" [placeholder]="vaccineInfo.Proizvodjac"
+                        readonly />
                 </div>
             </div>
             <div class="form-group row my_margin">
                 <label for="tip" class="col-3 col-form-label">Tip</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="tip" placeholder="Pfizer" readonly />
+                    <input class="form-control" type="text" id="tip" [placeholder]="vaccineInfo.Tip" readonly />
                 </div>
             </div>
             <div class="form-group row my_margin">
@@ -72,19 +99,22 @@
             <div class="form-group row my_margin">
                 <label for="imeLekara" class="col-3 col-form-label">Ime</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="imeLekara" placeholder="Djura" readonly />
+                    <input class="form-control" type="text" id="imeLekara" [placeholder]="korisnik.Korisnik.Ime"
+                        readonly />
                 </div>
             </div>
             <div class="form-group row my_margin">
                 <label for="prezimeLekara" class="col-3 col-form-label">Prezime</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="prezimeLekara" placeholder="Peric" readonly />
+                    <input class="form-control" type="text" id="prezimeLekara" [placeholder]="korisnik.Korisnik.Prezime"
+                        readonly />
                 </div>
             </div>
             <div class="form-group row my_margin">
                 <label for="jmbg" class="col-3 col-form-label">JMBG</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="jmbg" placeholder="12345" readonly />
+                    <input class="form-control" type="text" id="jmbg" [placeholder]="korisnik.Korisnik.KorisnikID"
+                        readonly />
                 </div>
             </div>
             <div class="form-group row my_margin">
@@ -109,22 +139,23 @@
             </div>
             <div class="drink-creation-label">Kontraindikacije</div>
             <div class="form-group row my_margin">
-                <label for="dijagnoza" class="col-3 col-form-label">Dijagnoza</label>
+                <label for="dijagnoza" class="col-3 col-form-label"
+                    matTooltip='"Nema kontraindikacije" je podrazumevana vrednost.'>Dijagnoza*</label>
                 <div class="col-6">
                     <textarea rows="2" class="form-control" type="text" id="dijagnoza" placeholder="Unesite dijagnoza"
                         formControlName="dijagnoza"></textarea>
                 </div>
             </div>
-            <!-- <div class="form-group row my_margin">
-                <label for="datumKontraindikacije" class="col-3 col-form-label">Datum</label>
-                <div class="col-6">
-                    <input class="form-control" type="date" id="datumKontraindikacije"
-                        formControlName="datumKontraindikacije" />
-                    <small class="text-danger"
-                        *ngIf="f['datumKontraindikacije'].touched && f['datumKontraindikacije'].errors && f['datumKontraindikacije'].errors['required']">
-                        Potrebno je da unesete datum rodjenja.</small>
+            <div class="form-group row my_margin">
+                <label for="agreed" class="col-3 col-form-label">Trajne kontraindikacije</label>
+                <div class="col-6" style="margin-top: 10px;">
+                    <input type="radio" formControlName="odlukaKomisije" name="odlukaKomisije" value="Da">
+                    Da
+                    <input type="radio" formControlName="odlukaKomisije" name="odlukaKomisije" value="Ne"
+                        style="margin-left: 15px;" checked>
+                    Ne
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
     <button id="submit" class="btn" type="submit" [disabled]='checkSubmit()'>Podnesi saglasnost</button>

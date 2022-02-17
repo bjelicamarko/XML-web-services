@@ -41,7 +41,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS, COLLECTION_PATH_ZAHTEV_DZS, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS, COLLECTION_PATH_ZAHTEV_DZS, new IdGeneratorPosInt(), ZAHTEV_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS, XML_SCHEMA_PATH_ZAHTEV);
     }
 

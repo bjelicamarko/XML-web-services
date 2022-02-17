@@ -42,6 +42,7 @@ public class Constants {
     public static final String TERMIN_NAMESPACE_PATH = ROOT_PATH + "termini";
     public static final String KORISNIK_NAMESPACE_PATH = ROOT_PATH + "korisnik";
     public static final String ODGOVORI_NAMESPACE_PATH = ROOT_PATH + "odgovori";
+    public static final String UTIL_NAMESPACE_PATH = ROOT_PATH + "util";
 
     public static final String PREDICATE_NAMESPACE = ROOT_PATH + "predicate/";
 

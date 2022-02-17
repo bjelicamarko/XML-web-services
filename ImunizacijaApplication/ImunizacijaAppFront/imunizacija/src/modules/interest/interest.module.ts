@@ -8,17 +8,16 @@ import { SharedModule } from '../shared/shared.module';
 import { InterestPageComponent } from './pages/interest-page/interest-page.component';
 import { InterestRoutes } from './interest.routes';
 
-
 @NgModule({
   declarations: [
-    InterestPageComponent
+    InterestPageComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
     RouterModule.forChild(InterestRoutes),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class InterestModule { }

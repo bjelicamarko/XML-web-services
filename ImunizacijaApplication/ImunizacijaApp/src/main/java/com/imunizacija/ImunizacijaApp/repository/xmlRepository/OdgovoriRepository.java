@@ -174,6 +174,8 @@ public class OdgovoriRepository extends GenericXMLRepository<Odgovori>{
             JAXBContext context = JAXBContext.newInstance(PACKAGE_PATH_ODGOVORI);
             Unmarshaller u = context.createUnmarshaller();
             res = i.nextResource();
+            if (res == null) // ako je prazan upit
+                return null;
             System.out.println(res.getContent());
             String str = res.getContent().toString();
             Odgovori.Odgovor odgovor = (Odgovori.Odgovor) u.unmarshal(new StreamSource(new StringReader(str)));

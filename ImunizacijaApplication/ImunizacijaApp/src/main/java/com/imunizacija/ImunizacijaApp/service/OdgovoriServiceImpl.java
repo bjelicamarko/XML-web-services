@@ -6,6 +6,7 @@ import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDT
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.OdgovoriRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +32,10 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    @Lazy
+    private PotvrdaService potvrdaService;
+
     @Override
     public void dodajOdgovor(OdgovorTerminDTO odgovor) {
         this.odgovoriRepository.dodajOdgovor(odgovor);
@@ -43,8 +47,8 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     }
 
     @Override
-    public void izbrisiOdgovor(OdgovorTerminDTO odgovor) {
-        this.odgovoriRepository.izbrisiOdgovor(odgovor.getEmail());
+    public void izbrisiOdgovor(String email) {
+        this.odgovoriRepository.izbrisiOdgovor(email);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     }
 
     @Override
-    @Scheduled(cron = "0 25 16 * * ?", zone = "CET")
+   // @Scheduled(cron = "0 25 16 * * ?", zone = "CET")
     public VakcinaKolicinaDTO vratiDozeUMagacin() {
         VakcinaKolicinaDTO vakcinaKolicinaDTO = new VakcinaKolicinaDTO();
         List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore(LocalDate.now().toString());
@@ -85,7 +89,7 @@ public class OdgovoriServiceImpl implements OdgovoriService{
     }
 
     @Override
-    @Scheduled(cron = "0 15 22 * * ?", zone = "CET")
+  //  @Scheduled(cron = "0 15 22 * * ?", zone = "CET")
     public void posaljiOdgovore() throws MessagingException {
         List<Odgovori.Odgovor> odgovori = odgovoriRepository.vratiOdgovore("Empty");
         HttpHeaders headers = new HttpHeaders();
@@ -111,7 +115,7 @@ public class OdgovoriServiceImpl implements OdgovoriService{
         }
     }
 
-    private String generisiTekstOdgovora(OdgovorTerminDTO odgovorTerminDTO) {
+    public String generisiTekstOdgovora(OdgovorTerminDTO odgovorTerminDTO) {
         return String.format("Dodeljen termin: %s\n" +
                 "Ustanova: %s\n" +
                 "Vakcina dodeljena: %s\n" +

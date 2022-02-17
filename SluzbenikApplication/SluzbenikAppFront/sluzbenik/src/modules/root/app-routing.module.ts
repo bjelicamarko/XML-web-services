@@ -22,6 +22,11 @@ const routes: Routes = [
         path: "dzs",
         loadChildren: () =>
           import("./../issue-dzs/issue-dzs.module").then((m) => m.IssueDzsModule),
+      },
+      {
+        path: "search",
+        loadChildren: () =>
+          import("./../search/search.module").then((m) => m.SearchModule),
       }
     ]
   },

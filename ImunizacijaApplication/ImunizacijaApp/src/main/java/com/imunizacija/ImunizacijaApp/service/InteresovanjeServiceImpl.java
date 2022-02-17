@@ -9,11 +9,17 @@ import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGe
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import java.io.StringWriter;
+import java.util.Objects;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 import static com.imunizacija.ImunizacijaApp.transformers.Constants.*;
@@ -39,12 +45,15 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
 
+    @Autowired
     private OdgovoriService odgovoriService;
 
+    @Autowired
+    private RestTemplate restTemplate;
 
     @PostConstruct // after init
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt(), INTERESOVANJE_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, XML_SCHEMA_PATH_INTERESOVANJE);
     }
 
@@ -66,7 +75,20 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
         odgovorTerminDTO.setGrad(i.getOpstinaVakcinisanja());
         for (Interesovanje.Vakcina v : i.getVakcine())
             odgovorTerminDTO.getVakcine().add(v.getTip());
+
+
         this.odgovoriService.dodajOdgovor(odgovorTerminDTO);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<OdgovorTerminDTO> requestUpdate = new HttpEntity<>(odgovorTerminDTO, headers);
+        ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
+                HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
+        this.odgovoriService.azurirajOdgovor(entity.getBody());
+
+        this.mailService.sendMail("Termin",
+                this.odgovoriService.generisiTekstOdgovora(Objects.requireNonNull(entity.getBody())),
+                entity.getBody().getEmail());
     }
 
     private String generateTextFromInterest(Interesovanje interesovanje) {
@@ -90,7 +112,7 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
                 "Broj fiksnog telefona: %s\n" +
                 "Opstina vakcinisanja: %s\n" +
                 "Datum predaje interesovanja: %s\n" +
-                "Izabrane zelene vakcine: \n %s", sb.toString(), interesovanje.getIme(), interesovanje.getPrezime(),
+                "Izabrane zeljene vakcine: \n %s", sb.toString(), interesovanje.getIme(), interesovanje.getPrezime(),
                 interesovanje.getKontakt().getEmailAdresa(), interesovanje.getKontakt().getBrojTelefona(),
                 interesovanje.getKontakt().getBrojFiksnosgTelefona(),
                 interesovanje.getOpstinaVakcinisanja(), interesovanje.getDatum().toString(), sb2.toString());
