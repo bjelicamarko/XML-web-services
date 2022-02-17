@@ -1,6 +1,7 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.service.InteresovanjeService;
+import com.imunizacija.ImunizacijaApp.service.OdgovoriService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,9 @@ public class InteresovanjeController {
 
     @Autowired
     private InteresovanjeService interesovanjeService;
+
+    @Autowired
+    private OdgovoriService odgovoriService;
 
     @PreAuthorize("hasRole('CITIZEN')")
     @GetMapping(value = "/{id}", produces = MediaType.TEXT_XML_VALUE)
@@ -53,5 +57,13 @@ public class InteresovanjeController {
         }
     }
 
+    @PreAuthorize("hasRole('CITIZEN')")
+    @GetMapping(value = "/provjeraPostojanjaInteresovanja/{email}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> provjeraPostojanjaInteresovanja(@PathVariable String email) {
+        if (this.odgovoriService.vratiOdgovor(email) == null)
+            return new ResponseEntity<>("Nepostoji interesovanje.", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Postoji vec interesovanje.", HttpStatus.OK);
+    }
 }
 

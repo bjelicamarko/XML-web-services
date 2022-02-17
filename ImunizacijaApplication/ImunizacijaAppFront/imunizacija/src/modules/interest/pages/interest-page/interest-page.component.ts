@@ -8,7 +8,9 @@ import { jmbgValidator } from 'src/modules/shared/directives/custom-validators/j
 import { pasosValidator } from 'src/modules/shared/directives/custom-validators/pasos-validator';
 import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
 import { Kontakt } from 'src/modules/shared/models/Kontakt';
+import { Korisnik } from 'src/modules/shared/models/Korisnik';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
+import { UtilService } from 'src/modules/shared/services/util.service';
 import { Interesovanje } from '../../models/Interesovanje';
 import { Vakcina } from '../../models/Vakcina';
 import { InterestService } from '../../services/interest.service';
@@ -64,8 +66,20 @@ export class InterestPageComponent {
     }
   }
 
+  korisnik: Korisnik = {
+    Korisnik: {
+      '@': '',
+      'KorisnikID': '',
+      'Ime': '',
+      'Prezime': '',
+      'Email': '',
+      'Lozinka': '',
+      'TipKorisnika': ''
+    }
+  };
+  
   constructor(public dialog: MatDialog, private fb: FormBuilder, private snackBarService: SnackBarService,
-    private interestService: InterestService) {
+    private interestService: InterestService, private utilService: UtilService) {
     this.registrationFormGroup = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -91,7 +105,20 @@ export class InterestPageComponent {
       },
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.createInterest();
+        let userId = this.utilService.getLoggedUserID();
+        this.utilService.getUser(userId + ".xml")
+          .subscribe(response => {
+            if (response.body)
+              this.korisnik = this.utilService.parseXml(response.body);
+              this.interestService.isInterestExist(this.korisnik.Korisnik.Email)
+              .subscribe(response => {
+                if (response.body === "Nepostoji interesovanje.") {
+                  this.createInterest();
+                } else {
+                  this.snackBarService.openSnackBar(response.body as string);
+                }
+              })
+          })
       }
     });
   }

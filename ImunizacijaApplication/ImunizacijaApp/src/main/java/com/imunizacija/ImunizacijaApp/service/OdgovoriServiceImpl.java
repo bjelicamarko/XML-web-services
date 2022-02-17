@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 

@@ -1,6 +1,8 @@
 package com.imunizacija.ImunizacijaApp.controllers;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
+import com.imunizacija.ImunizacijaApp.service.OdgovoriService;
 import com.imunizacija.ImunizacijaApp.service.SaglasnostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,18 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-
 @RestController
 @RequestMapping("api/saglasnost")
 public class SaglasnostController {
 
     @Autowired
     private SaglasnostService saglasnostService;
+
+    @Autowired
+    private OdgovoriService odgovoriService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Saglasnost> findOne(@PathVariable String id) {
@@ -75,5 +74,15 @@ public class SaglasnostController {
     public ResponseEntity<String> updateConsent(@RequestBody String saglasnost) {
         saglasnostService.updateConsent(saglasnost);
         return new ResponseEntity<>("Saglasnost uspesno dopunjena!", HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('CITIZEN')")
+    @GetMapping(value = "/provjeraPostojanjaTerminaZaSaglasnost/{email}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> provjeraPostojanjaTerminaZaSaglasnost(@PathVariable String email) {
+        Odgovori.Odgovor o = this.odgovoriService.vratiOdgovor(email);
+        if (o.getTermin().equals("Empty"))
+            return new ResponseEntity<>("Nepostoji termin da bi se podneo saglasnost.", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Postoji termin.", HttpStatus.OK);
     }
 }

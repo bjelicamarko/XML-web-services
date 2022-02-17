@@ -24,4 +24,14 @@ export class InterestService {
     return this.http.post<HttpResponse<string>>("indirekcija/api/interesovanje/kreirajNovoInteresovanje", 
     o2x(interesovanje), queryParams);
   }
+
+  isInterestExist(email: string): Observable<HttpResponse<string>> {
+    let queryParams = {};
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text"
+    };
+    return this.http.get<HttpResponse<string>>("indirekcija/api/interesovanje/provjeraPostojanjaInteresovanja/" + email, queryParams);
+  }
 }
