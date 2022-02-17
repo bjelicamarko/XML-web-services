@@ -1,9 +1,9 @@
-import { LicniPodaciJmbgBrPasosa } from "src/modules/shared/models/LicniPodaci";
+import { LicniPodaciJmbgBrPasosa, Podnosilac } from "src/modules/shared/models/LicniPodaci";
 
 export interface Zahtev {
     Zahtev: {
         "@": {}
-        Podnosilac: LicniPodaciJmbgBrPasosa,
+        Podnosilac: Podnosilac,
         Razlog: string,
         Mesto: string,
         Datum: string

@@ -1,4 +1,5 @@
 import { Adresa } from "./Adresa";
+import { Drzavljanstvo } from "./Drzavljanstvo";
 
 export /* abstract */ interface LicniPodaci {
     Ime: { "@": { }, 
@@ -27,4 +28,8 @@ export interface LicniPodaciDetaljnije extends LicniPodaci {
     Mesto_rodjenja: { "@": { },
         "#": string},
     Adresa: Adresa  
+}
+
+export interface Podnosilac extends LicniPodaci {
+    Drzavljanstvo: Drzavljanstvo
 }

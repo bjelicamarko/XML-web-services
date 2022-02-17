@@ -127,6 +127,7 @@ export class InterestPageComponent {
     } else if (this.selectedValue === 'Strani drzavljanin bez boravka u RS') {
       this.Drzavljanstvo['util:Br_pasosa'] = this.registrationFormGroup.get('userId')?.value;
     }
+    this.Drzavljanstvo['@'].Tip = this.userIdType;
 
     if (this.registrationFormGroup.get('homeNumber')?.value === '')
       this.Kontakt['util:Broj_fiksnosg_telefona']['#'] = '08005775';

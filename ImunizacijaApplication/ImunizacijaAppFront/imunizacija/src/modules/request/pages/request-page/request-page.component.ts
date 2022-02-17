@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { jmbgValidator } from 'src/modules/shared/directives/custom-validators/jmbg-validator';
 import { pasosValidator } from 'src/modules/shared/directives/custom-validators/pasos-validator';
-import { DEFAULT_IDS } from 'src/modules/shared/enums/deafult-identifiers';
-import { LicniPodaciJmbgBrPasosa } from 'src/modules/shared/models/LicniPodaci';
+import { Podnosilac } from 'src/modules/shared/models/LicniPodaci';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { Zahtev } from '../../models/Zahtev';
 import { RequestService } from '../../services/request.service';
 
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService } from '@syncfusion/ej2-angular-richtexteditor';
+import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
 
 @Component({
   selector: 'app-request-page',
@@ -25,48 +25,48 @@ export class RequestPageComponent implements OnInit {
   };
   public iframe: object = { enable: true };
   public height: number = 200;
-  public value: string = "<p>sa</p>";
+  public value: string = "";
 
   registrationFormGroup: FormGroup;
 
   genderOptions: string[];
   options: string[];
   selectedValue: string;
-  userIdType: string;
+  userIdType: string = 'DOMACE';
 
-  Podnosilac: LicniPodaciJmbgBrPasosa = {
+  Drzavljanstvo: Drzavljanstvo = {
+    "@": {
+      Tip: this.userIdType
+    }
+  };
+
+  Podnosilac: Podnosilac = {
     Ime: {
-      '@': {xmlns: 'http://www.vakc-sistem.rs/util'},
+      '@': { xmlns: 'http://www.vakc-sistem.rs/util' },
       '#': ''
     },
     Prezime: {
-      '@': {xmlns: 'http://www.vakc-sistem.rs/util'},
+      '@': { xmlns: 'http://www.vakc-sistem.rs/util' },
       '#': ''
     },
     Datum_rodjenja: {
-      '@': {xmlns: 'http://www.vakc-sistem.rs/util'},
+      '@': { xmlns: 'http://www.vakc-sistem.rs/util' },
       '#': ''
     },
     Pol: {
-      '@': {xmlns: 'http://www.vakc-sistem.rs/util'},
+      '@': { xmlns: 'http://www.vakc-sistem.rs/util' },
       '#': ''
     },
-    JMBG: {
-      '@': {xmlns: 'http://www.vakc-sistem.rs/util'},
-      '#': ''
-    },
-    Broj_pasosa: {
-      '@': {xmlns: 'http://www.vakc-sistem.rs/util'},
-      '#': ''
-    }
+    Drzavljanstvo: this.Drzavljanstvo
   };
 
   constructor(private fb: FormBuilder, private requestService: RequestService,
               private snackBarService: SnackBarService) { 
     this.genderOptions = ['Muski', 'Zenski'];
-    this.options = ['Drzavljanin Republike Srbije', 'Strani drzavljanin bez boravka u RS'];
+    this.options = ['Drzavljanin Republike Srbije',
+                    'Strani drzavljanin sa boravkom u RS',
+                    'Strani drzavljanin bez boravka u RS'];
     this.selectedValue = 'Drzavljanin Republike Srbije';
-    this.userIdType = 'DOMACE';
 
     this.registrationFormGroup = this.fb.group({
       firstName: ['', Validators.required],
@@ -78,7 +78,6 @@ export class RequestPageComponent implements OnInit {
       place: ['Novi Sad', Validators.required],
       date: ['Da', Validators.required]
     });
-
   }
 
   ngOnInit(): void {
@@ -94,26 +93,29 @@ export class RequestPageComponent implements OnInit {
 
   onChange(_any: any) {
     this.selectedValue = _any;
-    if (this.selectedValue === 'Drzavljanin Republike Srbije') {  
+    if (this.selectedValue === 'Drzavljanin Republike Srbije') {
       this.registrationFormGroup.get('userId')?.setValidators(Validators.compose([Validators.required, jmbgValidator()]));
       this.userIdType = 'DOMACE';
-    }  else if (this.selectedValue === 'Strani drzavljanin bez boravka u RS') {
+    } else if (this.selectedValue === 'Strani drzavljanin sa boravkom u RS') {
+      this.registrationFormGroup.get('userId')?.setValidators(Validators.compose([Validators.required]));
+      this.userIdType = 'STRANO_SA_BORAVKOM';
+    } else if (this.selectedValue === 'Strani drzavljanin bez boravka u RS') {
       this.registrationFormGroup.get('userId')?.setValidators(Validators.compose([Validators.required, pasosValidator()]));
       this.userIdType = 'STRANO_BEZ_BORAVKA';
     }
-
     this.registrationFormGroup.get('userId')?.setValue('');
     this.checkSubmit();
   }
 
   createRequest() {
-    if (this.selectedValue === 'Drzavljanin Republike Srbije') {  
-      this.Podnosilac.JMBG['#'] = this.registrationFormGroup.get('userId')?.value;
-      this.Podnosilac.Broj_pasosa['#'] = DEFAULT_IDS.BR_PASOSA;
+    if (this.selectedValue === 'Drzavljanin Republike Srbije') {
+      this.Drzavljanstvo['util:JMBG'] = this.registrationFormGroup.get('userId')?.value;
+    } else if (this.selectedValue === 'Strani drzavljanin sa boravkom u RS') {
+      this.Drzavljanstvo['util:Evidencioni_broj_stranca'] = this.registrationFormGroup.get('userId')?.value;
     } else if (this.selectedValue === 'Strani drzavljanin bez boravka u RS') {
-      this.Podnosilac.Broj_pasosa['#'] = this.registrationFormGroup.get('userId')?.value;
-      this.Podnosilac.JMBG['#'] = DEFAULT_IDS.JMBG;
+      this.Drzavljanstvo['util:Br_pasosa'] = this.registrationFormGroup.get('userId')?.value;
     }
+    this.Drzavljanstvo['@'].Tip = this.userIdType;
 
     this.Podnosilac.Ime['#'] = this.registrationFormGroup.get('firstName')?.value;
     this.Podnosilac.Prezime['#'] = this.registrationFormGroup.get('lastName')?.value;
@@ -121,7 +123,8 @@ export class RequestPageComponent implements OnInit {
     this.Podnosilac.Pol['#'] = this.registrationFormGroup.get('gender')?.value;
 
     let newRequest: Zahtev = this.createNewRequest();
-    
+    // console.log(newRequest);
+
     this.requestService.createRequest(newRequest).subscribe((response) => {
       this.snackBarService.openSnackBar(response.body as string);
           this.resetStateOfForm();
@@ -130,7 +133,7 @@ export class RequestPageComponent implements OnInit {
 
   createRequestWithCheckValue() : void {
     if (this.value) {
-      this.createNewRequest();
+      this.createRequest();
     } else {
       this.snackBarService.openSnackBar("Popunite razlog.");
     }
@@ -142,6 +145,7 @@ export class RequestPageComponent implements OnInit {
         Zahtev: {
           "@": {
             "xmlns" : "http://www.vakc-sistem.rs/zahtev-dzs",
+            "xmlns:util" : "http://www.vakc-sistem.rs/util",
             "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
             "xsi:schemaLocation": "http://www.vakc-sistem.rs/zahtev-dzs zahtev_za_izdavanje_zelenog.xsd",
             Id: "1"
@@ -153,9 +157,7 @@ export class RequestPageComponent implements OnInit {
         }
       };
   
-      return zahtev;
-
-    
+      return zahtev;    
   }
 
   private resetStateOfForm() {
@@ -169,11 +171,12 @@ export class RequestPageComponent implements OnInit {
       place: ['Novi Sad', Validators.required],
       date: ['Da', Validators.required]
     });
+    this.value = '';
   }
 
   convertValue() {
    ///<*> ?*? <*/> ?*/?
-    console.log(this.value);
+    // console.log(this.value);
     let r = this.value.replace(/<\/p>/g, '');
     r = r.replace(/<p>/g, '');
     r = r.replace(/<\/strong>/g,"|+,");
@@ -181,7 +184,7 @@ export class RequestPageComponent implements OnInit {
     r = r.replace(/<\/em>/g,"|~,");
     r = r.replace(/<em>/g,",~");
     r = r.replace(',,', ',');
-    console.log(r);
+    // console.log(r);
     this.value = r;
   }
 }
