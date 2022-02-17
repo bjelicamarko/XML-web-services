@@ -54,7 +54,7 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     @Autowired
     private MailService mailService;
 
-    public static final String URL_RESOURCE_ROOT = "potvrda/";
+    public static final String URL_RESOURCE_ROOT = "potvrda/generatePDF/";
 
     @PostConstruct // after init
     private void postConstruct(){
