@@ -40,7 +40,7 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
 
     @PostConstruct // after init
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, COLLECTION_PATH_INTERESOVANJE, new IdGeneratorPosInt(), INTERESOVANJE_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_INTERESOVANJE, XML_SCHEMA_PATH_INTERESOVANJE);
     }
 

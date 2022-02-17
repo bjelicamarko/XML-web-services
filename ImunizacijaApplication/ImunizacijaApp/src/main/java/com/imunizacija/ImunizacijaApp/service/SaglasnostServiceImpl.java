@@ -4,7 +4,6 @@ import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
-import com.imunizacija.ImunizacijaApp.repository.xmlRepository.SaglasnostRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
@@ -36,12 +35,9 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
 
-    @Autowired
-    private SaglasnostRepository saglasnostRepository;
-
     @PostConstruct // after init
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, COLLECTION_PATH_SAGLASNOST, new IdGeneratorPosInt(), SAGLASNOST_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_SAGLASNOST, XML_SCHEMA_PATH_SAGLASNOST);
     }
 
@@ -61,21 +57,14 @@ public class SaglasnostServiceImpl implements SaglasnostService{
 
     @Override
     public String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException {
-        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_PATH, null);
         return htmlString;
     }
 
     @Override
-    public SearchResults searchUserDocumentsJmbg(String jmbg, String searchText) throws XMLDBException {
+    public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
         SearchResults searchResults;
-        searchResults = saglasnostRepository.searchUserDocumentsJMBG(jmbg, searchText);
-        return searchResults;
-    }
-
-    @Override
-    public SearchResults searchUserDocumentsPasos(String brojPasosa, String searchText) throws XMLDBException {
-        SearchResults searchResults;
-        searchResults = saglasnostRepository.searchUserDocumentsBrojPasosa(brojPasosa, searchText);
+        searchResults = repository.searchDocuments(userId, searchText);
         return searchResults;
     }
 }

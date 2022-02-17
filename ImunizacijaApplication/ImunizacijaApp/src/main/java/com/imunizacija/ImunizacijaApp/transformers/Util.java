@@ -56,5 +56,10 @@ public class Util {
         return sb.toString();
     }
 
+    public static String replaceCharacters(String xml) {
+
+        return null;
+    }
+
 
 }

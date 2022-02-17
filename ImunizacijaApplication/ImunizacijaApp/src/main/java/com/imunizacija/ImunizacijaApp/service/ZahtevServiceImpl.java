@@ -37,7 +37,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS, COLLECTION_PATH_ZAHTEV_DZS, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS, COLLECTION_PATH_ZAHTEV_DZS, new IdGeneratorPosInt(), ZAHTEV_NAMESPACE_PATH);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_ZAHTEV_DZS, XML_SCHEMA_PATH_ZAHTEV);
     }
 
@@ -57,7 +57,7 @@ public class ZahtevServiceImpl implements ZahtevService {
 
     @Override
     public String generateInteresovanjeHTML(String id) throws TransformerException, IOException, WriterException {
-        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
+        String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), ZAHTEV_XSL_PATH, null);
         return htmlString;
     }
 }

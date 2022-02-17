@@ -19,7 +19,5 @@ public interface SaglasnostService {
 
     String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException;
 
-    SearchResults searchUserDocumentsJmbg(String jmbg, String searchText) throws XMLDBException;
-
-    SearchResults searchUserDocumentsPasos(String brojPasosa, String searchText) throws XMLDBException;
+    SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
 }

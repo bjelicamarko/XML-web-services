@@ -44,7 +44,7 @@ public class SaglasnostController {
         }
     }
 
-    @GetMapping(value = "/generateHTML/{id}", produces = MediaType.TEXT_XML_VALUE)
+    @GetMapping(value = "/generateHTML/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<String> generateHTML(@PathVariable String id) {
         try {
             return new ResponseEntity<>(saglasnostService.generateSaglasnostHTML(id), HttpStatus.OK);
@@ -53,22 +53,18 @@ public class SaglasnostController {
         }
     }
 
-    @GetMapping(value = "/searchByJMBG", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<SearchResults> searchByJMBG(@RequestParam String jmbg, @RequestParam String searchText) {
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE) //TEXT_XML_VALUE | APPLICATION_XML_VALUE
+    public ResponseEntity<SearchResults> search(@RequestParam String userId, @RequestParam String searchText) {
         try {
-            return new ResponseEntity<>(saglasnostService.searchUserDocumentsJmbg(jmbg, searchText), HttpStatus.OK);
+            SearchResults results = saglasnostService.searchDocuments(userId, searchText);
+            if(results == null)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            else
+                return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping(value = "/searchByPasos", produces = MediaType.TEXT_XML_VALUE)
-    public ResponseEntity<SearchResults> searchByPasos(@RequestParam String brojPasosa, @RequestParam String searchText) {
-        try {
-            return new ResponseEntity<>(saglasnostService.searchUserDocumentsPasos(brojPasosa, searchText), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
 }
