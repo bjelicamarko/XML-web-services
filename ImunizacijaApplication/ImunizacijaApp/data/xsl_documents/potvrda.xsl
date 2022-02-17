@@ -17,14 +17,28 @@
                 <p>Prezime: <xsl:value-of select="//util:Prezime"/></p>
                 <p>Datum rodjenja: <xsl:value-of select="//util:Datum_rodjenja"/></p>
                 <p>Pol: <xsl:value-of select="//util:Pol"/></p>
-                <p>O primljenoj vakcini:</p>
-                <p> - Redni broj: <xsl:value-of select="//b:Doza/@Redni_broj"/></p>
-                <p> - Datum primanja: <xsl:value-of select="//b:Doza//util:Datum"/></p>
-                <p> - Serija: <xsl:value-of select="//b:Doza//util:Serija"/></p>
-                <p> - Proizvodjac: <xsl:value-of select="//b:Doza//util:Proizvodjac"/></p>
-                <p> - Tip: <xsl:value-of select="//b:Doza//util:Tip"/></p>
-                <p> - Ustanova: <xsl:value-of select="//b:Doza//util:Ustanova"/></p>
-                <p>Datum izdavanja potvrde: <xsl:value-of select="//b:Datum_izdavanja"/></p>
+                <p>O primljenim vakcinama:</p>
+                <table>
+                    <tr>
+                        <th>Redni broj</th>
+                        <th>Datum</th>
+                        <th>Serija</th>
+                        <th>Proizvodjac</th>
+                        <th>Tip</th>
+                        <th>Ustanova</th>
+                    </tr>
+                    <xsl:for-each select="//b:Podaci_o_vakcini/b:Doza">
+                        <tr>
+                            <td> - Redni broj: <xsl:value-of select="@Redni_broj"/></td>
+                            <td> - Datum primanja: <xsl:value-of select="util:Datum"/></td>
+                            <td> - Serija: <xsl:value-of select="util:Serija"/></td>
+                            <td> - Proizvodjac: <xsl:value-of select="util:Proizvodjac"/></td>
+                            <td> - Tip: <xsl:value-of select="util:Tip"/></td>
+                            <td> - Ustanova: <xsl:value-of select="util:Ustanova"/></td>
+                        </tr>
+                    </xsl:for-each>
+                </table>
+                <p>Datum izdavanja potvrde: <xsl:value-of select="b:Datum_izdavanja"/></p>
             </body>
         </html>
     </xsl:template>

@@ -194,6 +194,78 @@
                     <fo:block text-align="right" font-family="Times" font-size="15px" padding="10px">
                         <fo:inline font-weight="bold"> Datum: </fo:inline> <xsl:value-of select="format-date(//b:Saglasnost/b:Datum, '[D1].[M1].[Y1].')"/>
                     </fo:block>
+                    <fo:table>
+                        <fo:table-column column-number="1"  column-width="256pt" />
+                        <fo:table-column column-number="2"  />
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block font-family="Times" font-size="15px" padding="7px" margin-top="10px">
+                                        <fo:inline font-weight="bold"> Zdravstvena ustanova: </fo:inline> <xsl:value-of select=".//b:Zdravstvena_ustanova"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block font-family="Times" font-size="15px" padding="7px" margin-top="7px">
+                                        <fo:inline font-weight="bold"> Punkt: </fo:inline> <xsl:value-of select="//b:Punkt"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
+                    <fo:block font-family="Times" font-size="15px" padding="7px" margin-top="7px" font-weight="bold">
+                        Podaci o lekaru koji je izvršio vakcinaciju:
+                    </fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px" >
+                        <fo:inline font-weight="bold"> - Ime: </fo:inline> <xsl:value-of select="//b:Podaci_o_lekaru/b:Ime"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold">- Prezime: </fo:inline> <xsl:value-of select="//b:Podaci_o_lekaru/b:Prezime"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold">- Faksimil: </fo:inline><xsl:value-of select="//b:Podaci_o_lekaru/b:Faksimil"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px" >
+                        <fo:inline font-weight="bold">- Broj telefona: </fo:inline><xsl:value-of select="//b:Podaci_o_lekaru/b:Broj_telefona"/></fo:block>
+                    <fo:block font-family="Times" font-size="15px" padding="7px" margin-top="7px" font-weight="bold" >
+                        Doza:
+                    </fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold"> - Datum: </fo:inline> <xsl:value-of select="format-date(//b:Doza/util:Datum, '[D1].[M1].[Y1].')"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold"> - Serija: </fo:inline> <xsl:value-of select="//util:Serija"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold"> - Proizvodjac: </fo:inline><xsl:value-of select="//util:Proizvodjac"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold"> - Tip: </fo:inline><xsl:value-of select="//util:Tip"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <fo:inline font-weight="bold"> - Ekstremitet: </fo:inline><xsl:value-of select="//util:Ekstremitet"/></fo:block>
+                    <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                        <xsl:choose>
+                            <xsl:when test="//util:Nezeljena_rekacija != 'Nema nezeljene reakcije.'">
+                                    <fo:inline font-weight="bold"> - Nezeljena rekacija: </fo:inline><xsl:value-of select="//util:Nezeljena_rekacija"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <fo:inline/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </fo:block>
+                    <fo:block>
+                        <xsl:choose>
+                            <xsl:when test="//b:Privremena_kontraindikacija/b:Dijagnoza != 'Nema kontraindikacije.'">
+                                <fo:block font-family="Times" font-size="15px" padding="7px" margin-top="7px" font-weight="bold">
+                                    Kontraindikacije:
+                                </fo:block>
+                                <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                                    <fo:inline font-weight="bold"> - Dijagnoza: </fo:inline> <xsl:value-of select="//b:Privremena_kontraindikacija/b:Dijagnoza"/>
+                                </fo:block>
+                                <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                                    <fo:inline font-weight="bold"> - Datum: </fo:inline><xsl:value-of select="format-date(//b:Privremena_kontraindikacija/b:Datum, '[D1].[M1].[Y1].')"/>
+                                </fo:block>
+                                <fo:block text-indent="30pt" text-align="left" font-family="Times" font-size="15px" padding="7px">
+                                    <fo:inline font-weight="bold"> - Odluka komisije o trajnim kontraindikacijama: </fo:inline><xsl:value-of select="//b:Kontraindikacije/b:Odluka_komisije_o_trajnim"/>
+                                </fo:block></xsl:when>
+                            <xsl:otherwise>
+                                <fo:inline/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </fo:block>
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>
