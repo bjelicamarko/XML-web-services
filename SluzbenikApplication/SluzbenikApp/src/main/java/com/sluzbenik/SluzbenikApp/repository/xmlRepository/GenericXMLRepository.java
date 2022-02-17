@@ -76,7 +76,6 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         } finally {
             closeResources(col, res);
         }
-        return entity.getXmlId();
     }
 
     public T retrieveXML(String documentId){
