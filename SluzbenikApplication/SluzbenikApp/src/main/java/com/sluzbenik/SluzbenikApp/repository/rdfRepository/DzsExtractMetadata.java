@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.repository.rdfRepository;
 
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.util.Drzavljanstvo;
 import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
@@ -27,7 +28,7 @@ public class DzsExtractMetadata extends ExtractMetadata {
         model.add(model.createStatement(resource, createdAt, date));
 
         Property issuedTo = model.createProperty(PREDICATE_NAMESPACE, "issuedTo");
-        Resource person = model.createResource(OSOBA_NAMESPACE_PATH + digitalniZeleniSertifikat.getPodaciOPrimaocu().getJMBG());
+        Resource person = model.createResource(OSOBA_NAMESPACE_PATH + getPersonIdentifier(digitalniZeleniSertifikat.getPodaciOPrimaocu().getDrzavljanstvo()));
         model.add(model.createStatement(resource, issuedTo, person));
 
         Property createdBy = model.createProperty(PREDICATE_NAMESPACE, "createdBy");
@@ -39,5 +40,17 @@ public class DzsExtractMetadata extends ExtractMetadata {
         model.add(model.createStatement(resource, refBy, zahtevRef));
 
         super.modelWrite(model, DZS_NAMED_GRAPH_URI);
+    }
+
+    private String getPersonIdentifier(Drzavljanstvo drzavljanstvo) {
+
+        if(drzavljanstvo.getTip().equals("DOMACE")){
+            return drzavljanstvo.getJMBG();
+        }
+        else if (drzavljanstvo.getTip().equals("STRANO_SA_BORAVKOM")){
+            return drzavljanstvo.getEvidencioniBrojStranca();
+        }
+        else // STRANO_BEZ_BORAVKA
+            return drzavljanstvo.getBrPasosa();
     }
 }

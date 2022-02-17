@@ -70,6 +70,19 @@
                     </fo:block>
                     <fo:block border-top-style="solid" text-align="center" margin-bottom="15pt"/>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
+                        <xsl:choose>
+                            <xsl:when test="//util:JMBG">
+                                <fo:inline font-weight="bold">Državljanstvo - JMBG: </fo:inline> <xsl:value-of select="//util:JMBG"/>
+                            </xsl:when>
+                            <xsl:when test="//util:Evidencioni_broj_stranca">
+                                <fo:inline font-weight="bold">Državljanstvo - Evidencioni broj:</fo:inline> <xsl:value-of select="//util:Evidencioni_broj_stranca"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <fo:inline font-weight="bold">Državljanstvo - Broj pasoša:</fo:inline> <xsl:value-of select="//util:Br_pasosa"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </fo:block>
+                    <fo:block font-family="Times" font-size="15px" padding="10px">
                         <fo:inline font-weight="bold"> Ime: </fo:inline> <xsl:value-of select="//b:Ime"/>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">

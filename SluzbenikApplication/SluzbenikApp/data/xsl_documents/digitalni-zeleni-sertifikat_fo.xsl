@@ -97,26 +97,21 @@
                     </fo:block>
 
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> JMBG: </fo:inline>
                         <xsl:choose>
-                            <xsl:when test="//util:JMBG != '0101901404404'">
-                               <xsl:value-of select="//util:JMBG"/>
+                            <xsl:when test="//util:JMBG">
+                                <fo:inline font-weight="bold">Državljanstvo - JMBG: </fo:inline> <xsl:value-of select="//util:JMBG"/>
                             </xsl:when>
+                            <xsl:when test="//util:Evidencioni_broj_stranca">
+                                <fo:inline font-weight="bold">Državljanstvo - Evidencioni broj:</fo:inline> <xsl:value-of select="//util:Evidencioni_broj_stranca"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <fo:inline font-weight="bold">Državljanstvo - Broj pasoša:</fo:inline> <xsl:value-of select="//util:Br_pasosa"/>
+                            </xsl:otherwise>
                         </xsl:choose>
                     </fo:block>
 
                     <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Broj pasoša: </fo:inline>
-                        <xsl:choose>
-                            <xsl:when test="//util:Broj_pasosa != 'ZZZZZZ'">
-                                <xsl:value-of select="//util:Broj_pasosa"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </fo:block>
-
-
-                    <fo:block font-family="Times" font-size="15px" padding="10px">
-                        <fo:inline font-weight="bold"> Datum rođenja: </fo:inline> <xsl:value-of select="format-date(//util:Datum_rodjenja, '[D1].[M1].[Y1].')"/>
+                        <fo:inline font-weight="bold"> Datum rodjenja: </fo:inline> <xsl:value-of select="format-date(//util:Datum_rodjenja, '[D1].[M1].[Y1].')"/>
                     </fo:block>
                     <fo:block font-family="Times" font-size="15px" padding="10px">
                         <fo:inline font-weight="bold"> Pol: </fo:inline>
@@ -165,7 +160,7 @@
 
                                 <fo:table-cell border-style="solid" border-width="2pt">
                                     <fo:block>
-                                        <fo:inline font-weight="bold"> Proizvođač </fo:inline>
+                                        <fo:inline font-family="Times" font-weight="bold"> Proizvođač </fo:inline>
                                     </fo:block>
                                 </fo:table-cell>
 
@@ -227,7 +222,7 @@
                         </fo:table-body>
                     </fo:table>
 
-                    <fo:block border-top-style="solid" text-align="center"/>
+                    <fo:block border-top-style="solid" text-align="center" margin-top="15px"/>
                     <fo:block text-align="right" font-family="Times" font-size="15px" padding="10px">
                         <fo:inline font-weight="bold"> Datum izdavanja: </fo:inline> <xsl:value-of select="format-date(//b:Datum_izdavanja_sertifikata, '[D1].[M1].[Y1].')"/>
                     </fo:block>

@@ -12,6 +12,7 @@ public interface PotvrdaService {
     PotvrdaOVakcinaciji findOneById(String id);
 
     PotvrdaOVakcinaciji findLastOneByUser(String userID);
+
     byte[] generatePotvrdaPDF(String id) throws Exception;
 
     String generatePotvrdaHTML(String id) throws Exception;

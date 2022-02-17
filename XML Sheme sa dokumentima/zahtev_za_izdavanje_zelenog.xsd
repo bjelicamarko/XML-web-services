@@ -9,7 +9,17 @@
     <xs:element name="Zahtev">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Podnosilac" type="util:Licni_podaci_JMBG_BrPasosa"> </xs:element>
+                <xs:element name="Podnosilac">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="util:Licni_podaci">
+                                <xs:sequence>
+                                    <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"/>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="Razlog">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">

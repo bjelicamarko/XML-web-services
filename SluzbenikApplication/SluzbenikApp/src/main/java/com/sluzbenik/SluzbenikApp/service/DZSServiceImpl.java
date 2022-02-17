@@ -88,7 +88,15 @@ public class DZSServiceImpl implements DZSService {
             throw new DzsException("Nevalidan dokument potvrde dobavljen sa servisa!");
 
         DigitalniZeleniSertifikat dzs = new DigitalniZeleniSertifikat();
-        dzs.setPodaciOPrimaocu(potvrdaOVakcinaciji.getPodaciOPrimaocu());
+
+        DigitalniZeleniSertifikat.PodaciOPrimaocu podaciOPrimaocu = new DigitalniZeleniSertifikat.PodaciOPrimaocu();
+        podaciOPrimaocu.setDrzavljanstvo(potvrdaOVakcinaciji.getPodaciOPrimaocu().getDrzavljanstvo());
+        podaciOPrimaocu.setIme(potvrdaOVakcinaciji.getPodaciOPrimaocu().getIme());
+        podaciOPrimaocu.setPrezime(potvrdaOVakcinaciji.getPodaciOPrimaocu().getPrezime());
+        podaciOPrimaocu.setPol(potvrdaOVakcinaciji.getPodaciOPrimaocu().getPol());
+        podaciOPrimaocu.setDatumRodjenja(potvrdaOVakcinaciji.getPodaciOPrimaocu().getDatumRodjenja());
+
+        dzs.setPodaciOPrimaocu(podaciOPrimaocu);
         dzs.setIdSluzbenika(idSluzbenika);
 
         DigitalniZeleniSertifikat.PodaciOSertifikatu podaciOSertifikatu = new DigitalniZeleniSertifikat.PodaciOSertifikatu();
