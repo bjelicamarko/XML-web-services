@@ -43,7 +43,7 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Autowired
     private OdgovoriService odgovoriService;
 
-    private static final String ID_PATH = "//@Id";
+    private static final String ID_PATH = "@Id";
 
     @PostConstruct // after init
     private void postConstruct(){

@@ -1,15 +1,13 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.service.DZSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/dzs")
@@ -43,6 +41,20 @@ public class DZSController {
             return new ResponseEntity<>(dzsService.generateDZSHTML(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<SearchResults> search(@RequestParam String userId, @RequestParam String searchText) {
+        try {
+            SearchResults results = dzsService.searchDocuments(userId, searchText);
+            if(results == null)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            else
+                return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.service;
 
 
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
@@ -9,10 +10,9 @@ import com.sluzbenik.SluzbenikApp.transformers.XML2HTMLTransformer;
 import com.sluzbenik.SluzbenikApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.PostConstruct;
-
-import java.io.StringWriter;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.transformers.Constants.*;
@@ -34,9 +34,11 @@ public class DZSServiceImpl implements DZSService {
 
     public static final String URL_RESOURCE_ROOT = "dzs/";
 
+    private static final String ID_PATH = "Broj_sertifikata";
+
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, new IdGeneratorPosInt(), DZS_NAMESPACE_PATH2);
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_DZS, XML_SCHEMA_PATH_DZS);
     }
 
@@ -56,5 +58,12 @@ public class DZSServiceImpl implements DZSService {
         String resourceUrl = URL_ROOT + URL_RESOURCE_ROOT + id;
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), DZS_XSL_PATH, resourceUrl);
         return htmlString;
+    }
+
+    @Override
+    public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
+        SearchResults searchResults;
+        searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
+        return searchResults;
     }
 }

@@ -15,17 +15,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.util.Locale;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
-import static com.imunizacija.ImunizacijaApp.repository.Constants.UTIL_NAMESPACE_PATH;
+
 
 @Component
 @Scope("prototype") // kreira novu instancu na svaki @Autowired
@@ -108,32 +103,36 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         XPathQueryService xpathService = (XPathQueryService) col.getService("XPathQueryService", "1.0");
         xpathService.setProperty("indent", "yes");
 
-        xpathService.setNamespace("", this.namespacePath);
-        xpathService.setNamespace("util", UTIL_NAMESPACE_PATH);
+//        xpathService.setNamespace("", this.namespacePath);
+//        xpathService.setNamespace("util", UTIL_NAMESPACE_PATH);
 
         String collPath = "/" + this.collectionPath;
-        String xpathExp = String.format("\ndeclare variable $data as document-node()* := collection(\"%s\");\n" +
-                "\n" +
-                "for $doc in $data\n" +
-                "let $email := $doc//util:Email_adresa\n" +
-                "let $jmbg := $doc//util:JMBG\n" +
-                "let $br_pasosa := $doc//util:Br_pasosa\n" +
-                "let $br_stranca := $doc//util:Evidencioni_broj_stranca\n" +
-                "let $id := $doc%s\n" +
-                "let $vals := $doc//text()[contains(lower-case(.),'%s')]\n" +
-                "let $attrs := $doc//*[contains(lower-case(@*),'%s')]/@*\n" +
+        String xpathExp = String.format("\n" +
+            "declare namespace def = \"%s\";\n" +
+            "declare namespace utill = \"%s\";\n" +
+            "declare variable $data as document-node()* := collection(\"%s\");\n" +
+            "" +
+            "\n" +
+            "for $doc in $data\n" +
+            "let $email := $doc//utill:Email_adresa\n" +
+            "let $jmbg := $doc//utill:JMBG\n" +
+            "let $br_pasosa := $doc//utill:Br_pasosa\n" +
+            "let $br_stranca := $doc//utill:Evidencioni_broj_stranca\n" +
+            "let $id := $doc//%s\n" +
+            "let $vals := $doc//text()[contains(lower-case(.),'%s')]\n" +
+            "let $attrs := $doc//*[contains(lower-case(@*),'%s')]/@*\n" +
 
-                "let $ret := if ( " +
-                "(count($vals) > 0 or count($attrs) > 0) " +
-                "%s " +
-                "( ($email = '%s') or ($jmbg = '%s') or ($br_pasosa = '%s') or ($br_stranca = '%s') ) " +
-                ")" +
-                "" +
-                "then $id else ()\n" +
+            "let $ret := if ( " +
+            "(count($vals) > 0 or count($attrs) > 0) " +
+            "%s " +
+            "( ($email = '%s') or ($jmbg = '%s') or ($br_pasosa = '%s') or ($br_stranca = '%s') ) " +
+            ")" +
+            "" +
+            "then $id else ()\n" +
 
-                "for $r in $ret\n" +
-                "return string($r)" +
-                "", collPath, idPath, searchText, searchText, andor, userId, userId, userId, userId);
+            "for $r in $ret\n" +
+            "return string($r)" +
+            "", this.namespacePath, UTIL_NAMESPACE_PATH, collPath, idPath, searchText, searchText, andor, userId, userId, userId, userId);
 
         System.out.println("[INFO] Invoking XPath query service for: " + xpathExp);
         ResourceSet result = xpathService.query(xpathExp);
@@ -175,7 +174,5 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         if(userId.equals("") && searchText.equals("")) return "or";
         else return "or"; // oba prazna
     }
-
-
 
 }

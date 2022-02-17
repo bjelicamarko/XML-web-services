@@ -66,7 +66,7 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
     public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
 
-    private static final String ID_PATH = "//@Sifra_potvrde";
+    private static final String ID_PATH = "@Sifra_potvrde";
 
     @PostConstruct // after init
     private void postConstruct(){

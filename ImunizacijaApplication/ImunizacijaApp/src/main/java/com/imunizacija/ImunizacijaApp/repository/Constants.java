@@ -36,6 +36,7 @@ public class Constants {
     public static final String OSOBA_NAMESPACE_PATH = ROOT_PATH + "osoba/";
     public static final String DOZA_NAMESPACE_PATH = ROOT_PATH + "doza/";
     public static final String POTVRDA_NAMESPACE_PATH = ROOT_PATH + "potvrda-o-vakcinaciji/";
+    public static final String POTVRDA_NAMESPACE_PATH2 = ROOT_PATH + "potvrda-o-vakcinaciji";
     public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
     public static final String INTERESOVANJE_NAMESPACE_PATH = ROOT_PATH + "interesovanje/";
     public static final String SAGLASNOST_NAMESPACE_PATH = ROOT_PATH + "saglasnost-za-imunizaciju/";
