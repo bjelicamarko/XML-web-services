@@ -2,12 +2,14 @@ package com.imunizacija.ImunizacijaApp.repository.rdfRepository;
 
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.DozaSaUstanovom;
+import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.ConnectionPropertiesFusekiJena;
 import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.*;
+import org.springframework.stereotype.Component;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -15,10 +17,11 @@ import java.util.List;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
+@Component
 public class PotvrdaExtractMetadata extends ExtractMetadata{
 
-    public PotvrdaExtractMetadata(ConnectionPropertiesFusekiJena conn) {
-        super(conn);
+    public PotvrdaExtractMetadata() {
+        super(AuthenticationUtilities.setUpPropertiesFusekiJena());
     }
 
     private void extractForDose(DozaSaUstanovom dozaSaUstanovom, String idPotvrde){

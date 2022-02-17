@@ -1,15 +1,17 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
+import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.CreateDzsDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.service.DZSService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import javax.xml.datatype.DatatypeConfigurationException;
 
 @RestController
 @RequestMapping("api/dzs")
@@ -61,7 +63,7 @@ public class DZSController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            dzsService.createDZS(zahtevIdDTO.getZahtevId(), userDetails.getUsername(), entity.getBody());
+            dzsService.createDZS(zahtevIdDTO.getZahtevId(), userDetails.getUsername(), entity.getBody(), zahtevIdDTO.getUserEmail());
             return new ResponseEntity<>("Uspesno kreiran digitalni zeleni sertifikat!", HttpStatus.OK);
         } catch (DzsException | DatatypeConfigurationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);

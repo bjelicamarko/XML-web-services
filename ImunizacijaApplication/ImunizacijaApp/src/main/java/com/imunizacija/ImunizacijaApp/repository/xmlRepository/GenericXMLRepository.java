@@ -40,10 +40,12 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         this.collectionPath = collectionPath;
     }
 
-    public void storeXML(T entity, boolean generateId){
+    public String storeXML(T entity, boolean generateId){ //vraca id dokumenta koji je kreiran
         OutputStream os = new ByteArrayOutputStream();
         Collection col = null;
         XMLResource res = null;
+
+        String docID = null;
 
         try {
             System.out.println("[INFO] Retrieving the collection: " + collectionPath);
@@ -67,11 +69,14 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
 
             col.storeResource(res);
             System.out.println("[INFO] Done.");
+            docID = entity.getXmlId();
         } catch(JAXBException | XMLDBException e) {
             e.printStackTrace();
         } finally {
             closeResources(col, res);
         }
+
+        return docID;
     }
 
     public T retrieveXML(String documentId){

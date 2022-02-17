@@ -2,6 +2,7 @@ package com.imunizacija.ImunizacijaApp.service;
 
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -25,6 +26,9 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
 
     @Autowired
     private GenericXMLReaderWriter<Interesovanje> repositoryReaderWriter;
+
+    @Autowired
+    private InteresovanjeExtractMetadata interesovanjeExtractMetadata;
 
     @Autowired
     private MailService mailService;
@@ -55,6 +59,7 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
         this.mailService.sendMail("Novo interesovanje", this.generateTextFromInterest(i),
                 i.getKontakt().getEmailAdresa());
         this.repository.storeXML(i, true);
+        this.interesovanjeExtractMetadata.extract(i);
 
         OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
         odgovorTerminDTO.setEmail(i.getKontakt().getEmailAdresa());

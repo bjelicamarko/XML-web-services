@@ -1,28 +1,33 @@
 <div class="row p-4 align-items-center justify-content-center">
-    <h1 class="p-4" style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Dokumenti za korisnicki ID:
-        {{userID}}
+    <h1 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Dokumenti za korisnika
     </h1>
+    <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">ID: {{user.userID}}
+    </h2>
+    <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">{{user.firstName}} {{user.lastName}}
+    </h2>
 </div>
 <div *ngIf="userDocsDTO">
     <div class="row p-2 align-items-center justify-content-center"
         *ngIf="userDocsDTO.documentsOfUser.interesovanjeID.length > 0">
         <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Interesovanje</h2>
         <h3 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
-            http://localhost:9001/{{userDocsDTO.documentsOfUser.interesovanjeID[0]}}</h3>
+            ID: {{userDocsDTO.documentsOfUser.interesovanjeID[0]}} <button
+                (click)="openPdf('interesovanje',userDocsDTO.documentsOfUser.interesovanjeID[0])">Otvorite PDF</button>
+        </h3>
     </div>
     <div class="row p-2 align-items-center justify-content-center"
         *ngIf="userDocsDTO.documentsOfUser.salgasnostList.length > 0">
         <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Saglasnost</h2>
         <h3 *ngFor="let sagl of userDocsDTO.documentsOfUser.salgasnostList; let i = index"
             style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
-            {{i+1}}. doza: http://localhost:9001/{{sagl}}</h3>
+            {{i+1}}. doza, ID: {{sagl}} <button (click)="openPdf('saglasnost',sagl)">Otvorite PDF</button></h3>
     </div>
     <div class="row p-2 align-items-center justify-content-center"
         *ngIf="userDocsDTO.documentsOfUser.potvrdaOVakcList.length > 0">
         <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Potvrda o vakcinaciji</h2>
         <h3 *ngFor="let potvrda of userDocsDTO.documentsOfUser.potvrdaOVakcList; let i = index"
             style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
-            {{i+1}}. doza: http://localhost:9001/{{potvrda}}</h3>
+            {{i+1}}. doza, ID: {{potvrda}} <button (click)="openPdf('potvrda',potvrda)">Otvorite PDF</button></h3>
     </div>
     <div class="row p-2 align-items-center justify-content-center" *ngIf="userDocsDTO.documentsOfUser.zahtevDZSList.length > 0 || 
         userDocsDTO.documentsOfUser.prihvaceniZahtevDZSList.length > 0 ">
@@ -30,13 +35,13 @@
             <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Poslati zahtevi za DZS</h2>
             <h3 *ngFor="let zahtev of userDocsDTO.documentsOfUser.zahtevDZSList; let i = index"
                 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
-                http://localhost:9001/{{zahtev}}</h3>
+                ID: {{zahtev}} <button (click)="openPdf('zahtev',zahtev)">Otvorite PDF</button></h3>
         </div>
         <div *ngIf="userDocsDTO.documentsOfUser.prihvaceniZahtevDZSList.length > 0">
             <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Prihvaceni zahtevi za DZS</h2>
             <h3 *ngFor="let zahtev of userDocsDTO.documentsOfUser.prihvaceniZahtevDZSList; let i = index"
                 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
-                http://localhost:9001/{{zahtev}}</h3>
+                ID: {{zahtev}} <button (click)="openPdf('zahtev',zahtev)">Otvorite PDF</button></h3>
         </div>
 
     </div>
@@ -45,6 +50,13 @@
         <h2 style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">Izdati DZS</h2>
         <h3 *ngFor="let dzs of userDocsDTO.documentsOfUser.dzsList; let i = index"
             style="text-align: center; font-weight: bold; color: rgb(196, 0, 0);">
-            http://localhost:9001/{{dzs}}</h3>
+            ID: {{dzs}} <button (click)="openPdf('dzs',dzs)">Otvorite PDF</button></h3>
+    </div>
+
+    <div class="row d-flex justify-content-center p-4">
+        <div class="row d-flex justify-content-center" style="width: 20%;">
+            <button mat-flat-button color="primary">Izdavanje zelenog sertifikata</button>
+        </div>
+        <!-- *ngIf="userDocsDTO.documentsOfUser.zahtevDZSList.length > 0"> -->
     </div>
 </div>

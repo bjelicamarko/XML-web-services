@@ -2,6 +2,7 @@ package com.imunizacija.ImunizacijaApp.service;
 
 import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -30,6 +31,9 @@ public class ZahtevServiceImpl implements ZahtevService {
     private GenericXMLReaderWriter<Zahtev> repositoryReaderWriter;
 
     @Autowired
+    private ZahtevExtractMetadata zahtevExtractMetadata;
+
+    @Autowired
     private XSLFOTransformer transformerXML2PDF;
 
     @Autowired
@@ -48,6 +52,7 @@ public class ZahtevServiceImpl implements ZahtevService {
     public void createNewRequest(String zahtevDzs) throws MessagingException {
         Zahtev z = repositoryReaderWriter.checkSchema(zahtevDzs);
         this.repository.storeXML(z, true);
+        this.zahtevExtractMetadata.extractData(z);
     }
 
     @Override

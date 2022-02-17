@@ -7,18 +7,18 @@ import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReade
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
 
-import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
-import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
-import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
-import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.sluzbenik.SluzbenikApp.transformers.XML2HTMLTransformer;
 import com.sluzbenik.SluzbenikApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import java.io.StringWriter;
+import java.util.GregorianCalendar;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.transformers.Constants.*;
@@ -36,6 +36,9 @@ public class DZSServiceImpl implements DZSService {
     GenericXMLReaderWriter<PotvrdaOVakcinaciji> potvrdaGenericReaderWriter;
 
     @Autowired
+    MailService mailService;
+
+    @Autowired
     private XSLFOTransformer transformerXML2PDF;
 
     @Autowired
@@ -45,7 +48,7 @@ public class DZSServiceImpl implements DZSService {
 
     @PostConstruct
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_DZS, COLLECTION_PATH_DZS, new IdGeneratorDZS());
         this.repositoryReaderWriter.setRepositoryParams(PACKAGE_PATH_DZS, XML_SCHEMA_PATH_DZS);
         this.potvrdaGenericReaderWriter.setRepositoryParams(PACKAGE_PATH_POTVRDA, XML_SCHEMA_PATH_POTVRDA);
     }
@@ -69,7 +72,7 @@ public class DZSServiceImpl implements DZSService {
     }
 
     @Override
-    public void createDZS(String zahtevID, String idSluzbenika, String potvrdaXML) throws DzsException, DatatypeConfigurationException {
+    public void createDZS(String zahtevID, String idSluzbenika, String potvrdaXML, String userEmail) throws DzsException, DatatypeConfigurationException {
         PotvrdaOVakcinaciji potvrdaOVakcinaciji = potvrdaGenericReaderWriter.checkSchema(potvrdaXML);
         if (potvrdaOVakcinaciji == null)
             throw new DzsException("Nevalidan dokument potvrde dobavljen sa servisa!");
@@ -85,13 +88,18 @@ public class DZSServiceImpl implements DZSService {
         XMLGregorianCalendar now =
                 datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
         podaciOSertifikatu.setDatumIzdavanjaSertifikata(now);
-        podaciOSertifikatu.setQrKod("qrkodic"); //TODO VIDETI STA OVDE TREBA U QR KOD
-
-        //TODO SLANJE MAIL-a
+        podaciOSertifikatu.setQrKod("qrkodic");
 
         dzs.setPodaciOSertifikatu(podaciOSertifikatu);
         dzs.getDoze().addAll(potvrdaOVakcinaciji.getPodaciOVakcini().getDoze());
 
-        xmlRepositoryDzs.storeXML(dzs, true);
+        String dzsId = repository.storeXML(dzs, true);
+
+        try {
+            mailService.sendDzs(this.generateDZSHTML(dzsId+".xml"), this.generateDZSPDF(dzsId+".xml"), userEmail);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error while sending mail!");
+        }
     }
 }

@@ -41,7 +41,7 @@ public class ImunizacijaAppApplication {
 		AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
 
 		// EKSTRAKCIJA ZAHTJEV
-		ZahtevExtractMetadata zahtevExtractMetadata = new ZahtevExtractMetadata(conn);
+		ZahtevExtractMetadata zahtevExtractMetadata = new ZahtevExtractMetadata();
 
 		GenericXMLRepository<Zahtev> zahtevGenericXMLRepository =
 				new GenericXMLRepository<Zahtev>();
@@ -52,7 +52,7 @@ public class ImunizacijaAppApplication {
 		zahtevExtractMetadata.extractData(zahtev);
 
 		// EKSTRAKCIJA INTERESOVANJE
-		InteresovanjeExtractMetadata interesovanjeExtractMetadata = new InteresovanjeExtractMetadata(conn);
+		InteresovanjeExtractMetadata interesovanjeExtractMetadata = new InteresovanjeExtractMetadata();
 
 		GenericXMLRepository<Interesovanje> interesovanjeRepository =
 				new GenericXMLRepository<Interesovanje>();
@@ -63,7 +63,7 @@ public class ImunizacijaAppApplication {
 		interesovanjeExtractMetadata.extract(i);
 
 		// EKSTRAKCIJA SAGLASNOST
-		SaglasnostExtractMetadata saglasnostExtractMetadata = new SaglasnostExtractMetadata(conn);
+		SaglasnostExtractMetadata saglasnostExtractMetadata = new SaglasnostExtractMetadata();
 
 		GenericXMLRepository<Saglasnost> saglasnostGenericXMLRepository =
 				new GenericXMLRepository<>();
@@ -75,7 +75,7 @@ public class ImunizacijaAppApplication {
 		saglasnostExtractMetadata.extract(saglasnost);
 
 		// EKSTRAKCIJA POTVRDA
-		PotvrdaExtractMetadata potvrdaExtractMetadata = new PotvrdaExtractMetadata(conn);
+		PotvrdaExtractMetadata potvrdaExtractMetadata = new PotvrdaExtractMetadata();
 
 		GenericXMLRepository<PotvrdaOVakcinaciji> potvrdaOVakcinacijiGenericXMLRepository =
 				new GenericXMLRepository<>();

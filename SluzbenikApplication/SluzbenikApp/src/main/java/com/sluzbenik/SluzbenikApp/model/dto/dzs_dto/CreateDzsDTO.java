@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CreateDzsDTO {
     private String zahtevId;
     private String userId;
+    private String userEmail;
 
     public CreateDzsDTO(){}
 
@@ -23,5 +24,13 @@ public class CreateDzsDTO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

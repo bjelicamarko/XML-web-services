@@ -2,6 +2,7 @@ package com.sluzbenik.SluzbenikApp.controllers;
 
 import com.sluzbenik.SluzbenikApp.model.dto.rdf_dto.DocumentsOfUserDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.user_dto.KorisniciListDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.user_dto.KorisnikBasicInfoDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.korisnik.Korisnik;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.KorisnikRepository;
 import com.sluzbenik.SluzbenikApp.security.TokenUtils;
@@ -74,6 +75,22 @@ public class KorisnikController {
 
        DocumentsOfUserDTO documentsOfUserDTO = korisnikService.getDocumentsOfUser(id, entity.getBody());
         return ResponseEntity.ok(documentsOfUserDTO);
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<KorisnikBasicInfoDTO> getOne(@PathVariable String id){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Korisnik> entity = restTemplate.getForEntity("http://localhost:9001/api/users/"+id + ".xml",
+                Korisnik.class);
+
+        if (entity.getBody() == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }else {
+            return ResponseEntity.ok(new KorisnikBasicInfoDTO(entity.getBody()));
+        }
     }
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_XML_VALUE)

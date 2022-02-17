@@ -2,6 +2,7 @@ package com.imunizacija.ImunizacijaApp.service;
 
 import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -27,6 +28,9 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     private GenericXMLReaderWriter<Saglasnost> repositoryReaderWriter;
 
     @Autowired
+    private SaglasnostExtractMetadata saglasnostExtractMetadata;
+
+    @Autowired
     private XSLFOTransformer transformerXML2PDF;
 
     @Autowired
@@ -45,6 +49,7 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     public void createNewConsent(String saglasnost) {
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
         this.repository.storeXML(s, true);
+        this.saglasnostExtractMetadata.extract(s);
     }
 
     @Override

@@ -24,6 +24,8 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
     @Autowired
     private RdfRepository rdfRepository;
+
+    @Autowired
     private XSLFOTransformer transformerXML2PDF;
 
     @Autowired

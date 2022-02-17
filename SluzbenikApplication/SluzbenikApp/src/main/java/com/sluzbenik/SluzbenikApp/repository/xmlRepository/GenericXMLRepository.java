@@ -34,7 +34,7 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         this.packagePath = packagePath;
     }
 
-    public void storeXML(T entity, boolean generateId){
+    public String storeXML(T entity, boolean generateId){
         OutputStream os = new ByteArrayOutputStream();
         Collection col = null;
         XMLResource res = null;
@@ -66,6 +66,7 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
         } finally {
             closeResources(col, res);
         }
+        return entity.getXmlId();
     }
 
     public T retrieveXML(String documentId){

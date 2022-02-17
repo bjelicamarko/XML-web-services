@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserDocsDTO } from '../models/user-docs-dto';
+import { UserViewDTO } from '../models/user-view-dto';
 import { UsersViewDTOList } from '../models/user-view-dto-list';
 
 @Injectable({
@@ -23,6 +24,16 @@ export class UsersService {
     return this.http.get<HttpResponse<string>>("indirekcija/api/users/", queryParams);
   }
 
+  getOne(id: string): Observable<HttpResponse<string>> {
+    let queryParams = {};
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text"
+    };
+    return this.http.get<HttpResponse<string>>("indirekcija/api/users/" + id, queryParams);
+  }
+
   getDocumentationOfUser(userID: string): Observable<HttpResponse<string>> {
     let queryParams = {};
     queryParams = {
@@ -39,6 +50,16 @@ export class UsersService {
     var resp: UsersViewDTOList = { users: { korisnikBasicInfoDTOList: [] } };
     parser.parseString(xml, function (err: any, result: any) {
       resp = result as UsersViewDTOList;
+    });
+    return resp;
+  }
+
+  userRespfromXMLToObj(xml: string): UserViewDTO {
+    var xml2js = require('xml2js');
+    var parser = new xml2js.Parser({ explicitArray: false });
+    var resp: UserViewDTO = { email: "", firstName: "", lastName: "", userID: "" };
+    parser.parseString(xml, function (err: any, result: any) {
+      resp = result.user as UserViewDTO;
     });
     return resp;
   }

@@ -61,7 +61,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/socket/**").permitAll()
 				.antMatchers("/api/users/login").permitAll()
 				.antMatchers("/api/users/registracija").permitAll()
-				.antMatchers("/api/users/").permitAll() //todo pogledati
+				.antMatchers("/api/interesovanje/generatePDF/**").permitAll()
+				.antMatchers("/api/interesovanje/generateHTML/**").permitAll()
+				.antMatchers("/api/potvrda/generatePDF/**").permitAll()
+				.antMatchers("/api/potvrda/generateHTML/**").permitAll()
+				.antMatchers("/api/saglasnost/generatePDF/**").permitAll()
+				.antMatchers("/api/saglasnost/generateHTML/**").permitAll()
+				.antMatchers("/api/zahtev/generatePDF/**").permitAll()
+				.antMatchers("/api/zahtev/generateHTML/**").permitAll()
+				.antMatchers("/api/users/**").permitAll() //todo pogledati
 				.antMatchers("/api/potvrda/korisnik/**").permitAll() //todo pogledati
 				.antMatchers("/api/users/dokumentacija/**").permitAll() //todo pogledati da li moze drugacije malko
 				.antMatchers("/api/users/test-create-citizen").permitAll() //todo izbrisati

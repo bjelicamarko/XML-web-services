@@ -28,18 +28,21 @@ public class PotvrdaController {
     }
 
     @GetMapping(value = "/korisnik/{userId}", produces = MediaType.TEXT_XML_VALUE)
-    public ResponseEntity<PotvrdaOVakcinaciji> findLastOneFromUser(@PathVariable String userId){
+    public ResponseEntity<PotvrdaOVakcinaciji> findLastOneFromUser(@PathVariable String userId) {
         PotvrdaOVakcinaciji potvrda = potvrdaService.findLastOneByUser(userId);
-        if(potvrda == null){
+        if (potvrda == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(potvrda, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generatePDF(@PathVariable String id) {
         try {
             byte[] pdfBytes = potvrdaService.generateInteresovanjePDF(id);
             return new ResponseEntity<>(pdfBytes, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }

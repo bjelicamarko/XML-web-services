@@ -1,6 +1,9 @@
 package com.sluzbenik.SluzbenikApp.service;
 
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
+import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
+
+import javax.xml.datatype.DatatypeConfigurationException;
 
 public interface DZSService {
 
@@ -10,6 +13,6 @@ public interface DZSService {
 
     String generateDZSHTML(String id) throws Exception;
 
-    void createDZS(String zahtevID, String idSluzbenika, String potvrdaXML) throws DzsException, DatatypeConfigurationException;
+    void createDZS(String zahtevID, String idSluzbenika, String potvrdaXML, String userEmail) throws DzsException, DatatypeConfigurationException;
 
 }

@@ -8,13 +8,15 @@ import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
+import org.springframework.stereotype.Component;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
+@Component
 public class SaglasnostExtractMetadata extends ExtractMetadata {
 
-    public SaglasnostExtractMetadata(AuthenticationUtilities.ConnectionPropertiesFusekiJena conn) {
-        super(conn);
+    public SaglasnostExtractMetadata() {
+        super(AuthenticationUtilities.setUpPropertiesFusekiJena());
     }
 
     public void extract(Saglasnost saglasnost) {
