@@ -22,6 +22,11 @@ const routes: Routes = [
         path: "izvestaji",
         loadChildren: () => 
           import("./../reports/reports.module").then((m) => m.ReportsModule),
+      },
+      {
+        path: "search",
+        loadChildren: () => 
+          import("./../search/search.module").then((m) => m.SearchModule),
       }
     ]
   },

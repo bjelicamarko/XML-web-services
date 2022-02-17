@@ -39,6 +39,7 @@ public class XML2HTMLTransformer {
         transformer.transform(source, result);
         String ret = sw.toString();
 
+        System.out.println(ret);
         if(resourceUrl != null)
             ret = Util.createAndEmbedQrCodeInHtmlString(sw.toString(), resourceUrl);
 

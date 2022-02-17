@@ -66,7 +66,7 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
     @PostConstruct // after init
     private void postConstruct(){
-        this.repository.setRepositoryParams(PACKAGE_PATH_POTVRDA, COLLECTION_PATH_POTVRDA, new IdGeneratorPosInt());
+        this.repository.setRepositoryParams(PACKAGE_PATH_POTVRDA, COLLECTION_PATH_POTVRDA, new IdGeneratorPosInt(), POTVRDA_NAMESPACE_PATH);
     }
 
     @Override

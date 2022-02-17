@@ -53,6 +53,7 @@ public class XSLFOTransformer {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.transform(new DOMSource(xmlAsDOMNode), new StreamResult(writer));
         String xmlString = writer.toString();
+        System.out.println(xmlString);
 
         // Create qr code
         if(resourceUrl != null)
