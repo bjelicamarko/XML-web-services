@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
-    jxb:version="1.0"
+    jxb:version="2.1"
     elementFormDefault="qualified"
     targetNamespace="http://www.vakc-sistem.rs/potvrda-o-vakcinaciji"
     xmlns="http://www.vakc-sistem.rs/potvrda-o-vakcinaciji"
@@ -10,7 +10,17 @@
     <xs:element name="Potvrda_o_vakcinaciji">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG"> </xs:element>
+                <xs:element name="Podaci_o_primaocu">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="util:Licni_podaci">
+                                <xs:sequence>
+                                    <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"/>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="Podaci_o_vakcini">
                     <xs:complexType>
                         <xs:sequence>

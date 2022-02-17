@@ -1,5 +1,6 @@
 package com.imunizacija.ImunizacijaApp.repository.rdfRepository;
 
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.Drzavljanstvo;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import org.apache.jena.rdf.model.Literal;
@@ -36,9 +37,21 @@ public class ZahtevExtractMetadata  extends ExtractMetadata{
 
         // OVO PAZITI AKO JE JMBG NULL, PROVJERITI TIP ID-a OSOBE
         Property createdBy = model.createProperty(PREDICATE_NAMESPACE, "createdBy");
-        Resource podnosilac = model.createResource(OSOBA_NAMESPACE_PATH + zahtev.getPodnosilac().getJMBG());
+        Resource podnosilac = model.createResource(OSOBA_NAMESPACE_PATH + getPersonIdentifier(zahtev.getPodnosilac().getDrzavljanstvo()));
         model.add(model.createStatement(resource, createdBy, podnosilac));
 
         super.modelWrite(model, ZAHTEV_NAMED_GRAPH_URI);
+    }
+
+    private String getPersonIdentifier(Drzavljanstvo drzavljanstvo) {
+
+        if(drzavljanstvo.getTip().equals("DOMACE")){
+            return drzavljanstvo.getJMBG();
+        }
+        else if (drzavljanstvo.getTip().equals("STRANO_SA_BORAVKOM")){
+            return drzavljanstvo.getEvidencioniBrojStranca();
+        }
+        else // STRANO_BEZ_BORAVKA
+            return drzavljanstvo.getBrPasosa();
     }
 }

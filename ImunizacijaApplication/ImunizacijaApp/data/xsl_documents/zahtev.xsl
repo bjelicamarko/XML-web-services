@@ -13,16 +13,15 @@
             <body>
                 <h3>Dokument zahteva za digitalni zeleni sertifikat</h3>
                 <xsl:choose>
-                    <xsl:when test="//util:JMBG != '0101901404404'">
-                        <p>JMBG: <xsl:value-of select="//util:JMBG"/></p>
+                    <xsl:when test="//util:JMBG">
+                        <p>Drzavljanstvo - JMBG: <xsl:value-of select="//util:JMBG"/></p>
                     </xsl:when>
-                    <xsl:otherwise/>
-                </xsl:choose>
-                <xsl:choose>
-                    <xsl:when test="//util:Broj_pasosa != 'ZZZZZZ'">
-                        <p>Broj pasosa: <xsl:value-of select="//util:Broj_pasosa"/></p>
+                    <xsl:when test="//util:Evidencioni_broj_stranca">
+                        <p>Drzavljanstvo - Evidencioni broj: <xsl:value-of select="//util:Evidencioni_broj_stranca "/></p>
                     </xsl:when>
-                    <xsl:otherwise/>
+                    <xsl:otherwise>
+                        <p>Drzavljanstvo - Broj pasoša: <xsl:value-of select="//util:Br_pasosa"/></p>
+                    </xsl:otherwise>
                 </xsl:choose>
                 <p>Ime: <xsl:value-of select="//util:Ime"/></p>
                 <p>Prezime: <xsl:value-of select="//util:Prezime"/></p>

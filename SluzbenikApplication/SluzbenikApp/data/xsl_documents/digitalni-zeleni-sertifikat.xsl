@@ -29,19 +29,16 @@
                 </xsl:choose>
 
                 <xsl:choose>
-                    <xsl:when test="//util:JMBG != '0101901404404'">
-                        <p>JMBG: <xsl:value-of select="//util:JMBG"/></p>
+                    <xsl:when test="//util:JMBG">
+                        <p>Drzavljanstvo - JMBG: <xsl:value-of select="//util:JMBG"/></p>
                     </xsl:when>
-                    <xsl:otherwise/>
-                </xsl:choose>
-
-                <xsl:choose>
-                    <xsl:when test="//util:Broj_pasosa != 'ZZZZZZ'">
-                        <p>Broj pasoša: <xsl:value-of select="//util:Broj_pasosa"/></p>
+                    <xsl:when test="//util:Evidencioni_broj_stranca">
+                        <p>Drzavljanstvo - Evidencioni broj: <xsl:value-of select="//util:Evidencioni_broj_stranca "/></p>
                     </xsl:when>
-                    <xsl:otherwise/>
+                    <xsl:otherwise>
+                        <p>Drzavljanstvo - Broj pasoša: <xsl:value-of select="//util:Br_pasosa"/></p>
+                    </xsl:otherwise>
                 </xsl:choose>
-
                 <h4>Podaci o sertifikatu</h4>
                 <p>Broj sertifikata: <xsl:value-of select="//b:Broj_sertifikata"/></p>
                 <p>Datum izdavanja: <xsl:value-of select="//b:Datum_izdavanja_sertifikata"/></p>
