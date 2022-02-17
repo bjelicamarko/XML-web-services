@@ -14,7 +14,7 @@ public interface ZahtevService {
 
     Zahtev findOneById(String id);
 
-    byte[] generateInteresovanjePDF(String id) throws Exception;
+    byte[] generateZahtevPDF(String id) throws Exception;
 
-    String generateInteresovanjeHTML(String id) throws TransformerException, IOException, WriterException;
+    String generateZahtevHTML(String id) throws TransformerException, IOException, WriterException;
 }

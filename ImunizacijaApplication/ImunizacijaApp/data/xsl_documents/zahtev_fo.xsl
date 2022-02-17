@@ -105,17 +105,22 @@
                             <xsl:choose>
                                 <xsl:when test="contains(., '~+')">
                                     <fo:inline font-weight="bold" font-style="italic">
-                                        <xsl:value-of select="substring(.,3,(string-length(.) - 4))"/>
+                                        <xsl:value-of select="substring(.,3,(string-length(.) - 6))"/>
+                                    </fo:inline>
+                                </xsl:when>
+                                <xsl:when test="contains(., '+~')">
+                                    <fo:inline font-weight="bold" font-style="italic">
+                                        <xsl:value-of select="substring(.,3,(string-length(.) - 6))"/>
                                     </fo:inline>
                                 </xsl:when>
                                 <xsl:when test="contains(., '+')">
                                     <fo:inline font-weight="bold">
-                                        <xsl:value-of select="substring(.,2,(string-length(.) - 2))"/>
+                                        <xsl:value-of select="substring(.,2,(string-length(.) - 3))"/>
                                     </fo:inline>
                                 </xsl:when>
                                 <xsl:when test="contains(., '~')">
                                     <fo:inline font-style="italic">
-                                        <xsl:value-of select="substring(.,2,(string-length(.) - 2))"/>
+                                        <xsl:value-of select="substring(.,2,(string-length(.) - 3))"/>
                                     </fo:inline>
                                 </xsl:when>
                                 <xsl:otherwise>

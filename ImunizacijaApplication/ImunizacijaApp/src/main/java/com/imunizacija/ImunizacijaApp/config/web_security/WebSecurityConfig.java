@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/saglasnost/generatePDF/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/saglasnost/generateHTML/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/zahtev/generatePDF/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/zahtev/generateHTML/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/search").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/generatePDF/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/generateHTML/**").permitAll() // komunikacija bekova

@@ -137,7 +137,7 @@ export class RequestPageComponent implements OnInit {
   }
 
   createNewRequest() : Zahtev {
-      this.test();  
+      this.convertValue();  
       let zahtev: Zahtev = {
         Zahtev: {
           "@": {
@@ -171,14 +171,14 @@ export class RequestPageComponent implements OnInit {
     });
   }
 
-  test() {
+  convertValue() {
    ///<*> ?*? <*/> ?*/?
     console.log(this.value);
     let r = this.value.replace(/<\/p>/g, '');
     r = r.replace(/<p>/g, '');
-    r = r.replace(/<\/strong>/g,"+,");
+    r = r.replace(/<\/strong>/g,"|+,");
     r = r.replace(/<strong>/g,",+");
-    r = r.replace(/<\/em>/g,"~,");
+    r = r.replace(/<\/em>/g,"|~,");
     r = r.replace(/<em>/g,",~");
     r = r.replace(',,', ',');
     console.log(r);
