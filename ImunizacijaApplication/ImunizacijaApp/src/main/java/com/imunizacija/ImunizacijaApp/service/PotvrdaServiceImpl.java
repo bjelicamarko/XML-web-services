@@ -5,17 +5,11 @@ import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.*;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
-import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
-import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.impl.BagImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,12 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -52,6 +43,9 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     private XML2HTMLTransformer transformerXML2HTML;
 
     @Autowired
+    private RdfRepository rdfRepository;
+
+    @Autowired
     private OdgovoriService odgovoriService;
 
     @Autowired
@@ -61,8 +55,6 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     private MailService mailService;
 
     public static final String URL_RESOURCE_ROOT = "potvrda/";
-    public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
-    public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
 
     @PostConstruct // after init
     private void postConstruct(){
@@ -88,7 +80,7 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     }
 
     @Override
-    public void generatePotvrdaOVakcinaciji(Saglasnost s) throws DatatypeConfigurationException, MessagingException {
+    public void generatePotvrdaOVakcinaciji(Saglasnost s) throws Exception {
         PotvrdaOVakcinaciji potvrdaOVakcinaciji = new PotvrdaOVakcinaciji();
         // generate PodaciOPrimaocu
         potvrdaOVakcinaciji.setPodaciOPrimaocu(this.generatePodaciOPrimaocu(s.getLicniPodaci(), s.getDrzavljanstvo()));
@@ -105,29 +97,26 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         String newPotvrdaId = this.repository.storeXML(potvrdaOVakcinaciji, true);
 
         // setting QRCode
-        podaciOPotvrdi.setQRCode(String.format(URL_RESOURCE_ROOT + "%s", newPotvrdaId));
+        podaciOPotvrdi.setQRCode(String.format(URL_ROOT + URL_RESOURCE_ROOT + "%s", newPotvrdaId));
         potvrdaOVakcinaciji.setPodaciOPotvrdi(podaciOPotvrdi);
         this.repository.storeXML(potvrdaOVakcinaciji, false);
     }
 
-    private LicniPodaciJMBG generatePodaciOPrimaocu(LicniPodaciDetaljnije saglasnostLicniPodaci, Drzavljanstvo drzavljanstvo) {
-        LicniPodaciJMBG licniPodaci = new LicniPodaciJMBG();
-        licniPodaci.setIme(saglasnostLicniPodaci.getIme());
-        licniPodaci.setPrezime(saglasnostLicniPodaci.getPrezime());
-        licniPodaci.setDatumRodjenja(saglasnostLicniPodaci.getDatumRodjenja());
-        licniPodaci.setPol(saglasnostLicniPodaci.getPol());
-        if(drzavljanstvo.getTip().equals("DOMACE"))
-            licniPodaci.setJMBG(drzavljanstvo.getJMBG());
-        else
-            licniPodaci.setJMBG("0101901404404");
-        return licniPodaci;
+    private PotvrdaOVakcinaciji.PodaciOPrimaocu generatePodaciOPrimaocu(LicniPodaciDetaljnije saglasnostLicniPodaci, Drzavljanstvo drzavljanstvo) {
+        PotvrdaOVakcinaciji.PodaciOPrimaocu podaciOPrimaocu = new PotvrdaOVakcinaciji.PodaciOPrimaocu();
+        podaciOPrimaocu.setIme(saglasnostLicniPodaci.getIme());
+        podaciOPrimaocu.setPrezime(saglasnostLicniPodaci.getPrezime());
+        podaciOPrimaocu.setDatumRodjenja(saglasnostLicniPodaci.getDatumRodjenja());
+        podaciOPrimaocu.setPol(saglasnostLicniPodaci.getPol());
+        podaciOPrimaocu.setDrzavljanstvo(drzavljanstvo);
+        return podaciOPrimaocu;
     }
 
     private PotvrdaOVakcinaciji.PodaciOVakcini generatePodaciOVakcini(Saglasnost.OVakcinaciji oVakcinaciji, String korisnikId, String email)
-            throws DatatypeConfigurationException, MessagingException {
+            throws Exception {
         PotvrdaOVakcinaciji.PodaciOVakcini podaciOVakcini = new PotvrdaOVakcinaciji.PodaciOVakcini();
         List<DozaSaUstanovom> doze = new ArrayList<>();
-        String potvrdaIzBazeId = this.getPosljednjaPotvrdaIzBazeId(korisnikId);
+        String potvrdaIzBazeId = this.rdfRepository.getPosljednjaPotvrdaIzBazeId(korisnikId);
         if(!potvrdaIzBazeId.equals("-1")){
             PotvrdaOVakcinaciji prethodnaPotvrda = repository.retrieveXML(potvrdaIzBazeId);
             doze.addAll(prethodnaPotvrda.getPodaciOVakcini().getDoze());
@@ -135,45 +124,47 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         doze.add(this.generateDozaSaUstanovom(doze.size() + 1, oVakcinaciji));
         podaciOVakcini.setDoze(doze);
 
-        if (doze.size() == 3) { // sklanjamo iz baze
+        if (doze.size() == 3) {
             this.odgovoriService.izbrisiOdgovor(email);
         } else {
-            Odgovori.Odgovor o = this.odgovoriService.vratiOdgovor(email);
+            createNewTermin(email, podaciOVakcini);
+        }
+        return podaciOVakcini;
+    }
 
-            OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
-            odgovorTerminDTO.setGrad(o.getGrad());
-            for (String s : o.getVakcine())
-                odgovorTerminDTO.getVakcine().add(s);
-            odgovorTerminDTO.setEmail(o.getEmail());
+    private void createNewTermin(String email, PotvrdaOVakcinaciji.PodaciOVakcini podaciOVakcini) throws Exception{
+        Odgovori.Odgovor o = this.odgovoriService.vratiOdgovor(email);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Type", "application/xml");
-            HttpEntity<OdgovorTerminDTO> requestUpdate = new HttpEntity<>(odgovorTerminDTO, headers);
-            ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
-                    HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
+        OdgovorTerminDTO odgovorTerminDTO = new OdgovorTerminDTO();
+        odgovorTerminDTO.setGrad(o.getGrad());
+        for (String s : o.getVakcine())
+            odgovorTerminDTO.getVakcine().add(s);
+        odgovorTerminDTO.setEmail(o.getEmail());
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<OdgovorTerminDTO> requestUpdate = new HttpEntity<>(odgovorTerminDTO, headers);
+        ResponseEntity<OdgovorTerminDTO> entity = restTemplate.exchange("http://localhost:9000/api/sistemski-magacin/dobaviTermin",
+                HttpMethod.POST, requestUpdate, OdgovorTerminDTO.class);
 
-            this.odgovoriService.azurirajOdgovor(entity.getBody());
+        this.odgovoriService.azurirajOdgovor(entity.getBody());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String date = "01/01/1971";
-            //convert String to LocalDate
-            LocalDate localDate = LocalDate.parse(date, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String date = "01/01/1971";
+        LocalDate localDate = LocalDate.parse(date, formatter);
 
-            if (Objects.requireNonNull(entity.getBody()).getTermin().equals("Empty")) {
-                podaciOVakcini.setDatumNaredneDoze(
-                        DatatypeFactory.newInstance().newXMLGregorianCalendar(localDate.toString())); // today + 7 days
-            } else {   // ima dodjeljen termin
-                podaciOVakcini.setDatumNaredneDoze( // YYYY-MM-DD
-                        DatatypeFactory.newInstance().newXMLGregorianCalendar(entity.getBody().getTermin().split(" ")[0]));
-            }
-
-            this.mailService.sendMail("Termin",
-                    this.odgovoriService.generisiTekstOdgovora(Objects.requireNonNull(entity.getBody())),
-                    entity.getBody().getEmail());
+        if (Objects.requireNonNull(entity.getBody()).getTermin().equals("Empty")) {
+            podaciOVakcini.setDatumNaredneDoze(
+                    DatatypeFactory.newInstance().newXMLGregorianCalendar(localDate.toString()));
+        }
+        else {
+            podaciOVakcini.setDatumNaredneDoze(
+                    DatatypeFactory.newInstance().newXMLGregorianCalendar(entity.getBody().getTermin().split(" ")[0]));
         }
 
-        return podaciOVakcini;
+        this.mailService.sendMail("Termin",
+                this.odgovoriService.generisiTekstOdgovora(Objects.requireNonNull(entity.getBody())),
+                entity.getBody().getEmail());
     }
 
     private DozaSaUstanovom generateDozaSaUstanovom(int num, Saglasnost.OVakcinaciji oVakcinaciji) {
@@ -186,56 +177,5 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         dozaSaUstanovom.setTip(dozaDetaljnije.getTip());
         dozaSaUstanovom.setUstanova(oVakcinaciji.getZdravstvenaUstanova());
         return dozaSaUstanovom;
-    }
-
-    // TODO: ovo prebaciti u RdfRepository
-    private String getPosljednjaPotvrdaIzBazeId(String korisnikId) {
-        AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
-        String sparqlCondition = "?potvrda " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + korisnikId + "> ."
-                + "?potvrda " + CREATED_AT_PREDICATE_DB + " ?datum";
-        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + POTVRDA_NAMED_GRAPH_URI, sparqlCondition);
-
-        // Create a QueryExecution that will access a SPARQL service over HTTP
-        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
-
-        // Query the collection, dump output response with the use of ResultSetFormatter
-        ResultSet results = query.execSelect();
-        List<String[]> affirmationList = new ArrayList<>();
-        while(results.hasNext()) {
-            QuerySolution res = results.nextSolution();
-            String affirmation = res.get("potvrda").toString();
-            String date = res.get("datum").toString();
-            affirmationList.add(new String[]{affirmation.substring(POTVRDA_NAMESPACE_PATH.length()), date}); //uzimamo samo id
-        }
-        query.close();
-        if(affirmationList.isEmpty())
-            return "-1"; // ako nema onda -1
-        affirmationList.sort(Comparator.comparing(o -> LocalDate.parse(o[1])));
-
-        List<String> sortedAffirmation = new ArrayList<>();
-        affirmationList.forEach(affirmation -> sortedAffirmation.add(affirmation[0]));
-        return sortedAffirmation.get(sortedAffirmation.size() - 1);
-    }
-
-    public static final String HAS_EMAIL_PREDICATE_DB = "http://www.vakc-sistem.rs/predicate/hasEmail";
-    private String getKorisnikEmailById(String korisnikId) {
-        AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
-        String sparqlCondition = String.format("?osoba " + "<" + HAS_EMAIL_PREDICATE_DB + "> ?email . \n" +
-                "FILTER (contains(str(?osoba), '%s') )", korisnikId);
-        // ?osoba http://www.vakc-sistem.rs/predicate/hasEmail ?email .
-        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + OSOBA_NAMED_GRAPH_URI, sparqlCondition);
-
-        // Create a QueryExecution that will access a SPARQL service over HTTP
-        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
-
-        // Query the collection, dump output response with the use of ResultSetFormatter
-        ResultSet results = query.execSelect();
-        String email = "";
-        while(results.hasNext()) {
-            QuerySolution res = results.nextSolution();
-            email = res.get("email").toString();
-        }
-        query.close();
-        return email;
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="1.0" elementFormDefault="qualified"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.1" elementFormDefault="qualified"
     targetNamespace="http://www.vakc-sistem.rs/interesovanje"
     xmlns="http://www.vakc-sistem.rs/interesovanje" xmlns:util="http://www.vakc-sistem.rs/util">
-    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="Util.xsd"/>
+    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="util.xsd"/>
     <xs:element name="Interesovanje">
         <xs:complexType>
             <xs:sequence>

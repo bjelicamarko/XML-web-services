@@ -74,6 +74,6 @@ public class SaglasnostServiceImpl implements SaglasnostService{
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
         this.repository.storeXML(s, false);
         try { this.potvrdaService.generatePotvrdaOVakcinaciji(s); }
-        catch (DatatypeConfigurationException | MessagingException e) { System.err.println("Generisanje potvrde nije uspjelo."); }
+        catch (Exception e) { System.err.println("Generisanje potvrde nije uspjelo."); }
     }
 }

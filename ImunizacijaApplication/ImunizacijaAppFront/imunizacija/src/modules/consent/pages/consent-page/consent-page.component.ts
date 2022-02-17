@@ -70,22 +70,13 @@ export class ConsentPageComponent {
   };
 
   Kontakt: Kontakt = {
-    Broj_telefona: {
-      "@": {
-        xmlns: 'http://www.vakc-sistem.rs/util'
-      },
+    'util:Broj_telefona': {
       "#": ''
     },
-    Broj_fiksnosg_telefona: {
-      "@": {
-        xmlns: 'http://www.vakc-sistem.rs/util'
-      },
+    'util:Broj_fiksnosg_telefona': {
       "#": ''
     },
-    Email_adresa: {
-      "@": {
-        xmlns: 'http://www.vakc-sistem.rs/util'
-      },
+    'util:Email_adresa': {
       "#": ''
     }
   }
@@ -144,9 +135,9 @@ export class ConsentPageComponent {
       this.Drzavljanstvo['util:Br_pasosa'] = this.registrationFormGroup.get('userId')?.value;
     }
 
-    this.Kontakt.Broj_fiksnosg_telefona['#'] = this.registrationFormGroup.get('homeNumber')?.value;
-    this.Kontakt.Broj_telefona['#'] = this.registrationFormGroup.get('phoneNumber')?.value;
-    this.Kontakt.Email_adresa['#'] = this.registrationFormGroup.get('email')?.value;
+    this.Kontakt['util:Broj_fiksnosg_telefona']['#'] = this.registrationFormGroup.get('homeNumber')?.value;
+    this.Kontakt['util:Broj_telefona']['#'] = this.registrationFormGroup.get('phoneNumber')?.value;
+    this.Kontakt['util:Email_adresa']['#'] = this.registrationFormGroup.get('email')?.value;
 
     this.LicniPodaci.Ime['#'] = this.registrationFormGroup.get('firstName')?.value;
     this.LicniPodaci.Prezime['#'] = this.registrationFormGroup.get('lastName')?.value;
