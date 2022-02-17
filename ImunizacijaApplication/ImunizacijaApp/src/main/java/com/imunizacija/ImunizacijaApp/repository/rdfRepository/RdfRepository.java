@@ -4,12 +4,14 @@ import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserDTO;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.*;
 import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
-import org.apache.jena.query.*;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -138,7 +140,6 @@ public class RdfRepository {
     }
 
     public String getPosljednjaPotvrdaIzBazeId(String korisnikId) {
-        AuthenticationUtilities.ConnectionPropertiesFusekiJena conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
         String sparqlCondition = "?potvrda " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + korisnikId + "> ."
                 + "?potvrda " + CREATED_AT_PREDICATE_DB + " ?datum";
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + POTVRDA_NAMED_GRAPH_URI, sparqlCondition);

@@ -46,22 +46,13 @@ export class InterestPageComponent {
   };
 
   Kontakt: Kontakt = {
-    Broj_telefona: {
-      "@": {
-        xmlns: 'http://www.vakc-sistem.rs/util'
-      },
+    'util:Broj_telefona': {
       "#": ''
     },
-    Broj_fiksnosg_telefona: {
-      "@": {
-        xmlns: 'http://www.vakc-sistem.rs/util'
-      },
+    'util:Broj_fiksnosg_telefona': {
       "#": ''
     },
-    Email_adresa: {
-      "@": {
-        xmlns: 'http://www.vakc-sistem.rs/util'
-      },
+    'util:Email_adresa': {
       "#": ''
     }
   }
@@ -88,7 +79,7 @@ export class InterestPageComponent {
       homeNumber: [''],
       town: ['Novi Sad', Validators.required],
       userId: ['', [Validators.required, jmbgValidator()]],
-      donator: ['Da', Validators.required]
+      donator: ['Ne', Validators.required]
     });
   }
 
@@ -138,11 +129,11 @@ export class InterestPageComponent {
     }
 
     if (this.registrationFormGroup.get('homeNumber')?.value === '')
-      this.Kontakt.Broj_fiksnosg_telefona['#'] = '08005775';
+      this.Kontakt['util:Broj_fiksnosg_telefona']['#'] = '08005775';
     else
-      this.Kontakt.Broj_fiksnosg_telefona['#'] = this.registrationFormGroup.get('homeNumber')?.value;
-    this.Kontakt.Broj_telefona['#'] = this.registrationFormGroup.get('phoneNumber')?.value;
-    this.Kontakt.Email_adresa['#'] = this.registrationFormGroup.get('email')?.value;
+      this.Kontakt['util:Broj_fiksnosg_telefona']['#'] = this.registrationFormGroup.get('homeNumber')?.value;
+    this.Kontakt['util:Broj_telefona']['#'] = this.registrationFormGroup.get('phoneNumber')?.value;
+    this.Kontakt['util:Email_adresa']['#'] = this.registrationFormGroup.get('email')?.value;
 
     let arrayOfVaccine: Vakcina[] = [];
     this.checkedValues.forEach((value) => {

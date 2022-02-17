@@ -650,9 +650,7 @@ public class Saglasnost implements IdentifiableEntity {
      *                   &lt;element name="Faksimil" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                   &lt;element name="Broj_telefona">
      *                     &lt;simpleType>
-     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-     *                         &lt;pattern value="[0-9]{7,12}"/>
-     *                       &lt;/restriction>
+     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"/>
      *                     &lt;/simpleType>
      *                   &lt;/element>
      *                   &lt;element name="JMBG">

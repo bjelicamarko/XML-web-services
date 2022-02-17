@@ -210,14 +210,6 @@ export class MedicalConsentPageComponent {
     }
   }
 
-
-  // getDozaRedniBroj(): number {
-  //   if (this.consentToUpdate?.Saglasnost.O_vakcinaciji == null) {
-  //     return 1;
-  //   }
-  //   return this.consentToUpdate?.Saglasnost.O_vakcinaciji.Doza['@']['Redni_broj'] + 1;
-  // }
-
   getDozaTip(izjava: string): string {
     return izjava.split('\"').slice(-2, -1)[0];
   }

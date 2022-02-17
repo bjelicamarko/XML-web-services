@@ -3,9 +3,6 @@ package com.imunizacija.ImunizacijaApp.model.dto.rdf_dto;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-//<http://www.vakc-sistem.rs/predicate/issued>
-//<http://www.vakc-sistem.rs/interesovanje/2312312> ;
-
 @XmlRootElement(name = "documentsOfUser")
 public class DocumentsOfUserDTO {
     private String interesovanjeID;
