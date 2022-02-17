@@ -27,6 +27,26 @@ public class ZahtevController {
         return new ResponseEntity<>(zahtev, HttpStatus.OK);
     }
 
+    @PutMapping(value = "/prihvati/{id}", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<String> acceptRequest(@PathVariable String id){
+        try {
+            zahtevService.acceptRequest(id);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>("Odobreno izdavanje digitalnog zelenog sertifikata!", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/odbij/{id}", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<String> rejectRequest(@PathVariable String id){
+        try {
+            zahtevService.rejectRequest(id);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>("Zahtev za DZS odbijen!", HttpStatus.OK);
+    }
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/kreirajNovZahtev", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> createNewInterest(@RequestBody String zahtev) throws MessagingException {

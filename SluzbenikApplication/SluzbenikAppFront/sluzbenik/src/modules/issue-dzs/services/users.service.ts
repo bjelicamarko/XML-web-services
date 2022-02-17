@@ -34,6 +34,30 @@ export class UsersService {
     return this.http.get<HttpResponse<string>>("indirekcija/api/users/" + id, queryParams);
   }
 
+  approveDZS(zahtevID: string, userId: string, userEmail: string): Observable<HttpResponse<string>> {
+    var o2x = require('object-to-xml');
+    let queryParams = {};
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text"
+    };
+    let reqObj = { "zahtev": { "zahtevId": zahtevID, "userId": userId, "userEmail": userEmail } }
+    return this.http.post<HttpResponse<string>>("indirekcija/api/dzs/", o2x(reqObj), queryParams);
+  }
+
+  declineDZS(zahtevID: string, reason: string, userEmail: string): Observable<HttpResponse<string>> {
+    var o2x = require('object-to-xml');
+    let queryParams = {};
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text"
+    };
+    let reqObj = { "odbijanje": { "zahtevId": zahtevID, "reason": reason, "userEmail": userEmail } }
+    return this.http.post<HttpResponse<string>>("indirekcija/api/dzs/odbijanje-zahteva", o2x(reqObj), queryParams);
+  }
+
   getDocumentationOfUser(userID: string): Observable<HttpResponse<string>> {
     let queryParams = {};
     queryParams = {

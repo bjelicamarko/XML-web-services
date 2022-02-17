@@ -1,9 +1,11 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
 import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.CreateDzsDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.RejectRequestDTO;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.service.DZSService;
+import com.sluzbenik.SluzbenikApp.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.MessagingException;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 @RestController
@@ -22,6 +25,9 @@ public class DZSController {
 
     @Autowired
     private DZSService dzsService;
+
+    @Autowired
+    private MailService mailService;
 
     @GetMapping(value = "/{id}", produces = MediaType.TEXT_XML_VALUE)
     public ResponseEntity<DigitalniZeleniSertifikat> findOne(@PathVariable String id) {
@@ -57,6 +63,14 @@ public class DZSController {
         headers.add("Content-Type", "application/xml");
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
+        //saljemo da promenimo stanje zahteva
+        ResponseEntity<String> entity2 = restTemplate.exchange("http://localhost:9001/api/zahtev/prihvati/"+zahtevIdDTO.getZahtevId(),
+                HttpMethod.PUT,httpEntity, String.class);
+
+        if (!entity2.getStatusCode().is2xxSuccessful()){
+            return new ResponseEntity<>("Nevalidan zahtev, digitalni zeleni sertifikat nije kreiran!", HttpStatus.BAD_REQUEST);
+        }
+
         ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:9001/api/potvrda/korisnik/"+zahtevIdDTO.getUserId(),
                 String.class);
 
@@ -64,10 +78,33 @@ public class DZSController {
 
         try {
             dzsService.createDZS(zahtevIdDTO.getZahtevId(), userDetails.getUsername(), entity.getBody(), zahtevIdDTO.getUserEmail());
-            return new ResponseEntity<>("Uspesno kreiran digitalni zeleni sertifikat!", HttpStatus.OK);
-        } catch (DzsException | DatatypeConfigurationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+            return new ResponseEntity<>("Uspesno kreiran digitalni zeleni sertifikat!", HttpStatus.CREATED);
+        } catch (DzsException | DatatypeConfigurationException | RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping(value = "/odbijanje-zahteva", consumes = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> rejectRequestForDZS(@RequestBody RejectRequestDTO rejectRequestDTO) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/xml");
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        //saljemo da promenimo stanje zahteva
+        ResponseEntity<String> entity = restTemplate.exchange("http://localhost:9001/api/zahtev/odbij/"+rejectRequestDTO.getZahtevId(),
+                HttpMethod.DELETE,httpEntity, String.class);
+
+        if (!entity.getStatusCode().is2xxSuccessful()){
+            return new ResponseEntity<>("Nevalidan zahtev!", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            mailService.sendRejection("Zahtev za DZS odbijen", rejectRequestDTO.getReason(), rejectRequestDTO.getUserEmail());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>("Zahtev odbijen!", HttpStatus.OK);
     }
 
 }

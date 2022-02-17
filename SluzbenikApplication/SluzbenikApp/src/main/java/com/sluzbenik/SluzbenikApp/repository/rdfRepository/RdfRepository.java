@@ -24,9 +24,8 @@ public class RdfRepository {
         conn = AuthenticationUtilities.setUpPropertiesFusekiJena();
     }
 
-    public List<String[]> getDZSFromUser(String userID){ //njih ne sortiramo
-        String sparqlCondition = "?sertifikat " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userID + "> . "
-                + "?sertifikat " + REF_BY_PREDICATE_DB + "?zahtev";
+    public List<String> getDZSFromUser(String userID){ //njih ne sortiramo
+        String sparqlCondition = "?sertifikat " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userID + ">";
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + DZS_NAMED_GRAPH_URI, sparqlCondition);
 
         // Create a QueryExecution that will access a SPARQL service over HTTP
@@ -34,15 +33,11 @@ public class RdfRepository {
 
         // Query the collection, dump output response with the use of ResultSetFormatter
         ResultSet results = query.execSelect();
-        List<String[]> requestList = new ArrayList<>();
+        List<String> requestList = new ArrayList<>();
         while(results.hasNext()) {
             QuerySolution res = results.nextSolution();
             String certificate = res.get("sertifikat").toString();
-            String request = res.get("zahtev").toString();
-            requestList.add(new String[]{
-                    certificate.substring(DZS_NAMESPACE_PATH.length()),
-                    request.substring(ZAHTEV_NAMESPACE_PATH.length())
-            }); //uzimamo samo id
+            requestList.add(certificate.substring(DZS_NAMESPACE_PATH.length())); //uzimamo samo id
         }
         query.close();
         return requestList;

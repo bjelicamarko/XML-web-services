@@ -130,4 +130,11 @@ public class MailServiceImpl implements MailService{
 
         Transport.send(msg);
     }
+
+    @Override
+    public void sendRejection(String subject, String text, String sendTo) throws MessagingException {
+        String textToReject = "Postovani,\nVas zahtev za digitalnim zelenim sertifikatom je odbijen.\nRazlog:\n"
+                + text + "\n\nNadamo se da se ne ljutite, i da mozemo ostati drugari.\nPozdrav";
+        this.sendMail("Zahtev za DZS odbijen", textToReject, sendTo);
+    }
 }

@@ -30,6 +30,10 @@ public class ZahtevExtractMetadata  extends ExtractMetadata{
         Literal place = model.createLiteral(zahtev.getMesto());
         model.add(model.createStatement(resource, createdIn, place));
 
+        Property hasStatus = model.createProperty(PREDICATE_NAMESPACE, "hasStatus");
+        Literal status = model.createLiteral("pending");
+        model.add(model.createStatement(resource, hasStatus, status));  //dodat status zahteva pending
+
         // OVO PAZITI AKO JE JMBG NULL, PROVJERITI TIP ID-a OSOBE
         Property createdBy = model.createProperty(PREDICATE_NAMESPACE, "createdBy");
         Resource podnosilac = model.createResource(OSOBA_NAMESPACE_PATH + zahtev.getPodnosilac().getJMBG());

@@ -17,4 +17,8 @@ public interface ZahtevService {
     byte[] generateInteresovanjePDF(String id) throws Exception;
 
     String generateInteresovanjeHTML(String id) throws TransformerException, IOException, WriterException;
+
+    void acceptRequest(String id);
+
+    void rejectRequest(String id);
 }

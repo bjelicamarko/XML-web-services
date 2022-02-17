@@ -58,6 +58,8 @@ public class Constants {
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
     public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
     public static final String CREATED_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdBy>";
+    public static final String HAS_STATUS_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/hasStatus>";
+
     public static final String PREDICATE_INTERESOVANJE_CREATED = PREDICATE_NAMESPACE + "createdWhen";
 
     public static final String PREDICATE_DOZA_GIVEN = PREDICATE_NAMESPACE + "givenAt";

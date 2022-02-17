@@ -3,6 +3,7 @@ package com.imunizacija.ImunizacijaApp.service;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.*;
@@ -48,6 +49,9 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
     @Autowired
     private RdfRepository rdfRepository;
+
+    @Autowired
+    private PotvrdaExtractMetadata potvrdaExtractMetadata;
 
     @Autowired
     private XSLFOTransformer transformerXML2PDF;
@@ -114,6 +118,7 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
         // save new PotvrdaOVakcinaciji
         String newPotvrdaId = this.repository.storeXML(potvrdaOVakcinaciji, true);
+        this.potvrdaExtractMetadata.extract(potvrdaOVakcinaciji);
 
         // setting QRCode
         podaciOPotvrdi.setQRCode(String.format(URL_RESOURCE_ROOT + "%s", newPotvrdaId));

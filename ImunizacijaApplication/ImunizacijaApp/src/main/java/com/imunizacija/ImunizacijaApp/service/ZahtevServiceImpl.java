@@ -3,8 +3,10 @@ package com.imunizacija.ImunizacijaApp.service;
 import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevRdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
+import com.imunizacija.ImunizacijaApp.repository.xmlRepository.ZahteviRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
@@ -28,10 +30,16 @@ public class ZahtevServiceImpl implements ZahtevService {
     private GenericXMLRepository<Zahtev> repository;
 
     @Autowired
+    private ZahteviRepository zahteviXMLRepository;
+
+    @Autowired
     private GenericXMLReaderWriter<Zahtev> repositoryReaderWriter;
 
     @Autowired
     private ZahtevExtractMetadata zahtevExtractMetadata;
+
+    @Autowired
+    private ZahtevRdfRepository zahtevRdfRepository;
 
     @Autowired
     private XSLFOTransformer transformerXML2PDF;
@@ -64,5 +72,28 @@ public class ZahtevServiceImpl implements ZahtevService {
     public String generateInteresovanjeHTML(String id) throws TransformerException, IOException, WriterException {
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), ZAHTEV_XSL_PATH, null);
         return htmlString;
+    }
+
+    @Override
+    public void acceptRequest(String id) {
+        String currentStatus = zahtevRdfRepository.getStatusZahtev(id);
+        if (currentStatus == null){
+            throw new RuntimeException("Ne postoji zahtev sa datim ID!");
+        }else if (!currentStatus.equals("pending")){
+            throw new RuntimeException("Zahtev sa datim ID nije u statusu poslato!");
+        }
+        zahtevRdfRepository.setStatusZahtev(id, "accepted", currentStatus);
+    }
+
+    @Override
+    public void rejectRequest(String id) {
+        String currentStatus = zahtevRdfRepository.getStatusZahtev(id);
+        if (currentStatus == null){
+            throw new RuntimeException("Ne postoji zahtev sa datim ID!");
+        }else if (!currentStatus.equals("pending")){
+            throw new RuntimeException("Zahtev sa datim ID nije u statusu poslato!");
+        }
+        zahteviXMLRepository.deleteZahtev(id);
+        zahtevRdfRepository.deleteZahtev(id);
     }
 }

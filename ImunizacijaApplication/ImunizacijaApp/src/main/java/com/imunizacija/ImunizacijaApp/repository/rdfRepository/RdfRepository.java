@@ -93,8 +93,9 @@ public class RdfRepository {
         return sortedAffirmation;
     }
 
-    public List<String> getRequestForCertificateFromUser(String userID){ //njih ne sortiramo
-        String sparqlCondition = "?zahtev " +  CREATED_BY_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userID + ">";
+    public List<String[]> getRequestForCertificateFromUser(String userID){ //njih ne sortiramo
+        String sparqlCondition = "?zahtev " +  CREATED_BY_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userID + "> . " +
+                "?zahtev " + HAS_STATUS_PREDICATE_DB + " ?status";
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, sparqlCondition);
 
         // Create a QueryExecution that will access a SPARQL service over HTTP
@@ -102,11 +103,12 @@ public class RdfRepository {
 
         // Query the collection, dump output response with the use of ResultSetFormatter
         ResultSet results = query.execSelect();
-        List<String> requestList = new ArrayList<>();
+        List<String[]> requestList = new ArrayList<>();
         while(results.hasNext()) {
             QuerySolution res = results.nextSolution();
             String request = res.get("zahtev").toString();
-            requestList.add(request.substring(ZAHTEV_NAMESPACE_PATH.length())); //uzimamo samo id
+            String requestStatus = res.get("status").toString();
+            requestList.add(new String[]{request.substring(ZAHTEV_NAMESPACE_PATH.length()), requestStatus}); //uzimamo samo id
         }
         query.close();
         return requestList;
@@ -117,7 +119,21 @@ public class RdfRepository {
         documentsOfUserDTO.setInteresovanjeID(this.getInterestFromUser(userID));
         documentsOfUserDTO.setPotvrdaOVakcList(this.getVaccinationAffirmationFromUser(userID));
         documentsOfUserDTO.setSalgasnostList(this.getConsentsFromUser(userID));
-        documentsOfUserDTO.setZahtevDZSList(this.getRequestForCertificateFromUser(userID));
+
+        List<String[]> requests = this.getRequestForCertificateFromUser(userID);
+        List<String> pending = new ArrayList<>();
+        List<String> accepted = new ArrayList<>();
+
+        for (String[] strArray : requests){
+            if (strArray[1].equals("pending")){
+                pending.add(strArray[0]);
+            }
+            if (strArray[1].equals("accepted")){
+                accepted.add(strArray[0]);
+            }
+        }
+        documentsOfUserDTO.setZahtevDZSList(pending);
+        documentsOfUserDTO.setPrihvaceniZahtevDZSList(accepted);
         return documentsOfUserDTO;
     }
 

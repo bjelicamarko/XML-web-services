@@ -1,0 +1,17 @@
+<h3 md-dialog-title>Odbijanje zahteva za DZS</h3>
+<form class="example-form" [formGroup]="rejectFormGroup">
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Razlog za odbijanje</mat-label>
+        <textarea matInput placeholder="Napisite razlog.." formControlName="reason"></textarea>
+        <mat-error *ngIf="
+                rejectFormGroup.controls['reason'].touched &&
+                rejectFormGroup.controls['reason'].errors?.['required']
+                ">
+            Potrebno je da napisete razlog!</mat-error>
+    </mat-form-field>
+</form>
+<div md-dialog-actions style="margin-top: 20px;">
+    <button id='confirm-button' mat-flat-button color="primary" (click)="dialogRef.close(rejectFormGroup.value.reason)"
+        style="margin-right: 10px;">Odbij zahtev</button>
+    <button mat-flat-button color="warn" (click)="dialogRef.close()">Otkazi</button>
+</div>

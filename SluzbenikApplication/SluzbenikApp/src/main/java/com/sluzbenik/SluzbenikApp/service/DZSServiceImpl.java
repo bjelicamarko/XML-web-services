@@ -3,6 +3,7 @@ package com.sluzbenik.SluzbenikApp.service;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
@@ -18,6 +19,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
@@ -34,6 +36,9 @@ public class DZSServiceImpl implements DZSService {
 
     @Autowired
     GenericXMLReaderWriter<PotvrdaOVakcinaciji> potvrdaGenericReaderWriter;
+
+    @Autowired
+    DzsExtractMetadata dzsExtractMetadata;
 
     @Autowired
     MailService mailService;
@@ -83,17 +88,14 @@ public class DZSServiceImpl implements DZSService {
 
         DigitalniZeleniSertifikat.PodaciOSertifikatu podaciOSertifikatu = new DigitalniZeleniSertifikat.PodaciOSertifikatu();
 
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-        XMLGregorianCalendar now =
-                datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
-        podaciOSertifikatu.setDatumIzdavanjaSertifikata(now);
+        podaciOSertifikatu.setDatumIzdavanjaSertifikata(DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString()));
         podaciOSertifikatu.setQrKod("qrkodic");
 
         dzs.setPodaciOSertifikatu(podaciOSertifikatu);
         dzs.getDoze().addAll(potvrdaOVakcinaciji.getPodaciOVakcini().getDoze());
 
         String dzsId = repository.storeXML(dzs, true);
+        dzsExtractMetadata.extract(dzs, zahtevID);
 
         try {
             mailService.sendDzs(this.generateDZSHTML(dzsId+".xml"), this.generateDZSPDF(dzsId+".xml"), userEmail);

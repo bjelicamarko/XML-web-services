@@ -7,13 +7,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IssueDZSRoutes } from './issue-dzs.routes';
 import { RouterModule } from '@angular/router';
 import { CitizenDocViewComponent } from './pages/citizen-doc-view/citizen-doc-view.component';
+import { ReasonToDeclineComponent } from './components/reason-to-decline/reason-to-decline.component';
 
 
 
 @NgModule({
   declarations: [
     UsersViewComponent,
-    CitizenDocViewComponent
+    CitizenDocViewComponent,
+    ReasonToDeclineComponent
   ],
   imports: [
     CommonModule,

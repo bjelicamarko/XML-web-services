@@ -4,6 +4,12 @@
 // Any modifications to this file will be lost upon recompilation of the source schema. 
 // Generated on: 2022.01.12 at 12:35:17 PM CET 
 //
-
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(
+        namespace = "http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat",
+        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
+        xmlns = {
+                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat", prefix = ""),
+                @javax.xml.bind.annotation.XmlNs(namespaceURI = "http://www.vakc-sistem.rs/util", prefix = "util")
+        }
+)
 package com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat;
