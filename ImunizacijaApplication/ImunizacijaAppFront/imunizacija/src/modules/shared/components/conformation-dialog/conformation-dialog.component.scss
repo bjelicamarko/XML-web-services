@@ -1,0 +1,17 @@
+button {
+    cursor: pointer;
+    width: 100%; 
+    background-color: red;
+    color: white;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+#confirm-button {
+    background-color: green;
+}
+
+button:hover, #confirm-button:hover {
+    background-color: rgba(0,0,0,.2);
+    color: black;
+}

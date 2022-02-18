@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    jxb:version="2.1"
+    elementFormDefault="qualified"
+    targetNamespace="http://www.vakc-sistem.rs/potvrda-o-vakcinaciji"
+    xmlns="http://www.vakc-sistem.rs/potvrda-o-vakcinaciji"
+    xmlns:util="http://www.vakc-sistem.rs/util">
+
+    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="util.xsd"/>
+    <xs:element name="Potvrda_o_vakcinaciji">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Podaci_o_primaocu">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="util:Licni_podaci">
+                                <xs:sequence>
+                                    <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"/>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Podaci_o_vakcini">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="1" name="Doza"
+                                    type="util:Doza_sa_ustanovom">
+                                    <xs:annotation>
+                                        <xs:appinfo>
+                                            <jxb:property name="Doze"/>
+                                        </xs:appinfo>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                            <xs:element minOccurs="0" name="Datum_naredne_doze" type="xs:date"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Podaci_o_potvrdi">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Datum_izdavanja" type="xs:date"/>
+                            <xs:element name="QRCode">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Sifra_potvrde" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

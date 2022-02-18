@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="http://www.vakc-sistem.rs/zahtev-dzs"
+    xmlns="http://www.vakc-sistem.rs/zahtev-dzs"
+    xmlns:util="http://www.vakc-sistem.rs/util">
+
+    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="util.xsd"/>
+    <xs:element name="Zahtev">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Podnosilac">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="util:Licni_podaci">
+                                <xs:sequence>
+                                    <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"/>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Razlog">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="2"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Mesto">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="2"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Datum" type="xs:date"/>
+            </xs:sequence>
+            <xs:attribute name="Id" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    jxb:version="1.0" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    elementFormDefault="qualified" vc:minVersion="1.1"
+    targetNamespace="http://www.vakc-sistem.rs/saglasnost-za-imunizaciju"
+    xmlns="http://www.vakc-sistem.rs/saglasnost-za-imunizaciju"
+    xmlns:util="http://www.vakc-sistem.rs/util">
+
+    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="Util.xsd"/>
+    <xs:element name="Saglasnost">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Drzavljanstvo" type="util:Drzavljanstvo"> </xs:element>
+                <xs:element name="Licni_podaci" type="util:Licni_podaci_detaljnije"> </xs:element>
+                <xs:element name="Kontakt" type="util:Kontakt"> </xs:element>
+                <xs:element name="Zaposlenje">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Radni_status">
+                                <xs:simpleType>
+                                    <xs:restriction base="util:Radni_status"> </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Zanimanje">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Zdravstvena zastita"/>
+                                        <xs:enumeration value="Socijalna zastita"/>
+                                        <xs:enumeration value="Prosveta"/>
+                                        <xs:enumeration value="MUP"/>
+                                        <xs:enumeration value="Vojska RS"/>
+                                        <xs:enumeration value="Drugo"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Socijalna_zastita" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Naziv_sedista">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Opstina_sedista">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Izjava">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Saglasan">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Da"/>
+                                        <xs:enumeration value="Ne"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Imunoloski_lek">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Datum" type="xs:date"/>
+                <xs:element name="O_vakcinaciji" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Zdravstvena_ustanova">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="2"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Punkt">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Podaci_o_lekaru">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Ime">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:minLength value="2"/>
+                                                  <xs:maxLength value="20"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="Prezime">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:minLength value="2"/>
+                                                  <xs:maxLength value="20"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="Faksimil" type="xs:string"/>
+                                        <xs:element name="Broj_telefona">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string"/>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="JMBG">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:pattern
+                                                  value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"
+                                                  />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="1" name="Doza"
+                                    type="util:Doza_detaljnije">
+                                    <xs:annotation>
+                                        <xs:appinfo>
+                                            <jxb:property name="Doze"/>
+                                        </xs:appinfo>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                            <xs:element name="Kontraindikacije" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" minOccurs="1"
+                                                name="Privremena_kontraindikacija">
+                                                <xs:annotation>
+                                                  <xs:appinfo>
+	                                                    <jxb:property name="Privremene_kontraindikacije"/>
+	                                                </xs:appinfo>
+                                                </xs:annotation>
+                                                <xs:complexType>
+                                                  <xs:sequence>
+                                                  <xs:element name="Datum" type="xs:date"/>
+                                                  <xs:element name="Dijagnoza">
+                                                  <xs:simpleType>
+                                                  <xs:restriction base="xs:string">
+                                                  <xs:minLength value="1"/>
+                                                  </xs:restriction>
+                                                  </xs:simpleType>
+                                                  </xs:element>
+                                                  </xs:sequence>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                        <xs:element name="Odluka_komisije_o_trajnim" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:enumeration value="Da"/>
+                                                  <xs:enumeration value="Ne"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Id" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

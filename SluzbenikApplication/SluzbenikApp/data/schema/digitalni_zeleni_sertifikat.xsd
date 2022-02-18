@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    jxb:version="1.0" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    elementFormDefault="qualified" vc:minVersion="1.1"
+    targetNamespace="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat"
+    xmlns="http://www.vakc-sistem.rs/digitalni-zeleni-sertifikat"
+    xmlns:util="http://www.vakc-sistem.rs/util">
+    <xs:import namespace="http://www.vakc-sistem.rs/util" schemaLocation="util.xsd"/>
+    <xs:element name="Digitalni_zeleni_sertifikat">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Podaci_o_primaocu" type="util:Licni_podaci_JMBG_BrPasosa"> </xs:element>
+                <xs:element name="Podaci_o_sertifikatu">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Broj_sertifikata">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:pattern value="[0-9]{7}"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="Datum_izdavanja_sertifikata" type="xs:date"/>
+                            <xs:element name="Qr_kod">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="1" name="Doza"
+                        type="util:Doza_sa_ustanovom">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <jxb:property name="Doze"/>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:sequence>
+            <xs:attribute name="Id_sluzbenika" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])\d{3}\d{2}\d{4}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

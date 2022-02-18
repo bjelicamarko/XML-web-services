@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Zahtev xmlns="http://www.vakc-sistem.rs/zahtev-dzs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.vakc-sistem.rs/zahtev-dzs zahtev_za_izdavanje_zelenog.xsd" Id="978989686">
+    <Podnosilac>
+        <Ime xmlns="http://www.vakc-sistem.rs/util">Marko</Ime>
+        <Prezime xmlns="http://www.vakc-sistem.rs/util">Markovic</Prezime>
+        <Datum_rodjenja xmlns="http://www.vakc-sistem.rs/util">1999-01-01</Datum_rodjenja>
+        <Pol xmlns="http://www.vakc-sistem.rs/util">Musko</Pol>
+        <JMBG xmlns="http://www.vakc-sistem.rs/util">0101999404404</JMBG>
+        <Broj_pasosa xmlns="http://www.vakc-sistem.rs/util">5685858787</Broj_pasosa>
+    </Podnosilac>
+    <Razlog>Da imam</Razlog>
+    <Mesto>Novi Sad</Mesto>
+    <Datum>2022-01-07</Datum>
+</Zahtev>

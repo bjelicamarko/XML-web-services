@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    jxb:version="2.1" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    elementFormDefault="qualified" vc:minVersion="1.1"
+    targetNamespace="http://www.vakc-sistem.rs/termini" xmlns="http://www.vakc-sistem.rs/termini">
+
+    <xs:element name="Sistemski_magacin">
+        <xs:complexType>
+            <xs:sequence maxOccurs="1" minOccurs="1">
+                <xs:element name="Grad" maxOccurs="unbounded" minOccurs="1">
+                    <xs:annotation>
+                        <xs:appinfo>
+                            <jxb:property name="Gradovi"/>
+                        </xs:appinfo>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="1">
+                            <xs:sequence maxOccurs="1">
+                                <xs:element name="Ustanova" maxOccurs="unbounded" minOccurs="1">
+                                    <xs:annotation>
+                                        <xs:appinfo>
+                                            <jxb:property name="Ustanove"/>
+                                        </xs:appinfo>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                        <xs:sequence maxOccurs="1">
+                                            <xs:element name="Termin" maxOccurs="1" minOccurs="1">
+                                                <xs:complexType>
+                                                  <xs:simpleContent>
+                                                  <xs:extension base="xs:nonNegativeInteger">
+                                                  <xs:attribute name="Datum" use="required"
+                                                  type="xs:string"/>
+                                                  </xs:extension>
+                                                  </xs:simpleContent>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                        <xs:attribute name="Naziv" use="required">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:minLength value="2"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:attribute>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                            <xs:sequence maxOccurs="1">
+                                <xs:element name="Vakcina" maxOccurs="unbounded" minOccurs="1">
+                                    <xs:annotation>
+                                        <xs:appinfo>
+                                            <jxb:property name="Vakcine"/>
+                                        </xs:appinfo>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                        <xs:simpleContent>
+                                            <xs:extension base="xs:nonNegativeInteger">
+                                                <xs:attribute name="Naziv_proizvodjaca"
+                                                  use="required">
+                                                  <xs:simpleType>
+                                                  <xs:restriction base="xs:string">
+                                                  <xs:minLength value="2"/>
+                                                  </xs:restriction>
+                                                  </xs:simpleType>
+                                                </xs:attribute>
+                                            </xs:extension>
+                                        </xs:simpleContent>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:sequence>
+                        <xs:attribute name="Ime" use="required">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="2"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

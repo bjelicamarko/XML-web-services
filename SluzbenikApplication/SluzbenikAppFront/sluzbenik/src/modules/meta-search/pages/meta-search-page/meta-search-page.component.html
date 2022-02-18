@@ -1,0 +1,65 @@
+<div class="drink-creation-label">Meta Pretraga</div>
+<div class="reactiveForm">
+    <p>Izabrati dokument za pretragu</p>
+    <select [ngModel]="izabranDokument" (ngModelChange)="onChange($event)" name="sel2">
+        <option [value]="dokument" *ngFor="let dokument of dokumenti">{{dokument}}</option>
+    </select>
+    <div style="margin-bottom: 25px;">
+        <p style="font-weight: bold; margin-top: 10px;">{{moguciPredikati}}</p>
+        <div>
+            <input class="form-control" type="text" id="searchText" placeholder="Unesite upit"
+                [(ngModel)]="postavljenUpit" />
+        </div>
+    </div>
+    <button id="submit" (click)="search()">Pretraži</button>
+    <div class="form-group row my_margin" *ngIf="searchResults">
+        <table>
+
+            <tr>
+                <th>Šifra/Identifikator</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Referenciran od strane</th>
+                <th>Referencira</th>
+            </tr>
+
+            <tr *ngFor="let result of searchResults.Search_results.Search_result">
+                <td>{{result.Document_id}}</td>
+                <td>
+                    <a (click)="getPdf(result.Document_id)"><u>Prikaži/preuzmi pdf</u></a>
+                </td>
+                <td>
+                    <a (click)="getHtml(result.Document_id)"><u>Prikaži Html</u></a>
+                </td>
+                <td>
+                    <a (click)="getJson(result.Document_id)"><u>Preuzmi json</u></a>
+                </td>
+                <td>
+                    <a (click)="getRdf(result.Document_id)"><u>Preuzmi rdf</u></a>
+                </td>
+
+                <td>
+                    <div *ngIf="result.Referencing && result.Referencing.length > 0">
+                        <div *ngFor="let referencingDoc of result.Referencing[0].Document_id">
+                            <a
+                                (click)="getPdfOnLink(false, referencingDoc)"><u>{{referencing}}/{{referencingDoc}}</u></a><br />
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div *ngIf="result.Referenced_by && result.Referenced_by.length > 0">
+                        <div *ngFor="let referenced_by of result.Referenced_by[0].Document_id">
+                            <a
+                                (click)="getPdfOnLink(true, referenced_by)"><u>{{referencedBy}}/{{referenced_by}}</u></a><br />
+                        </div>
+                    </div>
+                </td>
+                
+            </tr>
+
+        </table>
+    </div>
+</div>

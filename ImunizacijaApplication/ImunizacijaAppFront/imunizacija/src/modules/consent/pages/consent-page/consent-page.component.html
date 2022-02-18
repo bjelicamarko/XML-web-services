@@ -1,0 +1,236 @@
+<div class="drink-creation-label">Podnošenje saglasnosti za sprovođenje imunizacije</div>
+<form class="reactiveForm" [formGroup]="registrationFormGroup" (ngSubmit)="createConsentWithConformation()">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="form-group row my_margin">
+                <label for="firstName" class="col-3 col-form-label">Odaberite opciju:</label>
+                <div class="col-6">
+                    <select class="form-control" [ngModel]="selectedValue" 
+                    [ngModelOptions]="{standalone: true}" (ngModelChange)="onChange($event)">
+                        <option *ngFor="let option of options">
+                           {{ option }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            
+            <div *ngIf="selectedValue === 'Drzavljanin Republike Srbije'" 
+                class="form-group row my_margin">
+                <label for="userId" class="col-3 col-form-label">JMBG:</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="userId" placeholder="Unesite jmbg"
+                        formControlName="userId" />
+                    <small class="text-danger"
+                        *ngIf="f['userId'].touched && f['userId'].errors && f['userId'].errors['required']">
+                        Potrebno je da unesete Vaš jmbg.</small>
+                </div>
+            </div>
+
+            <div *ngIf="selectedValue === 'Strani drzavljanin sa boravkom u RS'" 
+                class="form-group row my_margin">
+                <label for="evidentialNumber" class="col-3 col-form-label">Evidencioni broj stranca:</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="userId" placeholder="Unesite evidencioni broj stranca"
+                        formControlName="userId" />
+                    <small class="text-danger"
+                        *ngIf="f['userId'].touched && f['userId'].errors && f['userId'].errors['required']">
+                        Potrebno je da unesete Vaš evidencioni broj.</small>
+                </div>
+            </div>
+
+            <div *ngIf="selectedValue === 'Strani drzavljanin bez boravka u RS'" 
+                class="form-group row my_margin">
+                <label for="firstName" class="col-3 col-form-label">Broj pasoša:</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="userId" placeholder="Unesite broj pasoša"
+                        formControlName="userId" />
+                    <small class="text-danger"
+                        *ngIf="f['userId'].touched && f['userId'].errors && f['userId'].errors['required']">
+                        Potrebno je da unesete Vaš broj pasoša.</small>
+                </div>
+            </div>
+            
+            <div class="form-group row my_margin">
+                <label for="firstName" class="col-3 col-form-label">Ime</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="firstName" placeholder="Unesite ime"
+                        formControlName="firstName" />
+                    <small class="text-danger"
+                        *ngIf="f['firstName'].touched && f['firstName'].errors && f['firstName'].errors['required']">
+                        Potrebno je da unesete Vaše ime.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="lastName" class="col-3 col-form-label">Prezime</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="lastName" placeholder="Unesite prezime"
+                        formControlName="lastName" />
+                    <small class="text-danger"
+                        *ngIf="f['lastName'].touched && f['lastName'].errors && f['lastName'].errors['required']">
+                        Potrebno je da unesete Vaše prezime.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="birthDay" class="col-3 col-form-label">Datum rodjenja</label>
+                <div class="col-6">
+                    <input class="form-control" type="date" id="birthDay" placeholder="Unesite datum rodjenja"
+                        formControlName="birthDay" />
+                    <small class="text-danger"
+                        *ngIf="f['birthDay'].touched && f['birthDay'].errors && f['birthDay'].errors['required']">
+                        Potrebno je da unesete datum rodjenja.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="town" class="col-3 col-form-label">Pol</label>
+                <div class="col-6" style="margin-top: 10px;">
+                    <input type="radio" formControlName="gender" name="gender" value="Musko"> 
+                    Musko
+                    <input type="radio" formControlName="gender" name="gender" value="Zensko" style="margin-left: 15px;"> 
+                    Zensko
+                </div>
+            </div>
+            
+            <div class="form-group row my_margin">
+                <label for="parentName" class="col-3 col-form-label">Ime roditelja</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="parentName" placeholder="Unesite ime roditelja"
+                        formControlName="parentName" />
+                    <small class="text-danger"
+                        *ngIf="f['parentName'].touched && f['parentName'].errors && f['parentName'].errors['required']">
+                        Potrebno je da unesete ime roditelja.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="birthPlace" class="col-3 col-form-label">Mesto rodjenja</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="birthPlace" placeholder="Unesite mesto rodjenja"
+                        formControlName="birthPlace" />
+                    <small class="text-danger"
+                        *ngIf="f['birthPlace'].touched && f['birthPlace'].errors && f['birthPlace'].errors['required']">
+                        Potrebno je da unesete mesto rodjenja.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="streetName" class="col-3 col-form-label">Naziv ulice</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="streetName" placeholder="Unesite naziv ulice"
+                        formControlName="streetName" />
+                    <small class="text-danger"
+                        *ngIf="f['streetName'].touched && f['streetName'].errors && f['streetName'].errors['required']">
+                        Potrebno je da unesete naziv ulice.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="streetNumber" class="col-3 col-form-label">Broj ulice</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="streetNumber" placeholder="Unesite broj ulice"
+                        formControlName="streetNumber" />
+                    <small class="text-danger"
+                        *ngIf="f['streetNumber'].touched && f['streetNumber'].errors && f['streetNumber'].errors['required']">
+                        Potrebno je da unesete broj ulice.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="place" class="col-3 col-form-label">Mesto</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="place" placeholder="Unesite mesto"
+                        formControlName="place" />
+                    <small class="text-danger"
+                        *ngIf="f['place'].touched && f['place'].errors && f['place'].errors['required']">
+                        Potrebno je da unesete mesto.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="city" class="col-3 col-form-label">Grad</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="city" placeholder="Unesite grad"
+                        formControlName="city" />
+                    <small class="text-danger"
+                        *ngIf="f['city'].touched && f['city'].errors && f['city'].errors['required']">
+                        Potrebno je da unesete grad.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="email" class="col-3 col-form-label">Elektronska pošta</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="email" placeholder="Unesite email"
+                        formControlName="email" />
+                    <small class="text-danger"
+                        *ngIf="f['email'].touched && f['email'].errors && f['email'].errors['required']">
+                        Potrebno je da unesete Vaš email.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="phoneNumber" class="col-3 col-form-label">Broj mobilnog telefona</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="phoneNumber" placeholder="Unesite broj mobilnog telefona"
+                        formControlName="phoneNumber" />
+                    <small class="text-danger"
+                        *ngIf="f['phoneNumber'].touched && f['phoneNumber'].errors && 
+                        f['phoneNumber'].errors['required']">
+                        Potrebno je da unesete Vaš mobilni telefon.</small>
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="homeNumber" class="col-3 col-form-label">Broj fiksnog telefona</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="homeNumber" placeholder="Unesite broj fiksnog telefona"
+                        formControlName="homeNumber" />
+                </div>
+            </div>
+
+            <div class="form-group row my_margin">
+                <label for="workStatus" class="col-3 col-form-label">Radni status</label>
+                <div class="col-6">
+                    <input class="form-control" type="text" id="workStatus" placeholder="Unesite radni status"
+                        formControlName="workStatus" />
+                    <small class="text-danger"
+                        *ngIf="f['workStatus'].touched && f['workStatus'].errors && f['workStatus'].errors['required']">
+                        Potrebno je da unesete status.</small>
+                </div>
+            </div>
+            
+            <div class="form-group row my_margin">
+                <label for="interest" class="col-3 col-form-label">Zanimanje</label>
+                <div class="col-6" style="margin-top: 10px;">
+                    <input type="radio" formControlName="interest" name="interest" value="Zdravstvena zastita"> 
+                    Zdravstvena zastita
+                    <input type="radio" formControlName="interest" name="interest" value="Socijalna zastita" style="margin-left: 15px;"> 
+                    Socijalna zastita
+                    <input type="radio" formControlName="interest" name="interest" value="Prosveta" style="margin-left: 15px;"> 
+                    Prosveta
+                    <input type="radio" formControlName="interest" name="interest" value="MUP" style="margin-left: 15px;"> 
+                    MUP
+                    <input type="radio" formControlName="interest" name="interest" value="Vojska RS" style="margin-left: 15px;"> 
+                    Vojska RS
+                    <input type="radio" formControlName="interest" name="interest" value="Drugo" style="margin-left: 15px;"> 
+                    Drugo
+                </div>
+            </div>
+            
+            <div class="form-group row my_margin">
+                <label for="agreed" class="col-3 col-form-label">Saglasan</label>
+                <div class="col-6" style="margin-top: 10px;">
+                    <input type="radio" formControlName="agreed" name="agreed" value="Da"> 
+                    Da
+                    <input type="radio" formControlName="agreed" name="agreed" value="Ne" style="margin-left: 15px;"> 
+                    Ne
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <button id="submit" class="btn" type="submit" [disabled]='checkSubmit()'>Podnesi saglasnost</button>
+</form>
