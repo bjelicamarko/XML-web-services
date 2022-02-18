@@ -4,10 +4,23 @@
     <select [ngModel]="selectedOption" (ngModelChange)="onChange($event)">
         <option [value]="option" *ngFor="let option of options">{{option}}</option>
     </select>
-    <li *ngFor="let vakcina of vakcine.Vakcine.Vakcina; index as i; first as isFirst">
-        {{i}}/{{vakcina.$.Naziv_proizvodjaca}}/{{vakcina._}}
-        <input id={{i}} type="number"
-        [ngModel]="vakcina._" />
-        <button (click)='changeQuanity(i, vakcina)'>Izmeni</button>
-    </li>
+    <div class="form-group row my_margin">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Tip vakcine</th>
+                <th>Kolicina</th>
+            </tr>
+            <tr *ngFor="let vakcina of vakcine.Vakcine.Vakcina; index as i; first as isFirst">
+                <td>{{i}}</td>
+                <td>{{vakcina.$.Naziv_proizvodjaca}}</td>
+                <td>
+                Trenutna kolicina : <b>{{vakcina._}}</b>
+                <input style="margin-left: 50px;" id={{i}} type="number"
+                    [ngModel]="vakcina._" />
+                    <button class="submit" (click)='changeQuanity(i, vakcina)'>Izmeni</button>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
