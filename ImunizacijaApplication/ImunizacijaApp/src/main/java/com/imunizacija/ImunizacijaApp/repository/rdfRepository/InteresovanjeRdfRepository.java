@@ -23,7 +23,11 @@ public class InteresovanjeRdfRepository {
         String sparqlCondition = String.format("SELECT (COUNT(?subject) as ?subjectCount) \n" +
                 "WHERE {" +
                 "?subject" + " <" +PREDICATE_INTERESOVANJE_CREATED  + "> " + "?datum" + "\n" +
-                "FILTER(?datum >= \"%s\" && ?datum <= \"%s\")" + "\n" +
+                "FILTER(<http://www.w3.org/2001/XMLSchema#date>(?datum) >= " +
+                "<http://www.w3.org/2001/XMLSchema#date>(\"%s\") " +
+                "&& " +
+                "<http://www.w3.org/2001/XMLSchema#date>(?datum) <= " +
+                "<http://www.w3.org/2001/XMLSchema#date>(\"%s\"))" + "\n" +
                 "}", dateFrom, dateTo);
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint +
                 INTERESOVANJE_NAMED_GRAPH_URI, sparqlCondition);

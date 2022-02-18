@@ -17,6 +17,14 @@ export class MetaSearchPageComponent {
   izabranDokument: string = 'interesovanje';
   postavljenUpit: string = '';
 
+  moguciPredikatiInteresovanje: string = "Moguci predikati: createdWhen.";
+  moguciPredikatiSaglasnost: string = "Moguci predikati: createdAt, issuedTo & refBy.";
+  moguciPredikatiZahtev: string = "Moguci predikati: createdBy, createdIn & createdWhen.";
+  moguciPredikatiPotvrda: string = "Moguci predikati: createdAt, issuedTo & refBy.";
+  moguciPredikatiDzs: string = "Moguci predikati: createdAt, createdBy, issuedTo & refBy.";
+
+  moguciPredikati: string = this.moguciPredikatiInteresovanje;
+
   metaSearchResults: MetaSearchResults | undefined;
 
   constructor(private metaSearchService: MetaSearchService, private snackBarService: SnackBarService,
@@ -25,6 +33,17 @@ export class MetaSearchPageComponent {
   onChange(newValue: any) {
     this.izabranDokument = newValue;
     console.log(this.izabranDokument);
+    if (this.izabranDokument === 'interesovanje') {
+      this.moguciPredikati = this.moguciPredikatiInteresovanje;
+    } else if (this.izabranDokument === 'saglasnost') {
+      this.moguciPredikati = this.moguciPredikatiSaglasnost;
+    } else if (this.izabranDokument === 'zahtev') {
+      this.moguciPredikati = this.moguciPredikatiZahtev;
+    } else if (this.izabranDokument === 'potvrda') {
+      this.moguciPredikati = this.moguciPredikatiPotvrda;
+    } else if (this.izabranDokument === 'dzs') {
+      this.moguciPredikati = this.moguciPredikatiDzs;
+    }
   }
 
   search() {
