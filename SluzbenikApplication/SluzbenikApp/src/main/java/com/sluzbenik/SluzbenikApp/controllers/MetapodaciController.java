@@ -37,7 +37,7 @@ public class MetapodaciController {
 
             SearchResults res = null;
             if (tokens[0].equals("dzs")){
-                //res = new AdvancedSearchResults(metadataService.getDocIdsFromQuery(tokens[1]));
+                res = metadataService.getDocIdsFromQuery(tokens[1]);
             }else{
                 ResponseEntity<SearchResults> entity = restTemplate.getForEntity("http://localhost:9001/api/metapodaci/pretraga/"+ query,
                         SearchResults.class);
