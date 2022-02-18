@@ -87,7 +87,11 @@ export class MetaSearchPageComponent {
 
           if (!this.searchResults)
             this.snackBarService.openSnackBarFast("Nema rezultata za unetu pretragu");
+        },
+        (err) => {
+          this.snackBarService.openSnackBarFast("Nije validan upit.");
         })
+        
     }
   }
 

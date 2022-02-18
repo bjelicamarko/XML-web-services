@@ -50,7 +50,6 @@ public class MetapodaciController {
             return new ResponseEntity<>(res, HttpStatus.OK);
         }catch (Exception e){
             System.out.println(e.getMessage());
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
