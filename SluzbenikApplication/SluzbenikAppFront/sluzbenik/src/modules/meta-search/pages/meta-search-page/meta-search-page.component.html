@@ -5,7 +5,7 @@
         <option [value]="dokument" *ngFor="let dokument of dokumenti">{{dokument}}</option>
     </select>
     <div style="margin-bottom: 25px;">
-        <label for="searchText" class="col-3 col-form-label">Upit:</label>
+        <p style="font-weight: bold; margin-top: 10px;">{{moguciPredikati}}</p>
         <div>
             <input class="form-control" type="text" id="searchText" placeholder="Unesite upit"
                 [(ngModel)]="postavljenUpit" />

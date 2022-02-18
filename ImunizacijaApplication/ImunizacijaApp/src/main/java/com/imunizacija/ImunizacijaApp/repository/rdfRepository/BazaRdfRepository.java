@@ -29,7 +29,12 @@ public class BazaRdfRepository {
                 "SELECT (COUNT(?subject) as ?subjectCount)\n" +
                         "WHERE {" +
                         "?subject" + " <" +PREDICATE_DOZA_GIVEN  + "> " + "?datum" + "\n" +
-                        "FILTER(?datum >= \"%s\" && ?datum <= \"%s\" && regex(str(?subject), \"-1\"))" + "\n" +
+                        "FILTER(<http://www.w3.org/2001/XMLSchema#date>(?datum) >= " +
+                        "<http://www.w3.org/2001/XMLSchema#date>(\"%s\")" +
+                        " && " +
+                        "<http://www.w3.org/2001/XMLSchema#date>(?datum)" +
+                        " <= <http://www.w3.org/2001/XMLSchema#date>(\"%s\")" +
+                        " && regex(str(?subject), \"-1\"))" + "\n" +
                         "}", dateFrom, dateTo);
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint +
                 DOZA_NAMED_GRAPH_URI, sparqlCondition);
@@ -49,7 +54,10 @@ public class BazaRdfRepository {
                 "WHERE {" +
                 "?subject" + " <" +PREDICATE_DOZA_GIVEN  + "> " + "?datum . " + "\n" +
                 "?subject" + " <" +PREDICATE_DOZA_TIP  + "> " + "?tip" + "\n" +
-                "FILTER(?datum >= \"%s\" && ?datum <= \"%s\")" + "\n" +
+                "FILTER(<http://www.w3.org/2001/XMLSchema#date>(?datum) >= " +
+                        "<http://www.w3.org/2001/XMLSchema#date>(\"%s\") && " +
+                        "<http://www.w3.org/2001/XMLSchema#date>(?datum) <= " +
+                        "<http://www.w3.org/2001/XMLSchema#date>(\"%s\"))" + "\n" +
                 "}\n" +
                 "GROUP BY ?tip", dateFrom, dateTo);
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint +
