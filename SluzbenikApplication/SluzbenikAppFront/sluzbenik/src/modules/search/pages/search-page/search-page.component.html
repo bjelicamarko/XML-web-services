@@ -48,15 +48,29 @@
                         <th>Šifra/Identifikator</th>
                         <th></th>
                         <th></th>
+                        <th>Referencira</th>
+                        <th>Referenciran od strane</th>
                     </tr>
 
-                    <tr *ngFor="let result of searchResults.Search_results.Document_id">
-                        <td>{{result}}</td>
+                    <tr *ngFor="let result of searchResults.Search_result">
+                        <td>{{result.Document_id}}</td>
                         <td>
                             <a (click)="getPdf(result)"><u>Prikaži/preuzmi pdf</u></a>
                         </td>
                         <td>
                             <a (click)="getHtml(result)"><u>Prikaži Html</u></a>
+                        </td>
+
+                        <td>
+                            <div *ngFor="let referencing of result.Referencing.Document_id">
+                                <a (click)="getPdf(referencing)"><u>{{refs}}/{{referencing}}</u></a><br />
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <div *ngFor="let referenced_by of result.Referenced_by.Document_id">
+                                <a (click)="getPdf(referenced_by)"><u>{{refBy}}/{{referenced_by}}</u></a><br />
+                            </div>
                         </td>
                     </tr>
 

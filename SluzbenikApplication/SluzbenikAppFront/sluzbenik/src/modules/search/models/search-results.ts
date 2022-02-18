@@ -1,7 +1,7 @@
-import { DocumentId } from "./document-id";
+import { SearchResult } from "./search-result";
 
 export interface SearchResults {
-    Search_results: {
-        Document_id: DocumentId[]
-    }
+
+    Search_result: SearchResult[]
+
 }

@@ -23,10 +23,51 @@ export class SearchService {
     return this.http.get<HttpResponse<string>>(`indirekcija/api/${documentType}/search?userId=${userId}&searchText=${searchText}`, queryParams);
   }
 
-  parseXml(xmlStr: string) : any {
+  parseXml(xmlStr: string) : any { // { explicitArray: false }
     var result;
     var parser = require('xml2js');
     parser.Parser().parseString(xmlStr, (e: any, r: any) => {result = r});
     return result;
   } 
+
+  parseXmlArrayFalse(xmlStr: string) : any { // { explicitArray: false }
+    var result;
+    var parser = require('xml2js');
+    parser.Parser({ explicitArray: false }).parseString(xmlStr, (e: any, r: any) => {result = r});
+    return result;
+  } 
+
+  returnDumy(): string {
+    return `
+    <Search_results>
+        <Search_result>
+            <Document_id>4125125</Document_id>
+            <Referencing>
+                <Document_id>Milan</Document_id>
+                <Document_id>Cvetko</Document_id>
+                <Document_id>Drago</Document_id>
+            </Referencing>
+            <Referenced_by>
+                <Document_id>Pero</Document_id>
+                <Document_id>Zdero</Document_id>
+                <Document_id>Gvero</Document_id>
+            </Referenced_by>
+        </Search_result>
+        <Search_result>
+            <Document_id>7654321</Document_id>
+            <Referencing>
+                <Document_id>Djura</Document_id>
+                <Document_id>Mika</Document_id>
+                <Document_id>Zika</Document_id>
+            </Referencing>
+            <Referenced_by>
+                <Document_id>Lane</Document_id>
+                <Document_id>Pane</Document_id>
+                <Document_id>Dane</Document_id>
+            </Referenced_by>
+        </Search_result>
+    </Search_results>
+    `;
+  }
+
 }
