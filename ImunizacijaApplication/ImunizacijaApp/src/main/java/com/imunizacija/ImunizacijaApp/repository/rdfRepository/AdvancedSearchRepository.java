@@ -210,15 +210,20 @@ public class AdvancedSearchRepository {
         String queryToDB = sb.toString();
         System.out.println(queryToDB);
 
+        int lenOfSubstr = 0;
         String sparqlQuery = null;
         if (docType == DocType.SAGLASNOST){
             sparqlQuery = formSaglasnostQuery(queryToDB);
+            lenOfSubstr = SAGLASNOST_NAMESPACE_PATH.length();
         }else if (docType == DocType.POTVRDA){
             sparqlQuery = formPotvrdaQuery(queryToDB);
+            lenOfSubstr = POTVRDA_NAMESPACE_PATH.length();
         }else if (docType == DocType.INTERESOVANJE){
             sparqlQuery = formInteresovanjeQuery(queryToDB);
+            lenOfSubstr = INTERESOVANJE_NAMESPACE_PATH.length();
         }else{
             sparqlQuery = formZahtevQuery(queryToDB);
+            lenOfSubstr = ZAHTEV_NAMESPACE_PATH.length();
         }
 
         QueryExecution queryToExecute = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
@@ -229,7 +234,7 @@ public class AdvancedSearchRepository {
         while(results.hasNext()) {
             QuerySolution res = results.nextSolution();
             String consent = res.get("s").toString();
-            consentList.add(consent); //uzimamo samo id
+            consentList.add(consent.substring(lenOfSubstr)); //uzimamo samo id
         }
         queryToExecute.close();
         return consentList;

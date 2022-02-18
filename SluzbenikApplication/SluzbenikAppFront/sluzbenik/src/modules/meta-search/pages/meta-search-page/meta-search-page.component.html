@@ -1,15 +1,17 @@
-<div class="drink-creation-label">Meta  Pretraga</div>
+<div class="drink-creation-label">Meta Pretraga</div>
 <div class="reactiveForm">
-<p>Izabrati dokument za pretragu</p>
+    <p>Izabrati dokument za pretragu</p>
     <select [ngModel]="izabranDokument" (ngModelChange)="onChange($event)" name="sel2">
         <option [value]="dokument" *ngFor="let dokument of dokumenti">{{dokument}}</option>
     </select>
     <div style="margin-bottom: 25px;">
         <label for="searchText" class="col-3 col-form-label">Upit:</label>
         <div>
-            <input class="form-control" type="text" id="searchText" placeholder="Unesite upit" [(ngModel)]="postavljenUpit" />
+            <input class="form-control" type="text" id="searchText" placeholder="Unesite upit"
+                [(ngModel)]="postavljenUpit" />
         </div>
     </div>
+    <button id="submit" (click)="search()">Pretraži</button>
     <div class="form-group row my_margin" *ngIf="metaSearchResults">
         <table>
             <tr>
@@ -18,7 +20,7 @@
                 <th></th>
             </tr>
 
-            <tr *ngFor="let result of metaSearchResults.Meta_search_results.Document_id">
+            <tr *ngFor="let result of metaSearchResults.Document_id">
                 <td>{{result}}</td>
                 <td>
                     <a (click)="getPdf(result)"><u>Prikaži/preuzmi pdf</u></a>
@@ -29,5 +31,4 @@
             </tr>
         </table>
     </div>
-    <button id="submit" (click)="search()">Pretraži</button>
 </div>

@@ -32,48 +32,48 @@ export class MetaSearchPageComponent {
     // ($($createdAt='2022-01-09'$&&$issuedTo='213223122'$)$&&$refBy='djura'$)$||$refBy='pera'$||$($createdAt='2022-01-09'$&&$issuedTo='213223122'$)$
     // ((createdAt='2022-01-09'&&issuedTo='213223122')&&refBy='djura')||refBy='pera'||(createdAt='2022-01-09'&&issuedTo='213223122')
     if (this.postavljenUpit && this.postavljenUpit.length > 0) {
-        console.log(this.postavljenUpit);
-        let preradjenUpit = this.postavljenUpit;
-        preradjenUpit = preradjenUpit.replace(/\(/g, '($');
-        preradjenUpit = preradjenUpit.replace(/\)/g,'$)');
-        preradjenUpit = preradjenUpit.replace(/\&\&/g, '\$$&&$' ); //&&&$
-        preradjenUpit = preradjenUpit.replace(/\|\|/g,'$||$');
-        preradjenUpit = '$' + preradjenUpit + '$';
+      console.log(this.postavljenUpit);
+      let preradjenUpit = this.postavljenUpit;
+      preradjenUpit = preradjenUpit.replace(/\(/g, '($');
+      preradjenUpit = preradjenUpit.replace(/\)/g, '$)');
+      preradjenUpit = preradjenUpit.replace(/\&\&/g, '\$$&&$'); //&&&$
+      preradjenUpit = preradjenUpit.replace(/\|\|/g, '$||$');
+      preradjenUpit = '$' + preradjenUpit + '$';
 
-        console.log(this.izabranDokument + '~' + preradjenUpit);
-        let result = this.izabranDokument + '~' + preradjenUpit;
-        this.metaSearchService.advanceSearch(result)
-          .subscribe(response => {
-            let res = this.metaSearchService.parseXml(response.body as string);
-            
-            if(res.Meta_search_results !== '') 
-              this.metaSearchResults = res;
-            else
-              this.metaSearchResults = undefined;
-          
-            if(!this.metaSearchResults) 
-              this.snackBarService.openSnackBarFast("Nema rezultata za unetu pretragu");
-            })
+      console.log(this.izabranDokument + '~' + preradjenUpit);
+      let result = this.izabranDokument + '~' + preradjenUpit;
+      this.metaSearchService.advanceSearch(result)
+        .subscribe(response => {
+          let res = this.metaSearchService.parseXml(response.body as string);
+
+          if (res.Meta_search_results !== '')
+            this.metaSearchResults = res.MetaSearchResults;
+          else
+            this.metaSearchResults = undefined;
+
+          if (!this.metaSearchResults)
+            this.snackBarService.openSnackBarFast("Nema rezultata za unetu pretragu");
+        })
     }
   }
 
   getPdf(documentId: any) {
     this.documentProviderService.getDocumentPDF(this.izabranDokument, documentId).subscribe((response) => {
-      if(response.body)
+      if (response.body)
         this.utilService.downloadPDFDocument(response.body, this.izabranDokument);
-    }, 
-    (error) => {
-      this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja/prikazivanja dokumenta.");
-    });
+    },
+      (error) => {
+        this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja/prikazivanja dokumenta.");
+      });
   }
-  
+
   getHtml(documentId: any) {
     this.documentProviderService.getDocumentHTML(this.izabranDokument, documentId).subscribe((response) => {
-      if(response.body)
+      if (response.body)
         this.utilService.openHtmlDocumentInNewTab(response.body);
-    }, 
-    (error) => {
-      this.snackBarService.openSnackBarFast("Doslo je do greške prilikom prikazivanja dokumenta.");
-    });
+    },
+      (error) => {
+        this.snackBarService.openSnackBarFast("Doslo je do greške prilikom prikazivanja dokumenta.");
+      });
   }
 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.DZS_NAMED_GRAPH_URI;
+import static com.sluzbenik.SluzbenikApp.repository.Constants.DZS_NAMESPACE_PATH;
 
 
 @Component
@@ -161,7 +162,7 @@ public class AdvancedSearchRepository {
         while(results.hasNext()) {
             QuerySolution res = results.nextSolution();
             String consent = res.get("s").toString();
-            consentList.add(consent); //uzimamo samo id
+            consentList.add(consent.substring(DZS_NAMESPACE_PATH.length())); //uzimamo samo id
         }
         queryToExecute.close();
         return consentList;
