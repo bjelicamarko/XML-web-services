@@ -22,10 +22,35 @@ export class MetaSearchService {
     return this.http.get<HttpResponse<string>>(`indirekcija/api/metapodaci/pretraga/${query}`, queryParams);
   }
 
+  getStringJson(documentName: string, documentId: string): Observable<HttpResponse<string>> {
+    let queryParams = {}
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text",
+    };
+
+    return this.http.get<HttpResponse<string>>(`indirekcija/api/${documentName}/generateJSON/${documentId}`, queryParams);
+  }
+
+  getStringRdf(documentName: string, documentId: string): Observable<HttpResponse<string>> {
+    let queryParams = {}
+    queryParams = {
+      headers: this.headers,
+      observe: "response",
+      responseType: "text",
+    };
+
+    return this.http.get<HttpResponse<string>>(`indirekcija/api/${documentName}/generateRDFTriplets/${documentId}`, queryParams);
+  }
+
+
   parseXml(xmlStr: string) : any {
     var result;
     var parser = require('xml2js');
     parser.Parser().parseString(xmlStr, (e: any, r: any) => {result = r});
     return result;
   } 
+
+
 }
