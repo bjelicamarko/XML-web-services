@@ -2,7 +2,7 @@
 <form class="reactiveForm" [formGroup]="registrationFormGroup" (ngSubmit)="search()">
     <div class="row">
         <div class="col-3"></div>
-        
+
         <div class="col-6">
 
 
@@ -10,7 +10,8 @@
                 <label class="col-3 col-form-label">Tip dokumenata:</label>
                 <div class="col-6">
 
-                    <input id="saglasnost" type="radio" value="Saglasnost" name="documentType" formControlName="documentType">
+                    <input id="saglasnost" type="radio" value="Saglasnost" name="documentType"
+                        formControlName="documentType">
                     <label for="saglasnost" class="radio-margin">Saglasnost</label>
 
                     <input id="dzs" type="radio" value="DZS" name="documentType" formControlName="documentType">
@@ -25,8 +26,8 @@
             <div class="form-group row my_margin">
                 <label for="userId" class="col-3 col-form-label">Jedinstveni identifikator:</label>
                 <div class="col-6">
-                    <input class="form-control" type="text" id="userId" placeholder="Jmbg | Broj pasosa | Email | Evidencioni broj stranca"
-                        formControlName="userId" />
+                    <input class="form-control" type="text" id="userId"
+                        placeholder="Jmbg | Broj pasosa | Email | Evidencioni broj stranca" formControlName="userId" />
                     <small class="text-danger"
                         *ngIf="f['userId'].touched && f['userId'].errors && f['userId'].errors['userId']">
                         Potrebno je da unesete id gradjanina.</small>
@@ -52,24 +53,30 @@
                         <th>Referenciran od strane</th>
                     </tr>
 
-                    <tr *ngFor="let result of searchResults.Search_result">
+                    <tr *ngFor="let result of searchResults.Search_results.Search_result">
                         <td>{{result.Document_id}}</td>
                         <td>
-                            <a (click)="getPdf(result)"><u>Prikaži/preuzmi pdf</u></a>
+                            <a (click)="getPdf(result.Document_id)"><u>Prikaži/preuzmi pdf</u></a>
                         </td>
                         <td>
-                            <a (click)="getHtml(result)"><u>Prikaži Html</u></a>
+                            <a (click)="getHtml(result.Document_id)"><u>Prikaži Html</u></a>
                         </td>
 
                         <td>
-                            <div *ngFor="let referencing of result.Referencing.Document_id">
-                                <a (click)="getPdf(referencing)"><u>{{refs}}/{{referencing}}</u></a><br />
+                            <div *ngIf="result.Referencing && result.Referencing.length > 0">
+                                <div *ngFor="let referencing of result.Referencing[0].Document_id">
+                                    <a
+                                        (click)="getPdfOnLink(false, referencing)"><u>{{refs}}/{{referencing}}</u></a><br />
+                                </div>
                             </div>
                         </td>
-                        
+
                         <td>
-                            <div *ngFor="let referenced_by of result.Referenced_by.Document_id">
-                                <a (click)="getPdf(referenced_by)"><u>{{refBy}}/{{referenced_by}}</u></a><br />
+                            <div *ngIf="result.Referenced_by && result.Referenced_by.length > 0">
+                                <div *ngFor="let referenced_by of result.Referenced_by[0].Document_id">
+                                    <a
+                                        (click)="getPdfOnLink(true, referenced_by)"><u>{{refBy}}/{{referenced_by}}</u></a><br />
+                                </div>
                             </div>
                         </td>
                     </tr>
