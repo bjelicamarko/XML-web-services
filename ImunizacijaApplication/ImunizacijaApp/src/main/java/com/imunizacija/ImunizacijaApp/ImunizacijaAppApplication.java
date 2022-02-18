@@ -145,7 +145,10 @@ public class ImunizacijaAppApplication {
 		//fillRDFDatabase();
 		//SpringApplication.run(ImunizacijaAppApplication.class, args);
 		AdvancedSearchRepository advancedSearchRepository = new AdvancedSearchRepository();
-		List<String> res = advancedSearchRepository.advancedSearchSaglasnost("($createdAt>='2022-01-09'$&&$issuedTo='0101999404404'$)&&$refBy='2312312'$");
+		//List<String> res = advancedSearchRepository.advancedSearchSaglasnost("($createdAt>='2022-01-09'$&&$issuedTo='0101999404404'$)&&$refBy='2312312'$");
+		//"($($createdAt='2022-01-09'$&&$issuedTo='213223122'$)$&&$refBy='djura'$)$||$refBy='pera'$||$($createdAt='2022-01-09'$&&$issuedTo='213223122'$)$"
+		List<String> res = advancedSearchRepository.
+				advancedSearch("$createdIn='Novi Sad'$", AdvancedSearchRepository.DocType.ZAHTEV);
 		System.out.println("gn");
 	}
 

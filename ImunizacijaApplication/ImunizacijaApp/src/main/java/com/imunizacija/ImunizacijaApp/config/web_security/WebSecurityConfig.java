@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/h2-console/**").permitAll()
 				.antMatchers("/socket/**").permitAll()
 				.antMatchers("/api/users/login").permitAll()
+				.antMatchers("/api/metapodaci/pretraga/**").permitAll()
 				.antMatchers("/api/zahtev/odbij/**").permitAll()
 				.antMatchers("/api/zahtev/prihvati/**").permitAll()
 				.antMatchers("/api/users/registracija").permitAll()

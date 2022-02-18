@@ -1,14 +1,19 @@
-package com.imunizacija.ImunizacijaApp.repository.rdfRepository;
+package com.sluzbenik.SluzbenikApp.repository.rdfRepository;
 
-import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
-import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
-import org.apache.jena.query.*;
+
+import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
+import com.sluzbenik.SluzbenikApp.utils.SparqlUtil;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
+import static com.sluzbenik.SluzbenikApp.repository.Constants.DZS_NAMED_GRAPH_URI;
+
 
 @Component
 public class AdvancedSearchRepository {
@@ -20,8 +25,6 @@ public class AdvancedSearchRepository {
     }
 
     enum ConverterEnum {DATE, LITERAL, RESOURCE};
-
-    public enum DocType { INTERESOVANJE, SAGLASNOST, ZAHTEV, POTVRDA };
 
     public String checkAndGetSignDate(String chars){
         //<, >, <=, >=, =, !=
@@ -90,10 +93,13 @@ public class AdvancedSearchRepository {
         throw new RuntimeException("Neka greska");
     }
 
-    public String expConverterForSaglasnostAndPotvrda(String exp){ //jer imaju iste metapodatke
+    public String expConverterForDZS(String exp){ //jer imaju iste metapodatke
         if (exp.contains("createdAt")){
             return this.expConverter(exp, "createdAt", ConverterEnum.DATE);
-        }else if (exp.contains("issuedTo")){
+        }else if (exp.contains("createdBy")){
+            return this.expConverter(exp, "createdBy", ConverterEnum.RESOURCE);
+        }
+        else if (exp.contains("issuedTo")){
             return this.expConverter(exp, "issuedTo", ConverterEnum.RESOURCE);
         }else if (exp.contains("refBy")){
             return this.expConverter(exp, "refBy", ConverterEnum.RESOURCE);
@@ -101,27 +107,7 @@ public class AdvancedSearchRepository {
         return null;
     }
 
-    public String expConverterForInteresovanje(String exp){
-        if (exp.contains("createdWhen")){
-            return this.expConverter(exp, "createdWhen", ConverterEnum.DATE);
-        }
-        return null;
-    }
-
-    public String expConverterForZahtev(String exp){ //jer imaju iste metapodatke
-        if (exp.contains("createdBy")){
-            return this.expConverter(exp, "createdBy", ConverterEnum.RESOURCE);
-        }else if (exp.contains("createdIn")){
-            return this.expConverter(exp, "createdIn", ConverterEnum.LITERAL);
-        } else if (exp.contains("createdWhen")){
-            return this.expConverter(exp, "createdWhen", ConverterEnum.DATE);
-        }else if (exp.contains("hasStatus")){
-            return this.expConverter(exp, "hasStatus", ConverterEnum.LITERAL);
-        }
-        return null;
-    }
-
-    public String formSaglasnostQuery(String queryToDB){
+    public String formSaglasnostDZS(String queryToDB){
         String sparqlCondition = "SELECT distinct ?s "+
                         "WHERE " +
                         "{ ?s <http://www.vakc-sistem.rs/predicate/issuedTo> ?issuedTo; " +
@@ -131,48 +117,10 @@ public class AdvancedSearchRepository {
                         "GROUP BY ?s";
         System.out.println(sparqlCondition);
         return SparqlUtil.selectData(conn.dataEndpoint +
-                SAGLASNOST_NAMED_GRAPH_URI, sparqlCondition);
+                DZS_NAMED_GRAPH_URI, sparqlCondition);
     }
 
-    public String formPotvrdaQuery(String queryToDB){
-        String sparqlCondition = "SELECT distinct ?s "+
-                        "WHERE " +
-                        "{ ?s <http://www.vakc-sistem.rs/predicate/issuedTo> ?issuedTo; " +
-                        "<http://www.vakc-sistem.rs/predicate/createdAt> ?createdAt;" +
-                        "<http://www.vakc-sistem.rs/predicate/refBy> ?refBy;" +
-                        "FILTER(" + queryToDB + ")}" +
-                        "GROUP BY ?s";
-        System.out.println(sparqlCondition);
-        return SparqlUtil.selectData(conn.dataEndpoint +
-                POTVRDA_NAMED_GRAPH_URI, sparqlCondition);
-    }
-
-    public String formInteresovanjeQuery(String queryToDB){
-        String sparqlCondition = "SELECT distinct ?s "+
-                "WHERE " +
-                "{ ?s <http://www.vakc-sistem.rs/predicate/createdWhen> ?createdWhen;" +
-                "FILTER(" + queryToDB + ")}" +
-                "GROUP BY ?s";
-        System.out.println(sparqlCondition);
-        return SparqlUtil.selectData(conn.dataEndpoint +
-                INTERESOVANJE_NAMED_GRAPH_URI, sparqlCondition);
-    }
-
-    public String formZahtevQuery(String queryToDB){
-        String sparqlCondition = "SELECT distinct ?s "+
-                "WHERE " +
-                "{ ?s <http://www.vakc-sistem.rs/predicate/createdBy> ?createdBy; " +
-                "<http://www.vakc-sistem.rs/predicate/createdIn> ?createdIn;" +
-                "<http://www.vakc-sistem.rs/predicate/createdWhen> ?createdWhen;" +
-                "<http://www.vakc-sistem.rs/predicate/hasStatus> ?hasStatus;" +
-                "FILTER(" + queryToDB + ")}" +
-                "GROUP BY ?s";
-        System.out.println(sparqlCondition);
-        return SparqlUtil.selectData(conn.dataEndpoint +
-                ZAHTEV_NAMED_GRAPH_URI, sparqlCondition);
-    }
-
-    public List<String> advancedSearch(String query, DocType docType){
+    public List<String> advancedSearch(String query){
         //createdAt, issuedTo, refBy
         //($createdAt='2022-01-09'$&&$issuedTo='213223122'$)||$refBy='djura'$
         //xsd:date(?createdAt)=xsd:date('2022-01-09') && contains(str(?issuedTo), '999090999999') && contains(str(?refBy), '999090999999')
@@ -192,14 +140,7 @@ public class AdvancedSearchRepository {
                 i = expEnd;
 
                 String exp = query.substring(expStart, expEnd);
-                String preparedExp = null;
-                if (docType == DocType.SAGLASNOST || docType == DocType.POTVRDA){
-                    preparedExp = expConverterForSaglasnostAndPotvrda(exp);
-                }else if (docType == DocType.INTERESOVANJE){
-                    preparedExp = expConverterForInteresovanje(exp);
-                }else {
-                    preparedExp = expConverterForZahtev(exp);
-                }
+                String preparedExp = expConverterForDZS(exp);
                 if (preparedExp == null){
                     i = oldI;
                 }else{
@@ -210,16 +151,7 @@ public class AdvancedSearchRepository {
         String queryToDB = sb.toString();
         System.out.println(queryToDB);
 
-        String sparqlQuery = null;
-        if (docType == DocType.SAGLASNOST){
-            sparqlQuery = formSaglasnostQuery(queryToDB);
-        }else if (docType == DocType.POTVRDA){
-            sparqlQuery = formPotvrdaQuery(queryToDB);
-        }else if (docType == DocType.INTERESOVANJE){
-            sparqlQuery = formInteresovanjeQuery(queryToDB);
-        }else{
-            sparqlQuery = formZahtevQuery(queryToDB);
-        }
+        String sparqlQuery = formSaglasnostDZS(queryToDB);
 
         QueryExecution queryToExecute = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
 
