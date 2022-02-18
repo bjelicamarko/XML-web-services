@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { DocumentProviderService } from 'src/modules/shared/services/document-provider.service';
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { UtilService } from 'src/modules/shared/services/util.service';
-import { MetaSearchResults } from '../../models/meta-search-results';
 import { RespDTO } from '../../models/new_dto_models/resp-dto';
 import { MetaSearchService } from '../../services/meta-search.service';
 
@@ -32,7 +32,8 @@ export class MetaSearchPageComponent {
   searchResults: RespDTO | undefined;
 
   constructor(private metaSearchService: MetaSearchService, private snackBarService: SnackBarService,
-    private utilService: UtilService, private documentProviderService: DocumentProviderService) { }
+    private utilService: UtilService, private documentProviderService: DocumentProviderService,
+    private sanitizer: DomSanitizer) { }
 
   onChange(newValue: any) {
     this.izabranDokument = newValue;
@@ -130,4 +131,40 @@ export class MetaSearchPageComponent {
         this.snackBarService.openSnackBarFast("Doslo je do greške prilikom prikazivanja dokumenta.");
       });
   }
+
+  getJson(documentId: any) {
+    
+    return;
+    this.metaSearchService.getStringJson(this.izabranDokument, documentId).subscribe((response) => {
+      if (response.body)
+        this.utilService.openHtmlDocumentInNewTab(response.body);
+    },
+      (error) => {
+        this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja dokumenta.");
+      });
+  }
+
+  getRdf(documentId: any) {
+
+    return;
+    this.metaSearchService.getStringRdf(this.izabranDokument, documentId).subscribe((response) => {
+      if (response.body)
+        this.utilService.openHtmlDocumentInNewTab(response.body);
+    },
+      (error) => {
+        this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja dokumenta.");
+      });
+  }
+
+  test() {
+    let testJson: any = {
+      Bokisheli: "Bokisheli",
+      Tica: "Ticoni"
+    }
+    
+    this.utilService.downloadJSONDocument(JSON.stringify(testJson));
+
+    //JSON.stringify(testJson, undefined, 4)
+  }
+
 }
