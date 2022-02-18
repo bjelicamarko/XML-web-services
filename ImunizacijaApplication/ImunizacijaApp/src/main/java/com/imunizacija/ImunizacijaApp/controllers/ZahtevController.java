@@ -50,8 +50,15 @@ public class ZahtevController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/kreirajNovZahtev", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> createNewInterest(@RequestBody String zahtev) throws MessagingException {
-        zahtevService.createNewRequest(zahtev);
-        return new ResponseEntity<>("Zahtev za izdavanje digitalnog zelenog sertifikata uspesno podnet!", HttpStatus.CREATED);
+        try {
+            zahtevService.createNewRequest(zahtev);
+            return new ResponseEntity<>("Zahtev za izdavanje digitalnog zelenog sertifikata uspesno podnet!", HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Doslo je do greške prilikom provere", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
@@ -70,6 +77,21 @@ public class ZahtevController {
             return new ResponseEntity<>(zahtevService.generateZahtevHTML(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/canCreateRequest/{userId}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> canCreateRequest(@PathVariable String userId) {
+        try {
+            boolean can = zahtevService.canCreateRequest(userId);
+            if(can)
+                return new ResponseEntity<>("Da", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Doslo je do greške prilikom provere", HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Doslo je do greške prilikom provere", HttpStatus.BAD_REQUEST);
         }
     }
 }

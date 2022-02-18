@@ -116,6 +116,23 @@ public class RdfRepository {
         return requestList;
     }
 
+    public boolean userHasPendingRequest(String userID){
+        String sparqlCondition = "?zahtev " +  CREATED_BY_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userID + "> . " +
+                "?zahtev " + HAS_STATUS_PREDICATE_DB + " 'pending'";
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+
+        boolean hasNext = results.hasNext();
+        query.close();
+
+        return hasNext;
+    }
+
     public DocumentsOfUserDTO getDocumentsOfUser(String userID){
         DocumentsOfUserDTO documentsOfUserDTO = new DocumentsOfUserDTO();
         documentsOfUserDTO.setInteresovanjeID(this.getInterestFromUser(userID));
@@ -165,4 +182,22 @@ public class RdfRepository {
         affirmationList.forEach(affirmation -> sortedAffirmation.add(affirmation[0]));
         return sortedAffirmation.get(sortedAffirmation.size() - 1);
     }
+
+    public boolean userHasCertificate(String userId) {
+        String sparqlCondition = "?potvrda " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userId + "> .";
+
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + POTVRDA_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+
+        boolean hasNext = results.hasNext();
+        query.close();
+
+        return hasNext;
+    }
+
 }
