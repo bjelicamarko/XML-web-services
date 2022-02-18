@@ -214,7 +214,7 @@ export class ConsentPageComponent {
   }
 
   checkSubmit() {
-    return !this.registrationFormGroup.valid;
+    return !this.registrationFormGroup.valid || this.registrationFormGroup.get('agreed')?.value === 'Ne';
   }
 
   onChange(_any: any) {
@@ -238,8 +238,8 @@ export class ConsentPageComponent {
       userId: ['', [Validators.required, jmbgValidator()]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      birthDay: ['', Validators.required],
-      gender: ['', Validators.required],
+      birthDay: [Validators.required],
+      gender: ['Musko', Validators.required],
       parentName: ['', Validators.required],
       birthPlace: ['', Validators.required],
       streetName: ['', Validators.required],
@@ -250,9 +250,9 @@ export class ConsentPageComponent {
       phoneNumber: ['', Validators.required],
       homeNumber: [''], // fiksni telefon
       workStatus: ['', Validators.required],
-      interest: ['', Validators.required],
-      agreed: ['', Validators.required],
-      immunologicalDrug: ['', Validators.required]
+      interest: ['Drugo', Validators.required],
+      agreed: ['Ne', Validators.required],
+      immunologicalDrug: ['test', Validators.required]  // TO JE VAKCINA KOJU SISTEM ODREDI DA CE DA PRIMI
     });
   }
 }

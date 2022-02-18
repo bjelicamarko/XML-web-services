@@ -164,7 +164,7 @@ export class MedicalConsentPageComponent {
       .subscribe(response => {
         this.snackBarService.openSnackBar(response.body as string);
         if (response.status == 200)
-          this.router.navigate(["imunizacija-app/saglasnost/drugi-deo-saglasnosti"]);
+          window.location.reload();
       })
   }
   getVaccineInfo(vaccineType: string): any {
