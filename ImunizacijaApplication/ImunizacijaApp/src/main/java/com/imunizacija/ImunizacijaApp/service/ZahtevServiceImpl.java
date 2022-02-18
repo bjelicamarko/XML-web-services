@@ -96,6 +96,11 @@ public class ZahtevServiceImpl implements ZahtevService {
     }
 
     @Override
+    public String generateZahtevJSON(String id) throws IOException {
+        return this.rdfRepository.generateJSON(ZAHTEV_NAMESPACE_PATH, id, ZAHTEV_NAMED_GRAPH_URI);
+    }
+
+    @Override
     public void acceptRequest(String id) {
         String currentStatus = zahtevRdfRepository.getStatusZahtev(id);
         if (currentStatus == null){

@@ -201,25 +201,19 @@ public class RdfRepository {
         return hasNext;
     }
 
-    public String generateRDFJSON(String doumentRdfUrl, String id, String namedGraphUri) throws IOException {
-        String sparqlCondition = "<" + doumentRdfUrl + id + "> ?predicate ?object .";
-        System.out.println(sparqlCondition);
+    public String generateJSON(String documentRdfUrl, String id, String namedGraphUri) throws IOException {
+        String sparqlCondition = "VALUES ?subject { <" + documentRdfUrl + id + "> }" +
+                " ?subject ?predicate ?object .";
         String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + namedGraphUri, sparqlCondition);
 
         // Create a QueryExecution that will access a SPARQL service over HTTP
         QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
         ResultSet results = query.execSelect();
 
-        // checking if ResultSet is empty
-//        if (results.hasNext()) {
-//            query.close();
-//            return "{}";
-//        }
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ResultSetFormatter.outputAsJSON(byteArrayOutputStream, results);
         String json = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
-        int indexOfSubStr = json.indexOf("results");
+        int indexOfSubStr = json.indexOf("bindings");
         String newJson  = String.format("{\n  %s", json.substring(indexOfSubStr - 1)); // creating substring from results to end
         byteArrayOutputStream.close();
         query.close();

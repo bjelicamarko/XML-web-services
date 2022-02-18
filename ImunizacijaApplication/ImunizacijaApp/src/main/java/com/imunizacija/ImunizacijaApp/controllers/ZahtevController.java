@@ -80,6 +80,15 @@ public class ZahtevController {
         }
     }
 
+    @GetMapping(value = "/generateJSON/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateJSON(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(zahtevService.generateZahtevJSON(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in JSON format .", id), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value = "/canCreateRequest/{userId}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> canCreateRequest(@PathVariable String userId) {
         try {

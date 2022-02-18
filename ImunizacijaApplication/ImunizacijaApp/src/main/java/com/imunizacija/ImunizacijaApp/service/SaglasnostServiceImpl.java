@@ -83,8 +83,8 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     }
 
     @Override
-    public String generateSaglasnostRDFJSON(String id) throws IOException {
-        return this.rdfRepository.generateRDFJSON(SAGLASNOST_NAMESPACE_PATH, id, SAGLASNOST_NAMED_GRAPH_URI);
+    public String generateSaglasnostJSON(String id) throws IOException {
+        return this.rdfRepository.generateJSON(SAGLASNOST_NAMESPACE_PATH, id, SAGLASNOST_NAMED_GRAPH_URI);
     }
 
     @Override

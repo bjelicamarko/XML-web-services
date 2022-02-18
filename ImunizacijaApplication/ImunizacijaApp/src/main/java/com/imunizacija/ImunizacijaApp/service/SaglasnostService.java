@@ -20,7 +20,7 @@ public interface SaglasnostService {
 
     String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException;
 
-    String generateSaglasnostRDFJSON(String id) throws IOException;
+    String generateSaglasnostJSON(String id) throws IOException;
     
     void updateConsent(String saglasnost);
 

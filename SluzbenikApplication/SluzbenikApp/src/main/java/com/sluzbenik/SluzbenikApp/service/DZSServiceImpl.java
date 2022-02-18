@@ -6,6 +6,7 @@ import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.RdfRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
@@ -21,6 +22,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
@@ -33,6 +35,9 @@ public class DZSServiceImpl implements DZSService {
 
     @Autowired
     private GenericXMLRepository<DigitalniZeleniSertifikat> repository;
+
+    @Autowired
+    private RdfRepository rdfRepository;
 
     @Autowired
     private GenericXMLReaderWriter<DigitalniZeleniSertifikat> repositoryReaderWriter;
@@ -123,5 +128,10 @@ public class DZSServiceImpl implements DZSService {
         SearchResults searchResults;
         searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
         return searchResults;
+    }
+
+    @Override
+    public String generateDZSJSON(String id) throws IOException {
+        return this.rdfRepository.generateJSON(DZS_NAMESPACE_PATH, id, DZS_NAMED_GRAPH_URI);
     }
 }

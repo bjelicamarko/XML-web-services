@@ -96,8 +96,8 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     }
 
     @Override
-    public String generateSaglasnostRDFJSON(String id) throws IOException {
-        return this.rdfRepository.generateRDFJSON(POTVRDA_NAMESPACE_PATH, id, POTVRDA_NAMED_GRAPH_URI);
+    public String generateSaglasnostJSON(String id) throws IOException {
+        return this.rdfRepository.generateJSON(POTVRDA_NAMESPACE_PATH, id, POTVRDA_NAMED_GRAPH_URI);
     }
 
     @Override

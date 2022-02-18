@@ -54,13 +54,10 @@ public class PotvrdaController {
         }
     }
 
-    @GetMapping(value = "/generateRDFJSON/{id}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<String> generateRDFJSON(@PathVariable String id) {
+    @GetMapping(value = "/generateJSON/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateJSON(@PathVariable String id) {
         try {
-            String json = potvrdaService.generateSaglasnostRDFJSON(id);
-            if(json.equals("{}"))
-                return new ResponseEntity<>("You probably entered the wrong document id.", HttpStatus.OK);
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(potvrdaService.generateSaglasnostJSON(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in JSON format .", id), HttpStatus.NOT_FOUND);
         }

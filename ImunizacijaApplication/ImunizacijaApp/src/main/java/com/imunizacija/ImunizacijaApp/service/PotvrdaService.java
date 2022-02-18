@@ -18,7 +18,7 @@ public interface PotvrdaService {
 
     String generatePotvrdaHTML(String id) throws Exception;
 
-    String generateSaglasnostRDFJSON(String id) throws IOException;
+    String generateSaglasnostJSON(String id) throws IOException;
 
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
     

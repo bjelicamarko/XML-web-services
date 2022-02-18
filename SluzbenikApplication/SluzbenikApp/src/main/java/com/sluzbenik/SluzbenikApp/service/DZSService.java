@@ -7,6 +7,8 @@ import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import org.xmldb.api.base.XMLDBException;
 
+import java.io.IOException;
+
 public interface DZSService {
 
     DigitalniZeleniSertifikat findOneById(String id);
@@ -18,4 +20,6 @@ public interface DZSService {
     void createDZS(String zahtevID, String idSluzbenika, String potvrdaXML, String userEmail) throws DzsException, DatatypeConfigurationException;
 
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
+
+    String generateDZSJSON(String id) throws IOException;
 }
