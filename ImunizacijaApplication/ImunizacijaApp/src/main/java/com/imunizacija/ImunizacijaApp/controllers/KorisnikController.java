@@ -3,7 +3,9 @@ package com.imunizacija.ImunizacijaApp.controllers;
 import com.imunizacija.ImunizacijaApp.model.app_users.KorisniciListDTO;
 import com.imunizacija.ImunizacijaApp.model.app_users.RegistrationDTO;
 import com.imunizacija.ImunizacijaApp.model.app_users.UserException;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.DzsList;
 import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserDTO;
+import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserWithDZSDTO;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.security.UserTokenState;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.korisnik.Korisnik;
@@ -12,6 +14,7 @@ import com.imunizacija.ImunizacijaApp.security.TokenUtils;
 import com.imunizacija.ImunizacijaApp.security.auth.JwtAuthenticationRequest;
 import com.imunizacija.ImunizacijaApp.service.KorisnikService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -37,6 +41,9 @@ public class KorisnikController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
 
     //todo izbrisati ova dva dole kasnije
@@ -104,6 +111,23 @@ public class KorisnikController {
     @GetMapping(value = "/dokumentacija/{id}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<DocumentsOfUserDTO> getDocumentationForUserByOfficial(@PathVariable String id){
         return new ResponseEntity<>(korisnikService.getDocumentsOfUser(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/dokumentacija_za_korisnika/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<DocumentsOfUserWithDZSDTO> getDocumentationForUserByUser(@PathVariable String id){
+        try {
+            DocumentsOfUserDTO documentsOfUserDTO = korisnikService.getDocumentsOfUser(id);
+            ResponseEntity<DzsList> entity = restTemplate.getForEntity("http://localhost:9000/api/dzs/odKorisnika/" + id, DzsList.class);
+            if (entity.getBody() == null){
+                throw new RuntimeException("Error");
+            }
+            DocumentsOfUserWithDZSDTO documentsOfUserWithDZSDTO = new DocumentsOfUserWithDZSDTO(documentsOfUserDTO);
+            documentsOfUserWithDZSDTO.setDzsList(entity.getBody().getDzsList());
+            return new ResponseEntity<>(documentsOfUserWithDZSDTO, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value = "/registracija", consumes = MediaType.APPLICATION_XML_VALUE)

@@ -15,6 +15,7 @@ import { RegistrationPageComponent } from './pages/registration-page/registratio
 import { AuthModule } from '../auth/auth.module';
 import { HeaderCitizenComponent } from './components/header/header-citizen/header-citizen.component';
 import { HeaderDoctorComponent } from './components/header/header-doctor/header-doctor.component';
+import { UserDocsModule } from '../user-docs/user-docs.module';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { HeaderDoctorComponent } from './components/header/header-doctor/header-
         MaterialExampleModule,
         FormsModule,
         HttpClientModule,
+        UserDocsModule,
         // ToastrModule.forRoot(),
         SharedModule,
         ReactiveFormsModule,

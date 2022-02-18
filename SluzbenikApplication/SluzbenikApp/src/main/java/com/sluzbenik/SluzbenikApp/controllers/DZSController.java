@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
 import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.CreateDzsDTO;
+import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.DzsList;
 import com.sluzbenik.SluzbenikApp.model.dto.dzs_dto.RejectRequestDTO;
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.DigitalniZeleniSertifikat;
@@ -41,6 +42,17 @@ public class DZSController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(dzs, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/odKorisnika/{id}", produces = MediaType.TEXT_XML_VALUE)
+    public ResponseEntity<DzsList> getDzsListOfList(@PathVariable String id) {
+        try{
+            DzsList dzsList = new DzsList(dzsService.getDzsOfUser(id));
+            return new ResponseEntity<>(dzsList, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/generatePDF/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
