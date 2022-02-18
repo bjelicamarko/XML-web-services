@@ -63,6 +63,16 @@ public class PotvrdaController {
         }
     }
 
+    @GetMapping(value = "/generateRDFTriplets/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateRDFTriplets(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(potvrdaService.generatePotvrdaRDFTriplets(id), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in N-TRIPLETS format .", id), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<SearchResults> search(@RequestParam String userId, @RequestParam String searchText) {
         try {

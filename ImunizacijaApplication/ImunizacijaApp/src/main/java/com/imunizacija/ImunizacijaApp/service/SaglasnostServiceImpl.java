@@ -88,6 +88,11 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     }
 
     @Override
+    public String generateSaglasnostRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(SAGLASNOST_NAMESPACE_PATH, id, SAGLASNOST_NAMED_GRAPH_URI);
+    }
+
+    @Override
     public void updateConsent(String saglasnost) { // primio vakcinu
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
         this.repository.storeXML(s, false);

@@ -66,6 +66,16 @@ public class InteresovanjeController {
         }
     }
 
+    @GetMapping(value = "/generateRDFTriplets/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateRDFTriplets(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(interesovanjeService.generateInteresovanjeRDFTriplets(id), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in N-TRIPLETS format .", id), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PreAuthorize("hasRole('CITIZEN')")
     @GetMapping(value = "/provjeraPostojanjaInteresovanja/{email}", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> provjeraPostojanjaInteresovanja(@PathVariable String email) {

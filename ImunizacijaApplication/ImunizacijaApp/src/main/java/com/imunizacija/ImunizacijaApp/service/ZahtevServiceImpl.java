@@ -101,6 +101,11 @@ public class ZahtevServiceImpl implements ZahtevService {
     }
 
     @Override
+    public String generateZahtevRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(ZAHTEV_NAMESPACE_PATH, id, ZAHTEV_NAMED_GRAPH_URI);
+    }
+
+    @Override
     public void acceptRequest(String id) {
         String currentStatus = zahtevRdfRepository.getStatusZahtev(id);
         if (currentStatus == null){

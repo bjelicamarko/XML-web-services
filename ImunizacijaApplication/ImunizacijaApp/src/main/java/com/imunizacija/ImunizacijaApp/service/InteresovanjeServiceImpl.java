@@ -138,4 +138,9 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     public String generateInteresovanjeJSON(String id) throws IOException {
         return this.rdfRepository.generateJSON(INTERESOVANJE_NAMESPACE_PATH, id, INTERESOVANJE_NAMED_GRAPH_URI);
     }
+
+    @Override
+    public String generateInteresovanjeRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(INTERESOVANJE_NAMESPACE_PATH, id, INTERESOVANJE_NAMED_GRAPH_URI);
+    }
 }

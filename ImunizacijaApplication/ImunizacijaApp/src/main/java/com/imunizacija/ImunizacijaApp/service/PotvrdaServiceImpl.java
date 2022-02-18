@@ -101,6 +101,11 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     }
 
     @Override
+    public String generatePotvrdaRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(POTVRDA_NAMESPACE_PATH, id, POTVRDA_NAMED_GRAPH_URI);
+    }
+
+    @Override
     public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
         SearchResults searchResults;
         searchResults = repository.searchDocuments(userId, searchText, ID_PATH);

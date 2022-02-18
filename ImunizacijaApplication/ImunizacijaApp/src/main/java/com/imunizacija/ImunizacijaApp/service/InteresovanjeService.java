@@ -17,4 +17,6 @@ public interface InteresovanjeService {
     String generateInteresovanjeHTML(String id) throws Exception;
 
     String generateInteresovanjeJSON(String id) throws IOException;
+
+    String generateInteresovanjeRDFTriplets(String id);
 }

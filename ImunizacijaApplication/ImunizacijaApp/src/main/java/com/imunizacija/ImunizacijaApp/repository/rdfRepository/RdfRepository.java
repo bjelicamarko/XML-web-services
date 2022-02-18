@@ -5,6 +5,7 @@ import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.*;
 import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
 import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Model;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -218,5 +219,17 @@ public class RdfRepository {
         byteArrayOutputStream.close();
         query.close();
         return newJson;
+    }
+
+    public String generateRDFTriplets(String documentRdfUrl, String id, String namedGraphUri) {
+        String sparqlCondition = " <" + documentRdfUrl + id + "> ?predicate ?object .";
+        String sparqlQuery = SparqlUtil.constructData(conn.dataEndpoint + namedGraphUri, sparqlCondition);
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+        Model model = query.execConstruct();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        model.write(out, "N-Triples");
+
+        return out.toString();
     }
 }

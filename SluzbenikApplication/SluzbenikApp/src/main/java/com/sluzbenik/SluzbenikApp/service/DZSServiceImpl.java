@@ -134,4 +134,9 @@ public class DZSServiceImpl implements DZSService {
     public String generateDZSJSON(String id) throws IOException {
         return this.rdfRepository.generateJSON(DZS_NAMESPACE_PATH, id, DZS_NAMED_GRAPH_URI);
     }
+
+    @Override
+    public String generateDZSRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(DZS_NAMESPACE_PATH, id, DZS_NAMED_GRAPH_URI);
+    }
 }

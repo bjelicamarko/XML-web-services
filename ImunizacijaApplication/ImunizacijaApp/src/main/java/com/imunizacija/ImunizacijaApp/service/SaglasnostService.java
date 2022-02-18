@@ -25,4 +25,6 @@ public interface SaglasnostService {
     void updateConsent(String saglasnost);
 
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
+
+    String generateSaglasnostRDFTriplets(String id);
 }

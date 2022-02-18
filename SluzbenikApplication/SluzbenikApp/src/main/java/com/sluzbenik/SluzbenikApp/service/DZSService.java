@@ -22,4 +22,6 @@ public interface DZSService {
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
 
     String generateDZSJSON(String id) throws IOException;
+
+    String generateDZSRDFTriplets(String id);
 }
