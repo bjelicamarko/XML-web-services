@@ -32,6 +32,11 @@ const routes: Routes = [
         path: "zahtev",
         loadChildren: () =>
           import("./../request/request.module").then((m) => m.RequestModule),
+      },
+      {
+        path: "pregled",
+        loadChildren: () =>
+          import("./../user-docs/user-docs.module").then((m) => m.UserDocsModule),
       }
     ]
   },

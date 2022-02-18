@@ -6,6 +6,7 @@ import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.RdfRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
@@ -24,12 +25,16 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static com.sluzbenik.SluzbenikApp.repository.Constants.*;
 import static com.sluzbenik.SluzbenikApp.transformers.Constants.*;
 
 @Service
 public class DZSServiceImpl implements DZSService {
+
+    @Autowired
+    RdfRepository rdfRepository;
 
     @Autowired
     private GenericXMLRepository<DigitalniZeleniSertifikat> repository;
@@ -123,5 +128,10 @@ public class DZSServiceImpl implements DZSService {
         SearchResults searchResults;
         searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
         return searchResults;
+    }
+
+    @Override
+    public List<String> getDzsOfUser(String id) {
+        return rdfRepository.getDZSFromUser(id);
     }
 }
