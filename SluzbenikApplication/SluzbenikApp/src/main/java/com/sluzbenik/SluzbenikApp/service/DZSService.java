@@ -8,6 +8,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import org.xmldb.api.base.XMLDBException;
 
 import java.util.List;
+import java.io.IOException;
 
 public interface DZSService {
 
@@ -22,4 +23,8 @@ public interface DZSService {
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
 
     List<String> getDzsOfUser(String id);
+    
+    String generateDZSJSON(String id) throws IOException;
+
+    String generateDZSRDFTriplets(String id);
 }

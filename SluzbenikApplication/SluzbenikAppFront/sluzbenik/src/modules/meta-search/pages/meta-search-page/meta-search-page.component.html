@@ -19,6 +19,8 @@
                 <th>Šifra/Identifikator</th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
                 <th>Referenciran od strane</th>
                 <th>Referencira</th>
             </tr>
@@ -30,6 +32,12 @@
                 </td>
                 <td>
                     <a (click)="getHtml(result.Document_id)"><u>Prikaži Html</u></a>
+                </td>
+                <td>
+                    <a (click)="getJson(result.Document_id)"><u>Preuzmi json</u></a>
+                </td>
+                <td>
+                    <a (click)="getRdf(result.Document_id)"><u>Preuzmi rdf</u></a>
                 </td>
 
                 <td>
@@ -49,6 +57,7 @@
                         </div>
                     </div>
                 </td>
+                
             </tr>
 
         </table>

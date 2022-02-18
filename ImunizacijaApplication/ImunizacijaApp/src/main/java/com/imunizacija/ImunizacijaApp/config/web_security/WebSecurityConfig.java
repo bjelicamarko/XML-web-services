@@ -66,12 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/users/registracija").permitAll()
 				.antMatchers("/api/interesovanje/generatePDF/**").permitAll()
 				.antMatchers("/api/interesovanje/generateHTML/**").permitAll()
-				.antMatchers("/api/potvrda/generatePDF/**").permitAll()
-				.antMatchers("/api/potvrda/generateHTML/**").permitAll()
-				.antMatchers("/api/saglasnost/generatePDF/**").permitAll()
-				.antMatchers("/api/saglasnost/generateHTML/**").permitAll()
-				.antMatchers("/api/zahtev/generatePDF/**").permitAll()
-				.antMatchers("/api/zahtev/generateHTML/**").permitAll()
+				.antMatchers("/api/interesovanje/generateJSON/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/interesovanje/generateRDFTriplets/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/users/**").permitAll() //todo pogledati
 				.antMatchers("/api/potvrda/korisnik/**").permitAll() //todo pogledati
 				.antMatchers("/api/users/dokumentacija/**").permitAll() //todo pogledati da li moze drugacije malko
@@ -82,11 +78,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/saglasnost/search").permitAll() // komunikacija bekova
 				.antMatchers("/api/saglasnost/generatePDF/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/saglasnost/generateHTML/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/saglasnost/generateJSON/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/saglasnost/generateRDFTriplets/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/zahtev/generatePDF/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/zahtev/generateHTML/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/zahtev/generateJSON/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/zahtev/generateRDFTriplets/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/search").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/generatePDF/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/generateHTML/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/potvrda/generateJSON/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/potvrda/generateRDFTriplets/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/metapodaciODigitalnomZelenomSertifikatu").permitAll() // komunikacija bekova
 				.anyRequest().authenticated().and()
 				.cors().and()

@@ -3,6 +3,7 @@ package com.imunizacija.ImunizacijaApp.service;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.OdgovorTerminDTO;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Objects;
 
@@ -29,6 +31,9 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
 
     @Autowired
     private GenericXMLRepository<Interesovanje> repository;
+
+    @Autowired
+    private RdfRepository rdfRepository;
 
     @Autowired
     private GenericXMLReaderWriter<Interesovanje> repositoryReaderWriter;
@@ -127,5 +132,15 @@ public class InteresovanjeServiceImpl implements InteresovanjeService {
     public String generateInteresovanjeHTML(String id) throws Exception {
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), INTERESOVANJE_XSL_PATH, null);
         return htmlString;
+    }
+
+    @Override
+    public String generateInteresovanjeJSON(String id) throws IOException {
+        return this.rdfRepository.generateJSON(INTERESOVANJE_NAMESPACE_PATH, id, INTERESOVANJE_NAMED_GRAPH_URI);
+    }
+
+    @Override
+    public String generateInteresovanjeRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(INTERESOVANJE_NAMESPACE_PATH, id, INTERESOVANJE_NAMED_GRAPH_URI);
     }
 }

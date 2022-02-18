@@ -19,8 +19,12 @@ public interface SaglasnostService {
     byte[] generateSaglasnostPDF(String id) throws Exception;
 
     String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException;
+
+    String generateSaglasnostJSON(String id) throws IOException;
     
     void updateConsent(String saglasnost);
 
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
+
+    String generateSaglasnostRDFTriplets(String id);
 }

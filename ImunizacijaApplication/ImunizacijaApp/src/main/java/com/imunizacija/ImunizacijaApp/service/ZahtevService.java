@@ -24,4 +24,7 @@ public interface ZahtevService {
 
     boolean canCreateRequest(String userId) throws RuntimeException;
 
+    String generateZahtevJSON(String id) throws IOException;
+
+    String generateZahtevRDFTriplets(String id);
 }

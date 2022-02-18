@@ -47,7 +47,7 @@ public class ZahtevController {
         return new ResponseEntity<String>("Zahtev za DZS odbijen!", HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+
     @PostMapping(value = "/kreirajNovZahtev", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> createNewInterest(@RequestBody String zahtev) throws MessagingException {
         try {
@@ -77,6 +77,26 @@ public class ZahtevController {
             return new ResponseEntity<>(zahtevService.generateZahtevHTML(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/generateJSON/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateJSON(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(zahtevService.generateZahtevJSON(id), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in JSON format .", id), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/generateRDFTriplets/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateRDFTriplets(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(zahtevService.generateZahtevRDFTriplets(id), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in N-TRIPLETS format .", id), HttpStatus.NOT_FOUND);
         }
     }
 
