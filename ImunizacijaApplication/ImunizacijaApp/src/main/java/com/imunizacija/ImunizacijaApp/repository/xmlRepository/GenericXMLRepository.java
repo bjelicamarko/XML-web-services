@@ -1,5 +1,8 @@
 package com.imunizacija.ImunizacijaApp.repository.xmlRepository;
 
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.ReferencedBy;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.Referencing;
+import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.SearchResult;
 import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.SearchResults;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.IdentifiableEntity;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -17,6 +20,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
@@ -151,8 +156,9 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
                 res = i.nextResource();
                 String response = (String) res.getContent();
                 System.out.println("Ret value is: " + response);
-
-                searchResults.getSearchResults().add(response /* + ".xml"*/);
+                SearchResult searchResult = new SearchResult();
+                searchResult.setDocumentId(response);
+                searchResults.getSearchResults().add(searchResult);
 
             } catch(XMLDBException e){
                 System.out.println("Error with query for consent!");

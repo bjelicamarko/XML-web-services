@@ -4,6 +4,7 @@ import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostRdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -34,6 +35,9 @@ public class SaglasnostServiceImpl implements SaglasnostService{
 
     @Autowired
     private SaglasnostExtractMetadata saglasnostExtractMetadata;
+
+    @Autowired
+    private SaglasnostRdfRepository saglasnostRdfRepository;
 
     @Autowired
     private XSLFOTransformer transformerXML2PDF;
@@ -90,6 +94,7 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
         SearchResults searchResults;
         searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
+        this.saglasnostRdfRepository.getSaglasnostWithReferences(searchResults);
         return searchResults;
     }
 }

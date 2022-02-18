@@ -40,6 +40,7 @@ public class Constants {
     public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
     public static final String INTERESOVANJE_NAMESPACE_PATH = ROOT_PATH + "interesovanje/";
     public static final String SAGLASNOST_NAMESPACE_PATH = ROOT_PATH + "saglasnost-za-imunizaciju/";
+    public static final String DZS_NAMESPACE_PATH = ROOT_PATH + "digitalni-zeleni-sertifikat/";
     public static final String TERMIN_NAMESPACE_PATH = ROOT_PATH + "termini";
     public static final String KORISNIK_NAMESPACE_PATH = ROOT_PATH + "korisnik";
     public static final String ODGOVORI_NAMESPACE_PATH = ROOT_PATH + "odgovori";
@@ -60,6 +61,8 @@ public class Constants {
     public static final String CREATED_AT_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdAt>";
     public static final String CREATED_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/createdBy>";
     public static final String HAS_STATUS_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/hasStatus>";
+    public static final String REF_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/refBy>";
+    public static final String REF_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/ref>";
 
     public static final String PREDICATE_INTERESOVANJE_CREATED = PREDICATE_NAMESPACE + "createdWhen";
 
