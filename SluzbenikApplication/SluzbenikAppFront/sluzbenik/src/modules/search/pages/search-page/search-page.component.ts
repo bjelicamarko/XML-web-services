@@ -16,6 +16,9 @@ export class SearchPageComponent implements OnInit {
   registrationFormGroup: FormGroup;
   searchResults: SearchResults | undefined;
 
+  refs: string;
+  refBy: string;
+
   constructor(private fb: FormBuilder, private snackBarService: SnackBarService,
               private searchService: SearchService, private utilService: UtilService,
               private documentProviderService: DocumentProviderService) { 
@@ -25,6 +28,9 @@ export class SearchPageComponent implements OnInit {
       userId: [''],
       searchText: [''],
     });
+
+    this.refs = 'Interesovanje';
+    this.refBy = 'Potvrda';
   }
 
   ngOnInit(): void {
@@ -52,12 +58,15 @@ export class SearchPageComponent implements OnInit {
     let documentType: string = this.registrationFormGroup.get('documentType')?.value;
 
     this.searchService.basicSearch(userId, searchText, documentType.toLowerCase()).subscribe((response) => {
-      let res = this.searchService.parseXml(response.body as string);
+      let res = this.searchService.parseXmlArrayFalse(response.body as string).Search_results;
 
-      if(res.Search_results !== '') 
+      if(res.Search_results !== '') {
         this.searchResults = res;
-      else
+        this.handleHtmlRef(documentType);
+      }
+      else {
         this.searchResults = undefined;
+      }
       
       if(!this.searchResults) 
         this.snackBarService.openSnackBarFast("Nema rezultata za unetu pretragu");
@@ -91,6 +100,21 @@ export class SearchPageComponent implements OnInit {
     (error) => {
       this.snackBarService.openSnackBarFast("Doslo je do greške prilikom prikazivanja dokumenta.");
     });
+  }
+
+  private handleHtmlRef(documentType: string) {
+    if(documentType === 'Saglasnost') {
+      this.refs = "Interesovanje";
+      this.refBy = "Potvrda";
+    } 
+    else if(documentType == "Potvrda") {
+      this.refs = "Saglasnost";
+      this.refBy = "DZS";
+    } 
+    else if(documentType == "DZS") {
+      this.refs = "Potvrda";
+      this.refBy = "Zahtev DZS";
+    } 
   }
 
 }
