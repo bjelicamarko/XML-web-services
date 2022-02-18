@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -92,6 +93,11 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         String resourceUrl = URL_ROOT + URL_RESOURCE_ROOT + id;
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), POTVRDA_XSL_PATH, resourceUrl);
         return htmlString;
+    }
+
+    @Override
+    public String generateSaglasnostRDFJSON(String id) throws IOException {
+        return this.rdfRepository.generateRDFJSON(POTVRDA_NAMESPACE_PATH, id, POTVRDA_NAMED_GRAPH_URI);
     }
 
     @Override

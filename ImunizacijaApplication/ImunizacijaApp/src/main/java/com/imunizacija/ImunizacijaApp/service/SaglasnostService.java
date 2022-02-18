@@ -19,6 +19,8 @@ public interface SaglasnostService {
     byte[] generateSaglasnostPDF(String id) throws Exception;
 
     String generateSaglasnostHTML(String id) throws TransformerException, IOException, WriterException;
+
+    String generateSaglasnostRDFJSON(String id) throws IOException;
     
     void updateConsent(String saglasnost);
 

@@ -3,6 +3,7 @@ package com.imunizacija.ImunizacijaApp.service;
 import com.google.zxing.WriterException;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
@@ -47,6 +48,9 @@ public class SaglasnostServiceImpl implements SaglasnostService{
     @Autowired
     private OdgovoriService odgovoriService;
 
+    @Autowired
+    private RdfRepository rdfRepository;
+
     private static final String ID_PATH = "@Id";
 
     @PostConstruct // after init
@@ -77,7 +81,12 @@ public class SaglasnostServiceImpl implements SaglasnostService{
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), SAGLASNOST_XSL_PATH, null);
         return htmlString;
     }
-    
+
+    @Override
+    public String generateSaglasnostRDFJSON(String id) throws IOException {
+        return this.rdfRepository.generateRDFJSON(SAGLASNOST_NAMESPACE_PATH, id, SAGLASNOST_NAMED_GRAPH_URI);
+    }
+
     @Override
     public void updateConsent(String saglasnost) { // primio vakcinu
         Saglasnost s = this.repositoryReaderWriter.checkSchema(saglasnost);
