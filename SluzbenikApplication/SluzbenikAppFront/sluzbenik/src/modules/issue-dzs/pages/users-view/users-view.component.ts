@@ -23,7 +23,7 @@ export class UsersViewComponent implements OnInit {
   //pagination
   @ViewChild(PaginationComponent) pagination?: PaginationComponent;
   public totalItems: number = 1;
-  public pageSize: number = 2;
+  public pageSize: number = 10;
   currentPage: number = 1;
 
   //forma

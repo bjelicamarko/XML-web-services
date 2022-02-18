@@ -2,6 +2,7 @@ package com.sluzbenik.SluzbenikApp.controllers;
 
 
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.AdvancedSearchResults;
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.korisnik.Korisnik;
 import com.sluzbenik.SluzbenikApp.service.MetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,19 @@ public class MetapodaciController {
     private RestTemplate restTemplate;
 
     @GetMapping(value = "/pretraga/{query}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<AdvancedSearchResults> advancedSearch(@PathVariable String query) {
+    public ResponseEntity<SearchResults> advancedSearch(@PathVariable String query) {
         try{
             String[] tokens = query.split("~");
             if (tokens.length != 2){
                 throw new RuntimeException("Nevalidan upit! Nema tacno 2 tokena nakon deljenja po ~!");
             }
 
-            AdvancedSearchResults res = null;
+            SearchResults res = null;
             if (tokens[0].equals("dzs")){
-                res = new AdvancedSearchResults(metadataService.getDocIdsFromQuery(tokens[1]));
+                //res = new AdvancedSearchResults(metadataService.getDocIdsFromQuery(tokens[1]));
             }else{
-                ResponseEntity<AdvancedSearchResults> entity = restTemplate.getForEntity("http://localhost:9001/api/metapodaci/pretraga/"+ query,
-                        AdvancedSearchResults.class);
+                ResponseEntity<SearchResults> entity = restTemplate.getForEntity("http://localhost:9001/api/metapodaci/pretraga/"+ query,
+                        SearchResults.class);
                 if (entity.getStatusCode().is2xxSuccessful()){
                     res = entity.getBody();
                 }else{

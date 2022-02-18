@@ -18,6 +18,13 @@ public class SearchResult {
     @XmlElement(name = "Referenced_by", required = true)
     private ReferencedBy referencedBy;
 
+
+    public SearchResult(String docID) {
+        this.documentId = docID;
+        this.referencing = new Referencing();
+        this.referencedBy = new ReferencedBy();
+    }
+
     public SearchResult() {
         this.referencing = new Referencing();
         this.referencedBy = new ReferencedBy();

@@ -12,23 +12,45 @@
         </div>
     </div>
     <button id="submit" (click)="search()">Pretraži</button>
-    <div class="form-group row my_margin" *ngIf="metaSearchResults">
+    <div class="form-group row my_margin" *ngIf="searchResults">
         <table>
+
             <tr>
                 <th>Šifra/Identifikator</th>
                 <th></th>
                 <th></th>
+                <th>Referenciran od strane</th>
+                <th>Referencira</th>
             </tr>
 
-            <tr *ngFor="let result of metaSearchResults.Document_id">
-                <td>{{result}}</td>
+            <tr *ngFor="let result of searchResults.Search_results.Search_result">
+                <td>{{result.Document_id}}</td>
                 <td>
-                    <a (click)="getPdf(result)"><u>Prikaži/preuzmi pdf</u></a>
+                    <a (click)="getPdf(result.Document_id)"><u>Prikaži/preuzmi pdf</u></a>
                 </td>
                 <td>
-                    <a (click)="getHtml(result)"><u>Prikaži Html</u></a>
+                    <a (click)="getHtml(result.Document_id)"><u>Prikaži Html</u></a>
+                </td>
+
+                <td>
+                    <div *ngIf="result.Referencing && result.Referencing.length > 0">
+                        <div *ngFor="let referencingDoc of result.Referencing[0].Document_id">
+                            <a
+                                (click)="getPdfOnLink(false, referencingDoc)"><u>{{referencing}}/{{referencingDoc}}</u></a><br />
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div *ngIf="result.Referenced_by && result.Referenced_by.length > 0">
+                        <div *ngFor="let referenced_by of result.Referenced_by[0].Document_id">
+                            <a
+                                (click)="getPdfOnLink(true, referenced_by)"><u>{{referencedBy}}/{{referenced_by}}</u></a><br />
+                        </div>
+                    </div>
                 </td>
             </tr>
+
         </table>
     </div>
 </div>

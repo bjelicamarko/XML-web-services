@@ -3,6 +3,7 @@ import { DocumentProviderService } from 'src/modules/shared/services/document-pr
 import { SnackBarService } from 'src/modules/shared/services/snack-bar.service';
 import { UtilService } from 'src/modules/shared/services/util.service';
 import { MetaSearchResults } from '../../models/meta-search-results';
+import { RespDTO } from '../../models/new_dto_models/resp-dto';
 import { MetaSearchService } from '../../services/meta-search.service';
 
 @Component({
@@ -15,6 +16,9 @@ export class MetaSearchPageComponent {
   dokumenti: string[] = ['interesovanje', 'saglasnost', 'zahtev', 'potvrda', 'dzs'];
 
   izabranDokument: string = 'interesovanje';
+  referencedBy: string | undefined;
+  referencing: string | undefined;
+
   postavljenUpit: string = '';
 
   moguciPredikatiInteresovanje: string = "Moguci predikati: createdWhen.";
@@ -25,7 +29,7 @@ export class MetaSearchPageComponent {
 
   moguciPredikati: string = this.moguciPredikatiInteresovanje;
 
-  metaSearchResults: MetaSearchResults | undefined;
+  searchResults: RespDTO | undefined;
 
   constructor(private metaSearchService: MetaSearchService, private snackBarService: SnackBarService,
     private utilService: UtilService, private documentProviderService: DocumentProviderService) { }
@@ -35,14 +39,24 @@ export class MetaSearchPageComponent {
     console.log(this.izabranDokument);
     if (this.izabranDokument === 'interesovanje') {
       this.moguciPredikati = this.moguciPredikatiInteresovanje;
+      this.referencedBy = undefined;
+      this.referencing = undefined;
     } else if (this.izabranDokument === 'saglasnost') {
       this.moguciPredikati = this.moguciPredikatiSaglasnost;
+      this.referencing = 'interesovanje';
+      this.referencedBy = 'potvrda';
     } else if (this.izabranDokument === 'zahtev') {
       this.moguciPredikati = this.moguciPredikatiZahtev;
+      this.referencedBy = undefined;
+      this.referencing = undefined;
     } else if (this.izabranDokument === 'potvrda') {
       this.moguciPredikati = this.moguciPredikatiPotvrda;
+      this.referencing = 'saglasnost';
+      this.referencedBy = 'dzs';
     } else if (this.izabranDokument === 'dzs') {
       this.moguciPredikati = this.moguciPredikatiDzs;
+      this.referencedBy = 'zahtev';
+      this.referencing = 'potvrda';
     }
   }
 
@@ -66,14 +80,35 @@ export class MetaSearchPageComponent {
           let res = this.metaSearchService.parseXml(response.body as string);
 
           if (res.Meta_search_results !== '')
-            this.metaSearchResults = res.MetaSearchResults;
+            this.searchResults = res;
           else
-            this.metaSearchResults = undefined;
+            this.searchResults = undefined;
 
-          if (!this.metaSearchResults)
+          if (!this.searchResults)
             this.snackBarService.openSnackBarFast("Nema rezultata za unetu pretragu");
         })
     }
+  }
+
+  getPdfOnLink(refby: boolean, documentId: string) {
+    let documentName: string | undefined = "";
+    if (refby) {
+      documentName = this.referencedBy?.toLowerCase();
+    } else {
+      documentName = this.referencing?.toLowerCase();
+    }
+
+    if (!documentName) {
+      return;
+    }
+
+    this.documentProviderService.getDocumentPDF(documentName, documentId).subscribe((response) => {
+      if (response.body)
+        this.utilService.downloadPDFDocument(response.body, documentName);
+    },
+      (error) => {
+        this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja/prikazivanja dokumenta.");
+      });
   }
 
   getPdf(documentId: any) {
