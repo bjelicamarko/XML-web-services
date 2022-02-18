@@ -4,10 +4,7 @@ import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesova
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
-import com.imunizacija.ImunizacijaApp.repository.rdfRepository.InteresovanjeExtractMetadata;
-import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
-import com.imunizacija.ImunizacijaApp.repository.rdfRepository.SaglasnostExtractMetadata;
-import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.*;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.StoreRetrieveXMLRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
@@ -17,6 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 import static com.imunizacija.ImunizacijaApp.repository.Constants.*;
 
@@ -142,9 +141,12 @@ public class ImunizacijaAppApplication {
 	}
 
 	public static void main(String[] args) {
-		StoreRetrieveXMLRepository.registerDatabase();
+		//StoreRetrieveXMLRepository.registerDatabase();
 		//fillRDFDatabase();
-		SpringApplication.run(ImunizacijaAppApplication.class, args);
+		//SpringApplication.run(ImunizacijaAppApplication.class, args);
+		AdvancedSearchRepository advancedSearchRepository = new AdvancedSearchRepository();
+		List<String> res = advancedSearchRepository.advancedSearchSaglasnost("($createdAt>='2022-01-09'$&&$issuedTo='0101999404404'$)&&$refBy='2312312'$");
+		System.out.println("gn");
 	}
 
 }
