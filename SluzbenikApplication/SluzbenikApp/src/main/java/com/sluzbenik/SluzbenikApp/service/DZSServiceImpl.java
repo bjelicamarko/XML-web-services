@@ -6,6 +6,7 @@ import com.sluzbenik.SluzbenikApp.model.vakc_sistem.digitalni_zeleni_sertifikat.
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.exception.DzsException;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsExtractMetadata;
+import com.sluzbenik.SluzbenikApp.repository.rdfRepository.DzsRdfRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.GenericXMLRepository;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorDZS;
@@ -42,6 +43,9 @@ public class DZSServiceImpl implements DZSService {
 
     @Autowired
     DzsExtractMetadata dzsExtractMetadata;
+
+    @Autowired
+    private DzsRdfRepository dzsRdfRepository;
 
     @Autowired
     MailService mailService;
@@ -108,7 +112,9 @@ public class DZSServiceImpl implements DZSService {
         dzs.getDoze().addAll(potvrdaOVakcinaciji.getPodaciOVakcini().getDoze());
 
         String dzsId = repository.storeXML(dzs, true);
-        dzsExtractMetadata.extract(dzs, zahtevID);
+        dzsExtractMetadata.extract(dzs, zahtevID, potvrdaOVakcinaciji.getXmlId());
+
+        // poziv na imunizaciju i sacuvati u rdf-potvrde idDzs-a
 
         try {
             mailService.sendDzs(this.generateDZSHTML(dzsId+".xml"), this.generateDZSPDF(dzsId+".xml"), userEmail);
@@ -122,6 +128,7 @@ public class DZSServiceImpl implements DZSService {
     public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
         SearchResults searchResults;
         searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
+        this.dzsRdfRepository.getDzsWithReferences(searchResults);
         return searchResults;
     }
 }

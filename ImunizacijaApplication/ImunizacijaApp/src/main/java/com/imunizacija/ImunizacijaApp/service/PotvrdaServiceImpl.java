@@ -5,6 +5,7 @@ import com.imunizacija.ImunizacijaApp.model.dto.comunication_dto.SearchResults;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.odgovori.Odgovori;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.potvrda_o_vakcinaciji.PotvrdaOVakcinaciji;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaExtractMetadata;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.PotvrdaRdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.saglasnost_za_imunizaciju.Saglasnost;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.util.*;
@@ -44,6 +45,9 @@ public class PotvrdaServiceImpl implements PotvrdaService {
 
     @Autowired
     private PotvrdaExtractMetadata potvrdaExtractMetadata;
+
+    @Autowired
+    private PotvrdaRdfRepository potvrdaRdfRepository;
 
     @Autowired
     private XSLFOTransformer transformerXML2PDF;
@@ -98,6 +102,7 @@ public class PotvrdaServiceImpl implements PotvrdaService {
     public SearchResults searchDocuments(String userId, String searchText) throws XMLDBException {
         SearchResults searchResults;
         searchResults = repository.searchDocuments(userId, searchText, ID_PATH);
+        this.potvrdaRdfRepository.getPotvrdaWithReferences(searchResults);
         return searchResults;
     }
 

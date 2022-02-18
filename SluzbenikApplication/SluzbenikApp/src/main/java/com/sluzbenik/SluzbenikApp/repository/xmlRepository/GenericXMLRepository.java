@@ -1,5 +1,6 @@
 package com.sluzbenik.SluzbenikApp.repository.xmlRepository;
 
+import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResult;
 import com.sluzbenik.SluzbenikApp.model.dto.comunication_dto.SearchResults;
 import com.sluzbenik.SluzbenikApp.model.vakc_sistem.IdentifiableEntity;
 import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGeneratorInterface;
@@ -149,8 +150,9 @@ public class GenericXMLRepository<T extends IdentifiableEntity> extends StoreRet
                 res = i.nextResource();
                 String response = (String) res.getContent();
                 System.out.println("Ret value is: " + response);
-
-                searchResults.getSearchResults().add(response /* + ".xml"*/);
+                SearchResult searchResult = new SearchResult();
+                searchResult.setDocumentId(response);
+                searchResults.getSearchResults().add(searchResult);
 
             } catch(XMLDBException e){
                 System.out.println("Error with query for consent!");

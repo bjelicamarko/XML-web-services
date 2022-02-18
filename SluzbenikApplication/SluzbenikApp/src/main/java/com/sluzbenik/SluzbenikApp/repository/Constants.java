@@ -28,6 +28,7 @@ public class Constants {
     public static final String DZS_NAMESPACE_PATH = ROOT_PATH + "digitalni-zeleni-sertifikat/";
     public static final String DZS_NAMESPACE_PATH2 = ROOT_PATH + "digitalni-zeleni-sertifikat";
     public static final String ZAHTEV_NAMESPACE_PATH = ROOT_PATH + "zahtev/";
+    public static final String POTVRDA_NAMESPACE_PATH = ROOT_PATH + "potvrda-o-vakcinaciji/";
     public static final String TERMIN_NAMESPACE_PATH = ROOT_PATH + "termini";
     public static final String KORISNIK_NAMESPACE_PATH = ROOT_PATH + "korisnik";
     public static final String IZVESTAJ_NAMESPACE_PATH = ROOT_PATH + "izvestaj/";
@@ -40,6 +41,7 @@ public class Constants {
     //predicates
     public static final String ISSUED_TO_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/issuedTo>";
     public static final String REF_BY_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/refBy>";
+    public static final String REF_PREDICATE_DB = "<http://www.vakc-sistem.rs/predicate/ref>";
 
     public static final String XML_SCHEMA_PATH_POTVRDA = "data/xml_example/potvrda_o_vakcinaciji.xsd";
     public static final String PACKAGE_PATH_POTVRDA = "com.sluzbenik.SluzbenikApp.model.vakc_sistem.potvrda_o_vakcinaciji";
