@@ -13,6 +13,9 @@ import com.imunizacija.ImunizacijaApp.repository.xmlRepository.GenericXMLReposit
 import com.imunizacija.ImunizacijaApp.repository.xmlRepository.id_generator.IdGeneratorPosInt;
 import com.imunizacija.ImunizacijaApp.transformers.XML2HTMLTransformer;
 import com.imunizacija.ImunizacijaApp.transformers.XSLFOTransformer;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -205,5 +208,10 @@ public class PotvrdaServiceImpl implements PotvrdaService {
         dozaSaUstanovom.setTip(dozaDetaljnije.getTip());
         dozaSaUstanovom.setUstanova(oVakcinaciji.getZdravstvenaUstanova());
         return dozaSaUstanovom;
+    }
+
+    @Override
+    public void dodajDzsIdURdf(String dzsId, String potvrdaId) {
+        this.potvrdaExtractMetadata.dodajDzsIdURdf(dzsId, potvrdaId);
     }
 }

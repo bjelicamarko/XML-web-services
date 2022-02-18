@@ -87,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/potvrda/search").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/generatePDF/**").permitAll() // komunikacija bekova
 				.antMatchers("/api/potvrda/generateHTML/**").permitAll() // komunikacija bekova
+				.antMatchers("/api/potvrda/metapodaciODigitalnomZelenomSertifikatu").permitAll() // komunikacija bekova
 				.anyRequest().authenticated().and()
 				.cors().and()
 				.addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),

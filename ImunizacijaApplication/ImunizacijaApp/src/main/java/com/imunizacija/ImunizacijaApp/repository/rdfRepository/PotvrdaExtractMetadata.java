@@ -110,4 +110,16 @@ public class PotvrdaExtractMetadata extends ExtractMetadata{
         else // STRANO_BEZ_BORAVKA
             return drzavljanstvo.getBrPasosa();
     }
+
+    public void dodajDzsIdURdf(String dzsId, String potvrdaId) {
+        Model model = createModel();
+
+        Resource resource = model.createResource(POTVRDA_NAMESPACE_PATH + potvrdaId);
+
+        Property ref = model.createProperty(PREDICATE_NAMESPACE, "ref");
+        Resource dzs = model.createResource(DZS_NAMESPACE_PATH + dzsId);
+        model.add(model.createStatement(resource, ref, dzs));
+
+        super.modelWrite(model, POTVRDA_NAMED_GRAPH_URI);
+    }
 }

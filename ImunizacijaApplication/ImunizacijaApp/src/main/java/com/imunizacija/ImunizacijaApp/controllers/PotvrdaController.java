@@ -67,4 +67,12 @@ public class PotvrdaController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping(value = "/metapodaciODigitalnomZelenomSertifikatu")
+    public ResponseEntity<String> metapodaciODigitalnomZelenomSertifikatu(@RequestBody String podaci) {
+        String[] dobijeniPodaci = podaci.split("\\|"); //0-dzsId 1-potvrdaId
+        System.out.println(podaci);
+        this.potvrdaService.dodajDzsIdURdf(dobijeniPodaci[0], dobijeniPodaci[1]);
+        return new ResponseEntity<>(podaci, HttpStatus.OK);
+    }
 }

@@ -15,7 +15,12 @@ import com.sluzbenik.SluzbenikApp.repository.xmlRepository.id_generator.IdGenera
 import com.sluzbenik.SluzbenikApp.transformers.XML2HTMLTransformer;
 import com.sluzbenik.SluzbenikApp.transformers.XSLFOTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.xmldb.api.base.XMLDBException;
 
 import javax.annotation.PostConstruct;
@@ -60,6 +65,9 @@ public class DZSServiceImpl implements DZSService {
 
     @Autowired
     private XML2HTMLTransformer transformerXML2HTML;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public static final String URL_RESOURCE_ROOT = "dzs/";
 
@@ -119,6 +127,12 @@ public class DZSServiceImpl implements DZSService {
         String dzsId = repository.storeXML(dzs, true);
         dzsExtractMetadata.extract(dzs, zahtevID, potvrdaOVakcinaciji.getXmlId());
 
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> requestUpdate = new HttpEntity<>(dzsId+"|"+potvrdaOVakcinaciji.getXmlId(), headers);
+        ResponseEntity<String> entity = restTemplate
+                .exchange("http://localhost:9001/api/potvrda/metapodaciODigitalnomZelenomSertifikatu",
+                        HttpMethod.POST, requestUpdate, String.class);
+        System.out.println("Odgovor: " + entity.getBody());
         // poziv na imunizaciju i sacuvati u rdf-potvrde idDzs-a
 
         try {

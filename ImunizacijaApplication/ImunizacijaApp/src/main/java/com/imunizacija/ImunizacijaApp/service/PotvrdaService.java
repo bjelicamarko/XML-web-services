@@ -20,4 +20,6 @@ public interface PotvrdaService {
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
     
     void generatePotvrdaOVakcinaciji(Saglasnost s) throws Exception;
+
+    void dodajDzsIdURdf(String dzsId, String potvrdaId);
 }
