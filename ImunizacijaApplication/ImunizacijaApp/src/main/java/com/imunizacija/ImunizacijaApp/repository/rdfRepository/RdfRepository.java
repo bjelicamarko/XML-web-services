@@ -4,12 +4,13 @@ import com.imunizacija.ImunizacijaApp.model.dto.rdf_dto.DocumentsOfUserDTO;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities;
 import com.imunizacija.ImunizacijaApp.utils.AuthenticationUtilities.*;
 import com.imunizacija.ImunizacijaApp.utils.SparqlUtil;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.*;
 import org.springframework.stereotype.Component;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -116,6 +117,23 @@ public class RdfRepository {
         return requestList;
     }
 
+    public boolean userHasPendingRequest(String userID){
+        String sparqlCondition = "?zahtev " +  CREATED_BY_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userID + "> . " +
+                "?zahtev " + HAS_STATUS_PREDICATE_DB + " 'pending'";
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + ZAHTEV_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+
+        boolean hasNext = results.hasNext();
+        query.close();
+
+        return hasNext;
+    }
+
     public DocumentsOfUserDTO getDocumentsOfUser(String userID){
         DocumentsOfUserDTO documentsOfUserDTO = new DocumentsOfUserDTO();
         documentsOfUserDTO.setInteresovanjeID(this.getInterestFromUser(userID));
@@ -164,5 +182,47 @@ public class RdfRepository {
         List<String> sortedAffirmation = new ArrayList<>();
         affirmationList.forEach(affirmation -> sortedAffirmation.add(affirmation[0]));
         return sortedAffirmation.get(sortedAffirmation.size() - 1);
+    }
+
+    public boolean userHasCertificate(String userId) {
+        String sparqlCondition = "?potvrda " +  ISSUED_TO_PREDICATE_DB + "<" + OSOBA_NAMESPACE_PATH + userId + "> .";
+
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + POTVRDA_NAMED_GRAPH_URI, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+
+        // Query the collection, dump output response with the use of ResultSetFormatter
+        ResultSet results = query.execSelect();
+
+        boolean hasNext = results.hasNext();
+        query.close();
+
+        return hasNext;
+    }
+
+    public String generateRDFJSON(String doumentRdfUrl, String id, String namedGraphUri) throws IOException {
+        String sparqlCondition = "<" + doumentRdfUrl + id + "> ?predicate ?object .";
+        System.out.println(sparqlCondition);
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + namedGraphUri, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+        ResultSet results = query.execSelect();
+
+        // checking if ResultSet is empty
+//        if (results.hasNext()) {
+//            query.close();
+//            return "{}";
+//        }
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ResultSetFormatter.outputAsJSON(byteArrayOutputStream, results);
+        String json = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        int indexOfSubStr = json.indexOf("results");
+        String newJson  = String.format("{\n  %s", json.substring(indexOfSubStr - 1)); // creating substring from results to end
+        byteArrayOutputStream.close();
+        query.close();
+        return newJson;
     }
 }

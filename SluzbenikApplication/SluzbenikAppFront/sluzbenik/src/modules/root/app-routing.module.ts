@@ -32,6 +32,11 @@ const routes: Routes = [
         path: "search",
         loadChildren: () =>
           import("./../search/search.module").then((m) => m.SearchModule),
+      },
+      {
+        path: "meta-podaci",
+        loadChildren: () => 
+          import("./../meta-search/meta-search.module").then((m) => m.MetaSearchModule),
       }
     ]
   },

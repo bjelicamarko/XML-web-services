@@ -1,7 +1,9 @@
 package com.imunizacija.ImunizacijaApp.service;
 
 import com.google.zxing.WriterException;
+import com.imunizacija.ImunizacijaApp.model.vakc_sistem.interesovanje.Interesovanje;
 import com.imunizacija.ImunizacijaApp.model.vakc_sistem.zahtev_dzs.Zahtev;
+import com.imunizacija.ImunizacijaApp.repository.rdfRepository.RdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevExtractMetadata;
 import com.imunizacija.ImunizacijaApp.repository.rdfRepository.ZahtevRdfRepository;
 import com.imunizacija.ImunizacijaApp.repository.xmlFileReaderWriter.GenericXMLReaderWriter;
@@ -39,6 +41,9 @@ public class ZahtevServiceImpl implements ZahtevService {
     private ZahtevExtractMetadata zahtevExtractMetadata;
 
     @Autowired
+    private RdfRepository rdfRepository;
+
+    @Autowired
     private ZahtevRdfRepository zahtevRdfRepository;
 
     @Autowired
@@ -57,10 +62,16 @@ public class ZahtevServiceImpl implements ZahtevService {
     public Zahtev findOneById(String id) { return repository.retrieveXML(id); }
 
     @Override
-    public void createNewRequest(String zahtevDzs) throws MessagingException {
+    public void createNewRequest(String zahtevDzs) {
         Zahtev z = repositoryReaderWriter.checkSchema(zahtevDzs);
-        this.repository.storeXML(z, true);
-        this.zahtevExtractMetadata.extractData(z);
+        if(z == null)
+            throw new RuntimeException("Poslali ste nevalidan dokument.");
+
+        String userId = returnPersonIdentifier(z);
+        if(canCreateRequest(userId)) {
+            this.repository.storeXML(z, true);
+            this.zahtevExtractMetadata.extractData(z);
+        } // else throws RuntimeException
     }
 
     @Override
@@ -72,6 +83,16 @@ public class ZahtevServiceImpl implements ZahtevService {
     public String generateZahtevHTML(String id) throws TransformerException, IOException, WriterException {
         String htmlString = transformerXML2HTML.generateHTML(repository.retrieveXMLAsDOMNode(id), ZAHTEV_XSL_PATH, null);
         return Util.replaceCharacters(htmlString);
+    }
+
+    @Override
+    public boolean canCreateRequest(String userId) throws RuntimeException {
+        if(!rdfRepository.userHasCertificate(userId))
+            throw new RuntimeException("Nije moguce kreirati zahtev jer nemate potvrdu o vakcinaciji.");
+        if(rdfRepository.userHasPendingRequest(userId))
+            throw new RuntimeException("Već postoji evidentiran zahtev za unete kredencijale.");
+
+        return true;
     }
 
     @Override
@@ -95,5 +116,17 @@ public class ZahtevServiceImpl implements ZahtevService {
         }
         zahteviXMLRepository.deleteZahtev(id);
         zahtevRdfRepository.deleteZahtev(id);
+    }
+
+    private String returnPersonIdentifier(Zahtev zahtev) {
+        /** Handle exception if all null **/
+
+        String jmbg = zahtev.getPodnosilac().getDrzavljanstvo().getJMBG();
+        if(jmbg != null) return jmbg;
+
+        String brojPasosa = zahtev.getPodnosilac().getDrzavljanstvo().getBrPasosa();
+        if(brojPasosa != null) return brojPasosa;
+
+        return zahtev.getPodnosilac().getDrzavljanstvo().getEvidencioniBrojStranca();
     }
 }

@@ -10,6 +10,8 @@ import { RequestService } from '../../services/request.service';
 
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService } from '@syncfusion/ej2-angular-richtexteditor';
 import { Drzavljanstvo } from 'src/modules/shared/models/Drzavljanstvo';
+import { UtilService } from 'src/modules/shared/services/util.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-page',
@@ -61,7 +63,8 @@ export class RequestPageComponent implements OnInit {
   };
 
   constructor(private fb: FormBuilder, private requestService: RequestService,
-              private snackBarService: SnackBarService) { 
+              private snackBarService: SnackBarService, private utilService: UtilService, 
+              private router: Router) { 
     this.genderOptions = ['Muski', 'Zenski'];
     this.options = ['Drzavljanin Republike Srbije',
                     'Strani drzavljanin sa boravkom u RS',
@@ -81,6 +84,7 @@ export class RequestPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.canCreateRequest(); // Proveri da li moze da kreira zahtev
   }
 
   get f() {
@@ -128,6 +132,9 @@ export class RequestPageComponent implements OnInit {
     this.requestService.createRequest(newRequest).subscribe((response) => {
       this.snackBarService.openSnackBar(response.body as string);
           this.resetStateOfForm();
+    }, (error) => {
+      this.snackBarService.openSnackBar(error.error);
+      this.router.navigate(["imunizacija-app/interesovanje/novo-interesovanje"]);
     });
   }
 
@@ -186,5 +193,16 @@ export class RequestPageComponent implements OnInit {
     r = r.replace(',,', ',');
     // console.log(r);
     this.value = r;
+  }
+
+  canCreateRequest(): boolean {
+    this.requestService.canCreateRequest(this.utilService.getLoggedUserID()).subscribe((response) => {
+      if(response.body) { }
+    }, (error) => {
+      this.snackBarService.openSnackBar(error.error);
+      this.router.navigate(["imunizacija-app/interesovanje/novo-interesovanje"]);
+    });
+    
+    return true;
   }
 }

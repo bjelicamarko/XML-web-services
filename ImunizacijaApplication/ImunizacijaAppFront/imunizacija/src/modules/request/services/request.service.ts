@@ -24,4 +24,16 @@ export class RequestService {
     };
     return this.http.post<HttpResponse<string>>("indirekcija/api/zahtev/kreirajNovZahtev", o2x(zahtev), queryParams);
   }
+
+  
+  canCreateRequest(userId: string): Observable<HttpResponse<string>> {
+    let queryParams = {};
+    queryParams = {
+      headers: this.headers, 
+      observe: "response",
+      responseType: "text"
+    };
+
+    return this.http.get<HttpResponse<string>>(`indirekcija/api/zahtev/canCreateRequest/${userId}`, queryParams);
+  }
 }

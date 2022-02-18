@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public interface ZahtevService {
 
-    void createNewRequest(String zahtevDzs) throws MessagingException;
+    void createNewRequest(String zahtevDzs) throws MessagingException, Exception;
 
     Zahtev findOneById(String id);
 
@@ -21,5 +21,7 @@ public interface ZahtevService {
     void rejectRequest(String id);
 
     String generateZahtevHTML(String id) throws TransformerException, IOException, WriterException;
+
+    boolean canCreateRequest(String userId) throws RuntimeException;
 
 }
