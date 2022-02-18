@@ -47,7 +47,7 @@ public class ZahtevController {
         return new ResponseEntity<String>("Zahtev za DZS odbijen!", HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+
     @PostMapping(value = "/kreirajNovZahtev", consumes = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> createNewInterest(@RequestBody String zahtev) throws MessagingException {
         try {
@@ -85,6 +85,7 @@ public class ZahtevController {
         try {
             return new ResponseEntity<>(zahtevService.generateZahtevJSON(id), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in JSON format .", id), HttpStatus.NOT_FOUND);
         }
     }

@@ -54,7 +54,7 @@ export class UtilService {
     PDF_link.click();
   }
 
-  public downloadJSONDocument(_blob: any, name: string = 'dzejson'): void {
+  public downloadJSONDocument(_blob: any, name: string = 'dokument'): void {
     let blob = new Blob([_blob], { type: 'application/json' });
     let pdfUrl = window.URL.createObjectURL(blob);
 
@@ -66,6 +66,18 @@ export class UtilService {
 
     //   TO DOWNLOAD PDF TO YOUR COMPUTER
     PDF_link.download = name + ".json";
+    PDF_link.click();
+  }
+
+  public downloadRDFDocument(_blob: any, name: string = 'dokument'): void {
+    let blob = new Blob([_blob], { type: 'application/xml' });
+    let pdfUrl = window.URL.createObjectURL(blob);
+
+    var PDF_link = document.createElement('a');
+    PDF_link.href = pdfUrl;
+
+    //   TO DOWNLOAD PDF TO YOUR COMPUTER
+    PDF_link.download = name + ".txt";
     PDF_link.click();
   }
 

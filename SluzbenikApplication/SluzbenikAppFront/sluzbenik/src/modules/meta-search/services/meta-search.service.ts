@@ -30,7 +30,7 @@ export class MetaSearchService {
       responseType: "text",
     };
 
-    return this.http.get<HttpResponse<string>>(`indirekcija/api/${documentName}/generateJSON/${documentId}`, queryParams);
+    return this.http.get<HttpResponse<string>>(`indirekcija/api/generisanje/json/${documentName}/${documentId}`, queryParams);
   }
 
   getStringRdf(documentName: string, documentId: string): Observable<HttpResponse<string>> {
@@ -41,7 +41,7 @@ export class MetaSearchService {
       responseType: "text",
     };
 
-    return this.http.get<HttpResponse<string>>(`indirekcija/api/${documentName}/generateRDFTriplets/${documentId}`, queryParams);
+    return this.http.get<HttpResponse<string>>(`indirekcija/api/generisanje/rdf/${documentName}/${documentId}`, queryParams);
   }
 
 

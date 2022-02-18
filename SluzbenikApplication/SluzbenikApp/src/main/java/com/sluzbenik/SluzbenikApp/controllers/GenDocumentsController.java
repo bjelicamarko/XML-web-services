@@ -83,4 +83,51 @@ public class GenDocumentsController {
         }
     }
 
+    @GetMapping(value = "/json/{docType}/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateJSON(@PathVariable String docType, @PathVariable String id) {
+        if (docType.equals("dzs")){ //uga buga
+            try {
+                return new ResponseEntity<>(dzsService.generateDZSJSON(id), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+            }
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "text/html");
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:9001/api/" + docType + "/generateJSON/" + id,
+                    String.class);
+            return new ResponseEntity<>(entity.getBody(), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/rdf/{docType}/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateRDF(@PathVariable String docType, @PathVariable String id) {
+        if (docType.equals("dzs")){ //uga buga
+            try {
+                return new ResponseEntity<>(dzsService.generateDZSRDFTriplets(id), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+            }
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "text/html");
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:9001/api/" + docType + "/generateRDFTriplets/" + id,
+                    String.class);
+            return new ResponseEntity<>(entity.getBody(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

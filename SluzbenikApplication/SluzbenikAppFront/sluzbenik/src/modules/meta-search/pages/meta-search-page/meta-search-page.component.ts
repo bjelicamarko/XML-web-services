@@ -133,11 +133,9 @@ export class MetaSearchPageComponent {
   }
 
   getJson(documentId: any) {
-    
-    return;
     this.metaSearchService.getStringJson(this.izabranDokument, documentId).subscribe((response) => {
       if (response.body)
-        this.utilService.openHtmlDocumentInNewTab(response.body);
+        this.utilService.downloadJSONDocument(response.body, this.izabranDokument);
     },
       (error) => {
         this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja dokumenta.");
@@ -145,26 +143,13 @@ export class MetaSearchPageComponent {
   }
 
   getRdf(documentId: any) {
-
-    return;
     this.metaSearchService.getStringRdf(this.izabranDokument, documentId).subscribe((response) => {
       if (response.body)
-        this.utilService.openHtmlDocumentInNewTab(response.body);
+        this.utilService.downloadRDFDocument(response.body, this.izabranDokument);
     },
       (error) => {
         this.snackBarService.openSnackBarFast("Doslo je do greške prilikom preuzimanja dokumenta.");
       });
-  }
-
-  test() {
-    let testJson: any = {
-      Bokisheli: "Bokisheli",
-      Tica: "Ticoni"
-    }
-    
-    this.utilService.downloadJSONDocument(JSON.stringify(testJson));
-
-    //JSON.stringify(testJson, undefined, 4)
   }
 
 }
