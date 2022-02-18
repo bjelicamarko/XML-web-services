@@ -98,7 +98,7 @@ public class ZahtevRdfRepository extends ExtractMetadata{
     public void deleteZahtev(String id) {
         System.out.println("[INFO] Inserting the triples to a named graph \"" + ZAHTEV_NAMED_GRAPH_URI + "\".");
         String sparqlUpdate = "WITH <http://localhost:8083/ImunizacijaDataset/data/zahtev/metadata> \n" +
-                "DELETE { <http://www.vakc-sistem.rs/zahtev/978989687> ?p ?o } \n" +
+                "DELETE { <http://www.vakc-sistem.rs/zahtev/" + id + "> ?p ?o } \n" +
                 "WHERE \n" +
                 "  { ?s ?p ?o}";
         System.out.println(sparqlUpdate);
