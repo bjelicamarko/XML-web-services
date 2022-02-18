@@ -1,6 +1,7 @@
 package com.sluzbenik.SluzbenikApp.controllers;
 
 import com.sluzbenik.SluzbenikApp.service.DZSService;
+import com.sluzbenik.SluzbenikApp.service.IzvestajService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,21 @@ public class GenDocumentsController {
     @Autowired
     private DZSService dzsService;
 
+    @Autowired
+    private IzvestajService izvestajService;
+
     @GetMapping(value = "/pdf/{docType}/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generatePDF(@PathVariable String docType, @PathVariable String id) {
         if (docType.equals("dzs")){ //uga buga
             try {
                 byte[] pdfBytes = dzsService.generateDZSPDF(id);
+                return new ResponseEntity<>(pdfBytes, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+        } else if (docType.equals("izvestaji")) {
+            try {
+                byte[] pdfBytes = izvestajService.generateIzvestajPDF(id);
                 return new ResponseEntity<>(pdfBytes, HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -50,6 +61,12 @@ public class GenDocumentsController {
                 return new ResponseEntity<>(dzsService.generateDZSHTML(id), HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
+            }
+        } else if (docType.equals("izvestaji")) {
+            try {
+                return new ResponseEntity<>(izvestajService.generateIzvestajHTML(id), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
         }
 
