@@ -3,12 +3,13 @@ package com.sluzbenik.SluzbenikApp.repository.rdfRepository;
 import com.sluzbenik.SluzbenikApp.model.dto.rdf_dto.DocumentsOfUserDTO;
 import com.sluzbenik.SluzbenikApp.utils.AuthenticationUtilities;
 import com.sluzbenik.SluzbenikApp.utils.SparqlUtil;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Model;
 import org.springframework.stereotype.Component;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,5 +42,36 @@ public class RdfRepository {
         }
         query.close();
         return requestList;
+    }
+
+    public String generateJSON(String documentRdfUrl, String id, String namedGraphUri) throws IOException {
+        String sparqlCondition = "VALUES ?subject { <" + documentRdfUrl + id + "> }" +
+                " ?subject ?predicate ?object .";
+        String sparqlQuery = SparqlUtil.selectData(conn.dataEndpoint + namedGraphUri, sparqlCondition);
+
+        // Create a QueryExecution that will access a SPARQL service over HTTP
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+        ResultSet results = query.execSelect();
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ResultSetFormatter.outputAsJSON(byteArrayOutputStream, results);
+        String json = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        int indexOfSubStr = json.indexOf("bindings");
+        String newJson  = String.format("{\n  %s", json.substring(indexOfSubStr - 1)); // creating substring from results to end
+        byteArrayOutputStream.close();
+        query.close();
+        return newJson;
+    }
+
+    public String generateRDFTriplets(String documentRdfUrl, String id, String namedGraphUri) {
+        String sparqlCondition = " <" + documentRdfUrl + id + "> ?predicate ?object .";
+        String sparqlQuery = SparqlUtil.constructData(conn.dataEndpoint + namedGraphUri, sparqlCondition);
+        QueryExecution query = QueryExecutionFactory.sparqlService(conn.queryEndpoint, sparqlQuery);
+        Model model = query.execConstruct();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        model.write(out, "N-Triples");
+
+        return out.toString();
     }
 }

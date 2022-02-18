@@ -28,6 +28,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
@@ -154,5 +155,15 @@ public class DZSServiceImpl implements DZSService {
     @Override
     public List<String> getDzsOfUser(String id) {
         return rdfRepository.getDZSFromUser(id);
+    }
+    
+    @Override
+    public String generateDZSJSON(String id) throws IOException {
+        return this.rdfRepository.generateJSON(DZS_NAMESPACE_PATH, id, DZS_NAMED_GRAPH_URI);
+    }
+
+    @Override
+    public String generateDZSRDFTriplets(String id) {
+        return this.rdfRepository.generateRDFTriplets(DZS_NAMESPACE_PATH, id, DZS_NAMED_GRAPH_URI);
     }
 }

@@ -7,6 +7,7 @@ import org.xmldb.api.base.XMLDBException;
 
 import javax.mail.MessagingException;
 import javax.xml.datatype.DatatypeConfigurationException;
+import java.io.IOException;
 
 public interface PotvrdaService {
     PotvrdaOVakcinaciji findOneById(String id);
@@ -17,9 +18,13 @@ public interface PotvrdaService {
 
     String generatePotvrdaHTML(String id) throws Exception;
 
+    String generateSaglasnostJSON(String id) throws IOException;
+
     SearchResults searchDocuments(String userId, String searchText) throws XMLDBException;
     
     void generatePotvrdaOVakcinaciji(Saglasnost s) throws Exception;
 
     void dodajDzsIdURdf(String dzsId, String potvrdaId);
+    
+    String generatePotvrdaRDFTriplets(String id);
 }

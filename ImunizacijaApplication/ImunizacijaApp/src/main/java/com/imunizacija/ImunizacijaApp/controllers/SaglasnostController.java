@@ -69,6 +69,25 @@ public class SaglasnostController {
             return new ResponseEntity<>("Error HTML transforming.", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping(value = "/generateJSON/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateJSON(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(saglasnostService.generateSaglasnostJSON(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in JSON format .", id), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/generateRDFTriplets/{id}", produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> generateRDFTriplets(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(saglasnostService.generateSaglasnostRDFTriplets(id), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(String.format("Error getting RDF (DocId: %s) in N-TRIPLETS format .", id), HttpStatus.NOT_FOUND);
+        }
+    }
     
     @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping(consumes = MediaType.APPLICATION_XML_VALUE)
