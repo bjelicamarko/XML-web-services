@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/socket/**").permitAll()
 				.antMatchers("/api/users/login").permitAll()
 				.antMatchers("/api/dzs/odKorisnika/**").permitAll() //todo izbrisati
+				.antMatchers("/api/dzs/generatePDF/**").permitAll() //todo izbrisati
 				.antMatchers("/api/users/test-create-sluzbenik").permitAll() //todo izbrisati
 				.antMatchers("/api/sistemski-magacin/dobaviTermin").permitAll() // Komunikacija beckova
 				.antMatchers("/api/izvestaji/dobaviIzvestaje/*").permitAll() // Komunikacija beckova
