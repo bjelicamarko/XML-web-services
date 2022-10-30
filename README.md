@@ -1,4 +1,4 @@
-# XML-Veb-Servisi - Информациони систем за вакцинацију грађана
+# XML-web-services - Informacioni sistem za vakcinaciju građana
 Projekat iz predmeta XML i veb servisi.
 
 ## Upustvo za pokretanje sistema aplikacija
